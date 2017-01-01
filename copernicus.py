@@ -119,6 +119,7 @@ allcombparsedfinal = []
 allcombparsed = []
 tmpchance = []
 regionfr = ["Alsace","Aquitaine","Auvergne","Basse-Normandie","Bourgogne","Bretagne","Centre","Champagne-Ardenne","Corse","Franche-Comté","Haute-Normandie","Île-de-France","Languedoc-Roussillon","Limousin","Lorraine","Midi-Pyrénées","Nord-Pas-de-Calais","Pays de la Loire","Picardie","Poitou-Charentes","Provence-Alpes-Côte+d'Azur","Rhône-Alpes","Guadeloupe","Guyane","La+Réunion","Martinique","Mayotte"]
+regionnode =["PbMayotte","PbMartinique","PbLaRunion","PbLaRunion","PbGuadeloupe","PbGuyane","PbRhoneAlpes","PbProvenceAlpesCotedAzur","PbPoitouCharentes","PbPicardie","PbPaysdelaLoire","PbNordPasdeCalais","PbMidiPyrnes","PbLorraine","PbLimousin","PbLanguedocRoussillon","PbiledeFrance","PbHauteNormandie","PbFrancheComt","PbCorse","PbChampagneArdenne","PbCentre","PbBretagne","PbBourgogne","PbBasseNormandie","PbAuvergne","PbAquitaine","PbAlsace"]
 alllng = ['af','ar','hy','be','bg','ca','zh-CN','hr','cs','da','nl','en','et','tl','fi','fr','de','el','hi','hu','is','id','it','ja','ko','lv','lt','no','fa','pl','pt','ro','ru','sr','sk','sl','es','sv','th','tr','uk','vi']
 lng = []
 
@@ -273,7 +274,7 @@ def pageblanche(familyname,city):
 
                                         if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
                                              print("Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
-                                             pageBres.append("Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                             pageBacu.append("Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
                                              i = i + 1 
 
                                         else:
@@ -289,22 +290,23 @@ def pageblanche(familyname,city):
 
                                    initial = initial + 1
                          else:
-                                   locations.append("none")
+                                   pass
 
 
                          time.sleep(15)
 
           except Exception as e:
 
-             print(e)
+#             print(e)
              pass
 
 
 
 
 
-     pageBacu = pageBres
-
+     names = []
+     locations = []
+     tels =[]
 
      print()
 
@@ -501,7 +503,7 @@ def pageblanche(familyname,city):
                
           except Exception as e:
 
-             print(e)
+#             print(e)
              pass
 
 
@@ -1836,10 +1838,9 @@ print("Which may contain : ",args.add)
 print()
 
 permutation(argsname)
+
 if family != "none":
      pageblanche(family,args.city)
-
-
 
 getYahooLinks(argsname,6)
 
@@ -2107,66 +2108,11 @@ s1.relationships.create("En Attente", Googlespecialnode)
 s2.relationships.create("En Attente", Bingspecialnode)
 s3.relationships.create("En Attente", Yahoospecialnode)
 ##
-PagesBlanches = db.nodes.create(name="Resultats",Region="", Nom="", Adresse="", telephone="")
+PagesBlanches = db.nodes.create(name="Regions",Region="Regions", Nom="Regions", Adresse="Regions", telephone="Regions")
 s4.relationships.create("Query", PagesBlanches)
 
-PbAccurate= db.nodes.create(name="Accurate",Region="", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("ResultatsPrecis",PbAccurate)
-
-PbAlsace= db.nodes.create(name="Alsace",Region="Alsace", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbAlsace)
-PbAquitaine= db.nodes.create(name="Aquitaine",Region="Aquitaine", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbAquitaine)
-PbAuvergne= db.nodes.create(name="Auvergne",Region="Auvergne", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbAuvergne)
-PbBasseNormandie= db.nodes.create(name="Basse-Normandie",Region="Basse-Normandie", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbBasseNormandie)
-PbBourgogne= db.nodes.create(name="Bourgogne",Region="Bourgogne", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbBourgogne)
-PbBretagne= db.nodes.create(name="Bretagne",Region="Bretagne", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbBretagne)
-PbCentre= db.nodes.create(name="Centre",Region="Centre", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbCentre)
-PbChampagneArdenne= db.nodes.create(name="Champagne-Ardenne",Region="Champagne-Ardenne", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbChampagneArdenne)
-PbCorse= db.nodes.create(name="Corse",Region="Corse", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbCorse)
-PbFrancheComt= db.nodes.create(name="Franche-Comté",Region="Franche-Comté", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbFrancheComt)
-PbHauteNormandie= db.nodes.create(name="Haute-Normandie",Region="Haute-Normandie", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbHauteNormandie)
-PbiledeFrance= db.nodes.create(name="Île-de-France",Region="Île-de-France", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbiledeFrance)
-PbLanguedocRoussillon= db.nodes.create(name="Languedoc-Roussillon",Region="Languedoc-Roussillon", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbLanguedocRoussillon)
-PbLimousin= db.nodes.create(name="Limousin",Region="Limousin", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbLimousin)
-PbLorraine= db.nodes.create(name="Lorraine",Region="Lorraine", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbLorraine)
-PbMidiPyrnes= db.nodes.create(name="Midi-Pyrénées",Region="Midi-Pyrénées", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbMidiPyrnes)
-PbNordPasdeCalais= db.nodes.create(name="Nord-Pas-de-Calais",Region="Nord-Pas-de-Calais", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbNordPasdeCalais)
-PbPaysdelaLoire= db.nodes.create(name="Pays de la Loire",Region="Pays de la Loire", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbPaysdelaLoire)
-PbPicardie= db.nodes.create(name="Picardie",Region="Picardie", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbPicardie)
-PbPoitouCharentes= db.nodes.create(name="Poitou-Charentes",Region="Poitou-Charentes", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbPoitouCharentes)
-PbProvenceAlpesCotedAzur= db.nodes.create(name="Provence-Alpes-Côte+d'Azur",Region="Provence-Alpes-Côte+d'Azur", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbProvenceAlpesCotedAzur)
-PbRhoneAlpes= db.nodes.create(name="Rhône-Alpes",Region="Rhône-Alpes", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbRhoneAlpes)
-PbGuadeloupe= db.nodes.create(name="Guadeloupe",Region="Guadeloupe", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbGuadeloupe)
-PbGuyane= db.nodes.create(name="Guyane",Region="Guyane", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbGuyane)
-PbLaRunion= db.nodes.create(name="La+Réunion",Region="La+Réunion", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbLaRunion)
-PbMartinique= db.nodes.create(name="Martinique",Region="Martinique", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbMartinique)
-PbMayotte= db.nodes.create(name="Mayotte",Region="Mayotte", Nom="", Adresse="", telephone="")
-PagesBlanches.relationships.create("Regions",PbMayotte)
+PbAccurate= db.nodes.create(name="Proximite",Region="Proximite", Nom="Proximite", Adresse="Proximite", telephone="Proximite")
+s4.relationships.create("Resultats",PbAccurate)
 
 
 
@@ -2174,7 +2120,7 @@ PagesBlanches.relationships.create("Regions",PbMayotte)
 
 labelPbres.add(PagesBlanches)
 
-labelPbregion.add(PbMayotte,PbMartinique,PbLaRunion,PbLaRunion,PbGuadeloupe,PbGuyane,PbRhoneAlpes,PbProvenceAlpesCotedAzur,PbPoitouCharentes,PbPicardie,PbPaysdelaLoire,PbNordPasdeCalais,PbMidiPyrnes,PbLorraine,PbLimousin,PbLanguedocRoussillon,PbiledeFrance,PbHauteNormandie,PbFrancheComt,PbCorse,PbChampagneArdenne,PbCentre,PbBretagne,PbBourgogne,PbBasseNormandie,PbAuvergne,PbAquitaine,PbAlsace)
+#labelPbregion.add(PbMayotte,PbMartinique,PbLaRunion,PbLaRunion,PbGuadeloupe,PbGuyane,PbRhoneAlpes,PbProvenceAlpesCotedAzur,PbPoitouCharentes,PbPicardie,PbPaysdelaLoire,PbNordPasdeCalais,PbMidiPyrnes,PbLorraine,PbLimousin,PbLanguedocRoussillon,PbiledeFrance,PbHauteNormandie,PbFrancheComt,PbCorse,PbChampagneArdenne,PbCentre,PbBretagne,PbBourgogne,PbBasseNormandie,PbAuvergne,PbAquitaine,PbAlsace)
 
 labelPbacu.add(PbAccurate)
 
@@ -2271,137 +2217,420 @@ for info in Pb:
   try:
      info = info.split("#***#")
      print(info)
+     
      if info[0] == "Alsace":
+          try:
+               type(PbAlsace)
                item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
                PbAlsace.relationships.create("Infos",item)
-               labelPbinfo.add(item)
+               labelPbres.add(item)
                print(item)
-     if info[0] == "Aquitaine":
+          except NameError:
+               PbAlsace= db.nodes.create(name="Alsace",Region="Alsace", Nom="", Adresse="", telephone="")
+               labelPbregion.add(PbAlsace)
+               PagesBlanches.relationships.create("Regions",PbAlsace)
                item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
                PbAquitaine.relationships.create("Infos",item)
                labelPbres.add(item)
-     print(item)
+               print(item)
+          
+     if info[0] == "Aquitaine":
+          try:
+               type(PbAquitaine)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbAquitaine.relationships.create("Infos",item)
+               labelPbres.add(item)
+          except NameError:
+                  PbAquitaine= db.nodes.create(name="Aquitaine",Region="Aquitaine", Nom="", Adresse="", telephone="")
+                  labelPbregion.add(PbAquitaine)
+                  PagesBlanches.relationships.create("Regions",PbAquitaine)
+                  item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                  PbAquitaine.relationships.create("Infos",item)
+                  labelPbres.add(item)
+                  print(item)
      if info[0] == "Auvergne":
-         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-         PbAuvergne.relationships.create("Infos",item)
-         labelPbres.add(item)
-     print(item)
+          try:
+               type(PbAuvergne)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbAuvergne.relationships.create("Infos",item)
+               labelPbres.add(item)
+          except NameError:
+               PbAuvergne= db.nodes.create(name="Auvergne",Region="Auvergne", Nom="", Adresse="", telephone="")
+               labelPbregion.add(PbAuvergne)
+               PagesBlanches.relationships.create("Regions",PbAuvergne)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbAuvergne.relationships.create("Infos",item)
+               labelPbres.add(item)
+               print(item)
      if info[0] == "Basse-Normandie":
+
+          try:
+              type(PbBasseNormandie)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbBasseNormandie.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
+          except NameError:
+              PbBasseNormandie= db.nodes.create(name="Basse-Normandie",Region="Basse-Normandie", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbBasseNormandie)
+              PagesBlanches.relationships.create("Regions",PbBasseNormandie)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbBasseNormandie.relationships.create("Infos",item)
+              labelPbres.add(item)
+
      if info[0] == "Bourgogne":
+
+          try:
+              type(PbBourgogne)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbBourgogne.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
+          except NameError:
+               PbBourgogne= db.nodes.create(name="Bourgogne",Region="Bourgogne", Nom="", Adresse="", telephone="")
+               labelPbregion.add(PbBourgogne)
+               PagesBlanches.relationships.create("Regions",PbBourgogne)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbBourgogne.relationships.create("Infos",item)
+               labelPbres.add(item)
+               print(item)
      if info[0] == "Bretagne":
+          try:
+              type(PbBretagne)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbBretagne.relationships.create("Infos",item)
               labelPbres.add(item)
-     print(item)
+              print(item)
+          except NameError:
+               PbBretagne= db.nodes.create(name="Bretagne",Region="Bretagne", Nom="", Adresse="", telephone="")
+               labelPbregion.add(PbBretagne)
+               PagesBlanches.relationships.create("Regions",PbBretagne)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbBretagne.relationships.create("Infos",item)
+               labelPbres.add(item)
+               print(item)
+
      if info[0] == "Centre":
+          try:
+              type(PbCentre)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbCentre.relationships.create("Infos",item)
               labelPbres.add(item)
-     print(item)
+              print(item)
+          except NameError:  
+               PbCentre= db.nodes.create(name="Centre",Region="Centre", Nom="", Adresse="", telephone="")
+               labelPbregion.add(PbCentre)
+               PagesBlanches.relationships.create("Regions",PbCentre)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbCentre.relationships.create("Infos",item)
+               labelPbres.add(item)
+               print(item)
      if info[0] == "Champagne-Ardenne":
+          try:
+              type(PbChampagneArdenne)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbChampagneArdenne.relationships.create("Infos",item)
               labelPbres.add(item)
-     print(item)
+              print(item)
+          except NameError:
+               PbChampagneArdenne= db.nodes.create(name="Champagne-Ardenne",Region="Champagne-Ardenne", Nom="", Adresse="", telephone="")
+               labelPbregion.add(PbChampagneArdenne)
+               PagesBlanches.relationships.create("Regions",PbChampagneArdenne)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbChampagneArdenne.relationships.create("Infos",item)
+               labelPbres.add(item)
+               print(item)          
      if info[0] == "Corse":
+          try:
+              type(PbCorse)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbCorse.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
+          except NameError:
+               PbCorse= db.nodes.create(name="Corse",Region="Corse", Nom="", Adresse="", telephone="")
+               labelPbregion.add(PbCorse)
+               PagesBlanches.relationships.create("Regions",PbCorse)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbCorse.relationships.create("Infos",item)
+               labelPbres.add(item)
+               print(item)
      if info[0] == "Franche-Comté":
+          try:
+              type(PbFrancheComt)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbFrancheComt.relationships.create("Infos",item)
               labelPbres.add(item)
-     print(item)
+              print(item)
+          except NameError:
+              PbFrancheComt= db.nodes.create(name="Franche-Comté",Region="Franche-Comté", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbFrancheComt)
+              PagesBlanches.relationships.create("Regions",PbFrancheComt)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbFrancheComt.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
      if info[0] == "Haute-Normandie":
+          try:
+              type(PbHauteNormandie)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbHauteNormandie.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbHauteNormandie= db.nodes.create(name="Haute-Normandie",Region="Haute-Normandie", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbHauteNormandie)
+              PagesBlanches.relationships.create("Regions",PbHauteNormandie)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbHauteNormandie.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "Île-de-France":
+          try:
+              type(PbiledeFrance)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbiledeFrance.relationships.create("Infos",item)
               labelPbres.add(item)
-     print(item)
+              print(item)
+          except NameError:
+              PbiledeFrance= db.nodes.create(name="Île-de-France",Region="Île-de-France", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbiledeFrance)
+              PagesBlanches.relationships.create("Regions",PbiledeFrance)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbiledeFrance.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
      if info[0] == "Languedoc-Roussillon":
+          try:
+              type(PbLanguedocRoussillon)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbLanguedocRoussillon.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbLanguedocRoussillon= db.nodes.create(name="Languedoc-Roussillon",Region="Languedoc-Roussillon", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbLanguedocRoussillon)
+              PagesBlanches.relationships.create("Regions",PbLanguedocRoussillon)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbLanguedocRoussillon.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "Limousin":
-         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-         PbLimousin.relationships.create("Infos",item)
-         labelPbres.add(item)
-         print(item)
+          try:
+               type(PbLimousin)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbLimousin.relationships.create("Infos",item)
+               labelPbres.add(item)
+               print(item)
+          except NameError:
+               PbLimousin= db.nodes.create(name="Limousin",Region="Limousin", Nom="", Adresse="", telephone="")
+               labelPbregion.add(PbLimousin)
+               PagesBlanches.relationships.create("Regions",PbLimousin)
+               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+               PbLimousin.relationships.create("Infos",item)
+               labelPbres.add(item)
+               print(item)
+
+
      if info[0] == "Lorraine":
+          try:
+              type(PbLorraine)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbLorraine.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
+          except NameError:
+               
+              PbLorraine= db.nodes.create(name="Lorraine",Region="Lorraine", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbLorraine)
+              PagesBlanches.relationships.create("Regions",PbLorraine)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbLorraine.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+
      if info[0] == "Midi-Pyrénées":
+          try:
+              type(PbMidiPyrnes)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbMidiPyrnes.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
+          except NameError:
+              PbMidiPyrnes= db.nodes.create(name="Midi-Pyrénées",Region="Midi-Pyrénées", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbMidiPyrnes)
+              PagesBlanches.relationships.create("Regions",PbMidiPyrnes)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbMidiPyrnes.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+
      if info[0] == "Nord-Pas-de-Calais":
+          try:
+              type(PbNordPasdeCalais)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbNordPasdeCalais.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbNordPasdeCalais= db.nodes.create(name="Nord-Pas-de-Calais",Region="Nord-Pas-de-Calais", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbNordPasdeCalais)
+              PagesBlanches.relationships.create("Regions",PbNordPasdeCalais)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbNordPasdeCalais.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "Pays de la Loire":
+          try:
+              type(PbPaysdelaLoire)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbPaysdelaLoire.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
+
+          except NameError:
+              PbPaysdelaLoire= db.nodes.create(name="Pays de la Loire",Region="Pays de la Loire", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbPaysdelaLoire)
+              PagesBlanches.relationships.create("Regions",PbPaysdelaLoire)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbPaysdelaLoire.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+
      if info[0] == "Picardie":
+          try:
+             type(PbPicardie)
              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
              PbPicardie.relationships.create("Infos",item)
              labelPbres.add(item)
              print(item)
+          except NameError:
+             PbPicardie= db.nodes.create(name="Picardie",Region="Picardie", Nom="", Adresse="", telephone="")
+             labelPbregion.add(PbPicardie)
+             PagesBlanches.relationships.create("Regions",PbPicardie)
+             item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+             PbPicardie.relationships.create("Infos",item)
+             labelPbres.add(item)
+             print(item)
+
      if info[0] == "Poitou-Charentes":
+          try:
+              type(PbPoitouCharentes)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbPoitouCharentes.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbPoitouCharentes= db.nodes.create(name="Poitou-Charentes",Region="Poitou-Charentes", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbPoitouCharentes)
+              PagesBlanches.relationships.create("Regions",PbPoitouCharentes)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbPoitouCharentes.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "Provence-Alpes-Côte+d'Azur":
+
+          try:
+              type(PbProvenceAlpesCotedAzur)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbProvenceAlpesCotedAzur.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
+          except NameError:
+              PbProvenceAlpesCotedAzur= db.nodes.create(name="Provence-Alpes-Côte+d'Azur",Region="Provence-Alpes-Côte+d'Azur", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbProvenceAlpesCotedAzur)
+              PagesBlanches.relationships.create("Regions",PbProvenceAlpesCotedAzur)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbProvenceAlpesCotedAzur.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+
      if info[0] == "Rhône-Alpes":
+          try:
+              type(PbRhoneAlpes)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbRhoneAlpes.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbRhoneAlpes= db.nodes.create(name="Rhône-Alpes",Region="Rhône-Alpes", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbRhoneAlpes)
+              PagesBlanches.relationships.create("Regions",PbRhoneAlpes)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbRhoneAlpes.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "Guadeloupe":
+          try:
+              type(PbGuadeloupe)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbGuadeloupe.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbGuadeloupe= db.nodes.create(name="Guadeloupe",Region="Guadeloupe", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbGuadeloupe)
+              PagesBlanches.relationships.create("Regions",PbGuadeloupe)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbGuadeloupe.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "Guyane":
+          try:
+              type(PbGuyane)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbGuyane.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbGuyane= db.nodes.create(name="Guyane",Region="Guyane", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbGuyane)
+              PagesBlanches.relationships.create("Regions",PbGuyane)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbGuyane.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "La+Réunion":
+          try:
+              type(PbLaRunion)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbLaRunion.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbLaRunion= db.nodes.create(name="La+Réunion",Region="La+Réunion", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbLaRunion)
+              PagesBlanches.relationships.create("Regions",PbLaRunion)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbLaRunion.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "Martinique":
+          try:
+              type(PbMartinique)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbMartinique.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbMartinique= db.nodes.create(name="Martinique",Region="Martinique", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbMartinique)
+              PagesBlanches.relationships.create("Regions",PbMartinique)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbMartinique.relationships.create("Infos",item)
               labelPbres.add(item)
               print(item)
      if info[0] == "Mayotte":
+          try:
+              type(PbMayotte)
+              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+              PbMayotte.relationships.create("Infos",item)
+              labelPbres.add(item)
+              print(item)
+          except NameError:
+              PbMayotte= db.nodes.create(name="Mayotte",Region="Mayotte", Nom="", Adresse="", telephone="")
+              labelPbregion.add(PbMayotte)
+              PagesBlanches.relationships.create("Regions",PbMayotte)
               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
               PbMayotte.relationships.create("Infos",item)
               labelPbres.add(item)
@@ -2416,17 +2645,8 @@ for info in Pb:
 
 
 
-
-    #item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-    #PagesBlanches.relationships.create("Infos",item)
-    #labelPbres.add(item)
-    #print(item)
-    #s1.relationships.create("Source Url", item)
   except Exception as e:
           print(e)
-
-
-
 
 
 print()
