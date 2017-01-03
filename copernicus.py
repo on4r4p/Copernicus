@@ -524,48 +524,54 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
      while i<depth: 
 
 
+          try:
+               query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+link+"&b="+str((i*100)+1)+"&pz=100"
+               i = i+1
+               print()
+               print("Page nbr : ",i)
+               print()
 
-          query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+link+"&b="+str((i*100)+1)+"&pz=100"
-          i = i+1
-          print()
-          print("Page nbr : ",i)
-          print()
-
-          fakeua = get_random_user_agent()
-
-
-          opener = urllib.request.build_opener()
-          opener.addheaders = [('User-Agent', fakeua)]
-
-          htmltext = opener.open(query)
+               fakeua = get_random_user_agent()
 
 
+               opener = urllib.request.build_opener()
+               opener.addheaders = [('User-Agent', fakeua)]
 
-          soup = BeautifulSoup(htmltext,'lxml')
-          search = soup.findAll('div',attrs={'id':'web'})
-          searchtext = str(search[0])
-          soup1 = BeautifulSoup(searchtext,'lxml')
-          list_items = soup1.findAll('li')
-          time.sleep(random.randint(30,60))
+               htmltext = opener.open(query)
+
+
+
+               soup = BeautifulSoup(htmltext,'lxml')
+               search = soup.findAll('div',attrs={'id':'web'})
+               searchtext = str(search[0])
+               soup1 = BeautifulSoup(searchtext,'lxml')
+               list_items = soup1.findAll('li')
+               time.sleep(random.randint(30,60))
 
           
-          for li in list_items:
-               soup2 = BeautifulSoup(str(li),'lxml')
-               links = soup2.findAll('a')
-               if len(links)>0:
-                    results_array.append(links)
-          urls2 = (re.findall('www(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',str(results_array)))
-          print("Yahoo Link counter : ",len(urls2))
-          print()
-     for link in urls2:
-          link = link.split("/RK")
-          link[0] = "http://"+urllib.parse.unquote(link[0])
-          print(link[0])
-          yahoores.append(link[0])
-     print()
-     print()
-     print("Yahoo Total : ",len(yahoores))
+               for li in list_items:
+                    soup2 = BeautifulSoup(str(li),'lxml')
+                    links = soup2.findAll('a')
+                    if len(links)>0:
+                         results_array.append(links)
+               urls2 = (re.findall('www(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',str(results_array)))
+               print("Yahoo Link counter : ",len(urls2))
+               print()
 
+          except:
+                    pass
+
+          for link in urls2:
+               link = link.split("/RK")
+               link[0] = "http://"+urllib.parse.unquote(link[0])
+               print(link[0])
+               yahoores.append(link[0])
+          print()
+          print()
+          print("Yahoo Total : ",len(yahoores))
+          if len(yahoores) > 500 :
+               print("Need to fix that loop")
+               return
 
 
 
@@ -1842,7 +1848,7 @@ permutation(argsname)
 if family != "none":
      pageblanche(family,args.city)
 
-getYahooLinks(argsname,6)
+getYahooLinks(argsname,12)
 
 bing(argsname)
 
@@ -2213,7 +2219,6 @@ for info in pageBacu:
 print()
 print("global :")
 for info in Pb:
-#region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i]
   try:
      info = info.split("#***#")
      print(info)
@@ -2230,7 +2235,7 @@ for info in Pb:
                labelPbregion.add(PbAlsace)
                PagesBlanches.relationships.create("Regions",PbAlsace)
                item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbAquitaine.relationships.create("Infos",item)
+               PbAlsace.relationships.create("Infos",item)
                labelPbres.add(item)
                print(item)
           
@@ -2240,6 +2245,7 @@ for info in Pb:
                item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
                PbAquitaine.relationships.create("Infos",item)
                labelPbres.add(item)
+
           except NameError:
                   PbAquitaine= db.nodes.create(name="Aquitaine",Region="Aquitaine", Nom="", Adresse="", telephone="")
                   labelPbregion.add(PbAquitaine)
