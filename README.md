@@ -24,7 +24,7 @@ Then make a graph in neo4j .
 - Rewrite all this shit
 - Add Install setup 
 -   Add whitepage engine for uk,es,ru,usa...(only fr now)
- -  Add ability to save current session and continue where it stopped in  case of uncaught error.
+-  Add ability to save current session and continue where it stopped in  case of uncaught error.
 -  Add graphml , gephi , cytoscape ,export format .
 -  Add image search for yahoo and bing
 - Add Search results function for other file format 
