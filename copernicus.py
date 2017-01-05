@@ -118,6 +118,7 @@ searcharglist = []
 allcombparsedfinal = []
 allcombparsed = []
 tmpchance = []
+enginelist = ['google','yahoo','bing','pagesblanches']
 regionfr = ["Alsace","Aquitaine","Auvergne","Basse-Normandie","Bourgogne","Bretagne","Centre","Champagne-Ardenne","Corse","Franche-Comté","Haute-Normandie","Île-de-France","Languedoc-Roussillon","Limousin","Lorraine","Midi-Pyrénées","Nord-Pas-de-Calais","Pays de la Loire","Picardie","Poitou-Charentes","Provence-Alpes-Côte+d'Azur","Rhône-Alpes","Guadeloupe","Guyane","La+Réunion","Martinique","Mayotte"]
 regionnode =["PbMayotte","PbMartinique","PbLaRunion","PbLaRunion","PbGuadeloupe","PbGuyane","PbRhoneAlpes","PbProvenceAlpesCotedAzur","PbPoitouCharentes","PbPicardie","PbPaysdelaLoire","PbNordPasdeCalais","PbMidiPyrnes","PbLorraine","PbLimousin","PbLanguedocRoussillon","PbiledeFrance","PbHauteNormandie","PbFrancheComt","PbCorse","PbChampagneArdenne","PbCentre","PbBretagne","PbBourgogne","PbBasseNormandie","PbAuvergne","PbAquitaine","PbAlsace"]
 alllng = ['af','ar','hy','be','bg','ca','zh-CN','hr','cs','da','nl','en','et','tl','fi','fr','de','el','hi','hu','is','id','it','ja','ko','lv','lt','no','fa','pl','pt','ro','ru','sr','sk','sl','es','sv','th','tr','uk','vi']
@@ -522,7 +523,7 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
      urls2 = []
      results_array = []
      while i<depth: 
-
+          oldnbr= ''
 
           try:
                query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+link+"&b="+str((i*100)+1)+"&pz=100"
@@ -548,7 +549,7 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
                list_items = soup1.findAll('li')
                time.sleep(random.randint(30,60))
 
-          
+               
                for li in list_items:
                     soup2 = BeautifulSoup(str(li),'lxml')
                     links = soup2.findAll('a')
@@ -558,21 +559,24 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
                print("Yahoo Link counter : ",len(urls2))
                print()
 
-          except:
+               for link in urls2:
+                    link = link.split("/RK")
+                    link[0] = "http://"+urllib.parse.unquote(link[0])
+                    print(link[0])
+                    yahoores.append(link[0])
+               print()
+               print()
+               print("Yahoo Total : ",len(yahoores))
+               if len(yahoores) > 500 :
+                    print("Need to fix that loop")
+                    return
+
+          except Exception as e:
+                    print(e)
                     pass
-
-          for link in urls2:
-               link = link.split("/RK")
-               link[0] = "http://"+urllib.parse.unquote(link[0])
-               print(link[0])
-               yahoores.append(link[0])
-          print()
-          print()
-          print("Yahoo Total : ",len(yahoores))
-          if len(yahoores) > 500 :
-               print("Need to fix that loop")
-               return
-
+                    if len(yahoores) > 500 :
+                         print("Need to fix that loop")
+                         return
 
 
 
@@ -1714,6 +1718,8 @@ def getPDFContent(path):
 
 parser = ArgumentParser()
 
+parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches',
+                    help="Use specific search engine: -e yahoo,bing ", metavar="'Engine'")
 
 parser.add_argument("-l","--language", dest="lang",default='fr',
                     help="Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...", metavar="'LANG'")
@@ -1733,7 +1739,13 @@ parser.add_argument("-a","--add", dest="add",default='none',
 parser.add_argument("-c","--city", dest="city",default='none',
                     help="Specify city", metavar="CITY")
 
+parser.add_argument("-i","--img", dest="image",default='true',
+                    help="-i true Search and download pictures too ", metavar="CITY")
+
+
 args = parser.parse_args()
+
+argsengine = args.engine
 
 lang = args.lang
 
@@ -1744,6 +1756,8 @@ argscity = args.city
 argsfamily = args.family
 
 argsadd = args.add
+
+argsimg = args.image
 
 pbarg = args.pbarg
 
@@ -1765,7 +1779,22 @@ else:
 
      lng = ['en','fr']
 
-print
+print()
+
+if argsengine.lower() != "none" :
+     splitengine = argsengine.split(",")
+     for item in splitengine:
+          if not item.lower() in enginelist:
+               print()
+               print("some options are missing")
+               print()
+               print("-e option must match the following names : google,bing,yahoo,pagesblanches")
+               print()
+               print("Example: -e google,pagesblanches  -s Albert Einstein -f Einstein -c Berne")
+               print()
+               print("")
+               sys.exit()
+
 
 if argsadd != "none" and family == "none":
      print()
@@ -1825,15 +1854,28 @@ if pbarg.lower() != "true" :
                print()
                print("")
                sys.exit()
- 
+
+if argsimg.lower() != "true" :
+     if argsimg.lower() != "false":
+               print()
+               print("some options are missing")
+               print()
+               print("-i option must be True or False")
+               print()
+               print(" -s Albert Einstein -f Einstein -c Berne -i true")
+               print()
+               print("")
+               sys.exit()
 
 
 
 print()
+print("Using Search Engine :",splitengine)
 print()
 print("Results Languages : ",lng)
 print()
-
+print("Search related pictures :",argsimg)
+print()
 print("Searching for : ",args.name)
 print()
 print("Family Name : ",args.family)
@@ -1845,16 +1887,26 @@ print()
 
 permutation(argsname)
 
-if family != "none":
-     pageblanche(family,args.city)
 
-getYahooLinks(argsname,12)
 
-bing(argsname)
+for item in splitengine:
+     if item.lower() == "pagesblanches":
+          if family != "none":
+               pageblanche(family,args.city)
 
-getimg(argsname,argscity)
+for item in splitengine:
+     if item.lower() == "yahoo":
+          getYahooLinks(argsname,5)
 
-fetchurl(lng,argsname,argscity,argsadd)
+for item in splitengine:
+     if item.lower() == "bing":
+          bing(argsname)
+if argsimg.lower() == "true":
+     getimg(argsname,argscity)
+
+for item in splitengine:
+     if item.lower() == "google":
+          fetchurl(lng,argsname,argscity,argsadd)
 
 
 
@@ -1864,71 +1916,77 @@ fetchurl(lng,argsname,argscity,argsadd)
 print()
 print()
 print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Google Searching in Results'))
-print()
-print()
-for link in resultats:
+for item in splitengine:
+     if item.lower() == "google":
 
-     try:
-          searchhtml(link,argsadd,argsname,argscity,"placehold","google")
-     except Exception as e:
-          print(e)
-          pass
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Google Searching in Results'))
+          print()
+          print()
+          for link in resultats:
 
-print()
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Google Searching in PDF'))
-print()
-print(("Pdf Nbr :",len(pdflink)))
-print()
+               try:
+                    searchhtml(link,argsadd,argsname,argscity,"placehold","google")
+               except Exception as e:
+                    print(e)
+                    pass
+
+          print()
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Google Searching in PDF'))
+          print()
+          print(("Pdf Nbr :",len(pdflink)))
+          print()
 
 
-for links in pdflink:
-     try:
-          searchpdf(links,argsadd,argsname,argscity,"google")
-     except Exception as e:
-          print(e)
-          pass
+          for links in pdflink:
+               try:
+                    searchpdf(links,argsadd,argsname,argscity,"google")
+               except Exception as e:
+                    print(e)
+                    pass
 
 
 print()
 print()
 ######################################################################
 print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Bing Searching in Results'))
-print()
-print()
-print()
-for link in bingurls:
+for item in splitengine:
+     if item.lower() == "bing":
+
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Bing Searching in Results'))
+          print()
+          print()
+          print()
+          for link in bingurls:
      
-     try:
-               searchhtml(link,argsadd,argsname,argscity,listnbr,"bing")
-               listnbr = listnbr + 1
-     except Exception as e:
-          print(e)
-          listnbr = listnbr + 1
-          pass
+               try:
+                         searchhtml(link,argsadd,argsname,argscity,listnbr,"bing")
+                         listnbr = listnbr + 1
+               except Exception as e:
+                    print(e)
+                    listnbr = listnbr + 1
+                    pass
 
-print()
-print()
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Bing Searching in PDF'))
-print()
-print(("Pdf Nbr :",len(bingpdflink)))
-print()
-print()
-print()
+          print()
+          print()
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Bing Searching in PDF'))
+          print()
+          print(("Pdf Nbr :",len(bingpdflink)))
+          print()
+          print()
+          print()
 
-for links in bingpdflink:
-     try:
-          searchpdf(links,argsadd,argsname,argscity,"bing")
-     except Exception as e:
-          print(e)
-          pass
+          for links in bingpdflink:
+               try:
+                    searchpdf(links,argsadd,argsname,argscity,"bing")
+               except Exception as e:
+                    print(e)
+                    pass
 ######################################################################
 
 
@@ -1937,37 +1995,40 @@ print()
 print()
 
 print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Yahoo Searching in Results'))
-print()
-print()
-for link in yahoores:
+for item in splitengine:
+     if item.lower() == "yahoo":
 
-     try:
-          searchhtml(link,argsadd,argsname,argscity,"placehold","yahoo")
-     except Exception as e:
-          print(e)
-          pass
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yahoo Searching in Results'))
+          print()
+          print()
+          for link in yahoores:
 
-print()
-print()
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Yahoo Searching in PDF'))
-print()
-print()
-print(("Pdf Nbr :",len(yahoopdflink)))
-print()
-print()
-print()
+               try:
+                    searchhtml(link,argsadd,argsname,argscity,"placehold","yahoo")
+               except Exception as e:
+                    print(e)
+                    pass
+
+          print()
+          print()
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yahoo Searching in PDF'))
+          print()
+          print()
+          print(("Pdf Nbr :",len(yahoopdflink)))
+          print()
+          print()
+          print()
 
 
-for links in yahoopdflink:
-     try:
-          searchpdf(links,argsadd,argsname,argscity,"yahoo")
-     except Exception as e:
-          print(e)
-          pass
+          for links in yahoopdflink:
+               try:
+                    searchpdf(links,argsadd,argsname,argscity,"yahoo")
+               except Exception as e:
+                    print(e)
+                    pass
 
 
 print()
@@ -1997,146 +2058,157 @@ print("##############################################")
 print()
 print()
 
+for item in splitengine:
+     if item.lower() == "pagesblanches":
 
-Pb = pageBres
+          Pb = pageBres
 
-googlelink = finalink
-googlelinkchance = finalinkchance
-googlepdf = pdfinalink
-googlepdfchance = pdfinalinkchance
-googlespecial = specialreslink
-googleimg = ActualImages
+for item in splitengine:
+     if item.lower() == "google":
 
+          googlelink = finalink
+          googlelinkchance = finalinkchance
+          googlepdf = pdfinalink
+          googlepdfchance = pdfinalinkchance
+          googlespecial = specialreslink
+          googleimg = ActualImages
 
-binglink = bingfinalink
-binglinkchance = bingfinalinkchance
-bingpdf = bingpdfinalink
-bingpdfchance = bingpdfinalinkchance
-bingspecial = bingspecialreslink
-bingimg = ActualImages
+for item in splitengine:
+     if item.lower() == "bing":
 
+          binglink = bingfinalink
+          binglinkchance = bingfinalinkchance
+          bingpdf = bingpdfinalink
+          bingpdfchance = bingpdfinalinkchance
+          bingspecial = bingspecialreslink
+          bingimg = ActualImages
 
-yahoolink = yahoofinalink
-yahoolinkchance = yahoofinalinkchance
-yahoopdf = yahoopdfinalink
-yahoopdfchance = yahoopdfinalinkchance
-yahoospecial = yahoospecialreslink
-yahooimg = ActualImages
+for item in splitengine:
+     if item.lower() == "yahoo":
+
+          yahoolink = yahoofinalink
+          yahoolinkchance = yahoofinalinkchance
+          yahoopdf = yahoopdfinalink
+          yahoopdfchance = yahoopdfinalinkchance
+          yahoospecial = yahoospecialreslink
+          yahooimg = ActualImages
 
 
 
 db = GraphDatabase("http://localhost:7474")
  
 
-stitle = db.labels.create("Recherche")  
-s0 = db.nodes.create(name=argsname)
+stitle = db.labels.create("Search")  
+s0 = db.nodes.create(Searchname=argsname)
 stitle.add(s0)
 
 
-srcheng = db.labels.create("Moteur")
-s1 = db.nodes.create(name="Google")
-srcheng.add(s1)
-s2 = db.nodes.create(name="Bing")
-srcheng.add(s2)
-s3 = db.nodes.create(name="Yahoo")
-srcheng.add(s3)
-s4 = db.nodes.create(name="PagesBlanches")
-srcheng.add(s4)
+srcheng = db.labels.create("Engine")
+for item in splitengine:
+     if item.lower() == "google":
 
-s0.relationships.create("Query", s1)
-s0.relationships.create("Query", s2)
-s0.relationships.create("Query", s3)
-s0.relationships.create("Query", s4)
- 
+          s1 = db.nodes.create(Enginename="Google")
+          srcheng.add(s1)
+          s0.relationships.create("Query", s1)
+for item in splitengine:
+     if item.lower() == "bing":
+
+          s2 = db.nodes.create(Enginename="Bing")
+          srcheng.add(s2)
+          s0.relationships.create("Query", s2)
+for item in splitengine:
+     if item.lower() == "yahoo":
+
+          s3 = db.nodes.create(Enginename="Yahoo")
+          srcheng.add(s3)
+          s0.relationships.create("Query", s3)
+for item in splitengine:
+     if item.lower() == "pagesblanches":
+
+          s4 = db.nodes.create(Enginename="PagesBlanches")
+          srcheng.add(s4)
+          s0.relationships.create("Query", s4)
+
+
 labelwebsite = db.labels.create("Website")
-labelFile = db.labels.create("Fichier")
+labelFile = db.labels.create("File")
 labelIMG = db.labels.create("Image")
-labelspecial = db.labels.create("Speciale")
+labelIMGres = db.labels.create("ImageResults")
+labelspecial = db.labels.create("Special")
+labelspecialres = db.labels.create("SpecialeResults")
 labelsiteverified = db.labels.create("Important")
-labelsitechance = db.labels.create("Valide")
+labelsitechance = db.labels.create("Valid")
 labelpdfverified = db.labels.create("Important")
-labelpdfchance = db.labels.create("Valide")
-labelPbacu = db.labels.create("ResultatsPrecis")
-labelPbres = db.labels.create("Resultats")
+labelpdfchance = db.labels.create("Valid")
+labelPbacu = db.labels.create("Accurate")
+labelPbres = db.labels.create("National")
 labelPbregion = db.labels.create("Regions")
 labelPbinfo = db.labels.create("infoPageBlanches")
 
-GoogleurlPlus = db.nodes.create(name="Url Important")
-GoogleurlMinus = db.nodes.create(name="Url Valide")
+for item in splitengine:
+     if item.lower() == "google":
+          GoogleurlPlus = db.nodes.create(Urlimp="Url Important")
+          GoogleurlMinus = db.nodes.create(Urlval="Url Valid")
+          s1.relationships.create("Link Website", GoogleurlPlus)
+          s1.relationships.create("Link Website", GoogleurlMinus)
+          GooglepdfPlus = db.nodes.create(Typepdfimp="Pdf Important")
+          GooglepdfMinus = db.nodes.create(Typepdfval="Pdf Valid")
+          s1.relationships.create("Link Pdf", GooglepdfPlus)
+          s1.relationships.create("Link Pdf", GooglepdfMinus)
+          Googleimgnode = db.nodes.create(Imgsname="Imgs")
+          s1.relationships.create("Image File", Googleimgnode)
+          Googlespecialnode = db.nodes.create(Specialname="Not handled yet")
+          s1.relationships.create("Not handled", Googlespecialnode)
+          labelwebsite.add(GoogleurlPlus, GoogleurlMinus)
+          labelFile.add(GooglepdfPlus,GooglepdfMinus)
+          labelIMG.add(Googleimgnode)
+          labelspecial.add(Googlespecialnode)
+for item in splitengine:
+     if item.lower() == "bing":
+          BingurlPlus = db.nodes.create(Urlimp="Url Important")
+          BingurlMinus = db.nodes.create(Urlval="Url Valid")
+          s2.relationships.create("Link Website", BingurlPlus)
+          s2.relationships.create("Link Website", BingurlMinus)
+          BingpdfPlus = db.nodes.create(Typepdfimp="Pdf Important")
+          BingpdfMinus = db.nodes.create(Typepdfval="Pdf Valid")
+          s2.relationships.create("Link Pdf", BingpdfPlus)
+          s2.relationships.create("Link Pdf", BingpdfMinus)
+          Bingimgnode = db.nodes.create(Imgsname="Imgs")
+          s2.relationships.create("Image File", Bingimgnode)
+          Bingspecialnode = db.nodes.create(Specialname="Not handled yet")
+          s2.relationships.create("Not handled", Bingspecialnode)
+          labelwebsite.add(BingurlPlus, BingurlMinus)
+          labelFile.add(BingpdfPlus,BingpdfMinus)
+          labelIMG.add(Bingimgnode)
+          labelspecial.add(Bingspecialnode)
+for item in splitengine:
+     if item.lower() == "yahoo":
+          YahoourlPlus = db.nodes.create(Urlimp="Url Important")
+          YahoourlMinus = db.nodes.create(Urlval="Url Valid")
+          s3.relationships.create("Link Website", YahoourlPlus)
+          s3.relationships.create("Link Website", YahoourlMinus)
+          YahoopdfPlus = db.nodes.create(Typepdfimp="Pdf Important")
+          YahoopdfMinus = db.nodes.create(Typepdfval="Pdf Valid")
+          s3.relationships.create("Link Pdf", YahoopdfPlus)
+          s3.relationships.create("Link Pdf", YahoopdfMinus)
+          Yahooimgnode = db.nodes.create(Imgsname="Imgs")
+          s3.relationships.create("Image File", Yahooimgnode)
+          Yahoospecialnode = db.nodes.create(Specialname="Not handled yet")
+          s3.relationships.create("Not handled", Yahoospecialnode)
+          labelwebsite.add(YahoourlPlus, YahoourlMinus)
+          labelFile.add(YahoopdfPlus,YahoopdfMinus)
+          labelIMG.add(Yahooimgnode)
+          labelspecial.add(Yahoospecialnode)
+for item in splitengine:
+     if item.lower() == "pagesblanches":
+          PagesBlanches = db.nodes.create(Pbname="Regions",Region="Regions", Nom="Regions", Adresse="Regions", telephone="Regions")
+          s4.relationships.create("LinkResults", PagesBlanches)
+          PbAccurate= db.nodes.create(Pbname="Proximity",Region="Proximity", Nom="Proximity", Adresse="Proximity", telephone="Proximity")
+          s4.relationships.create("Results",PbAccurate)
+          labelPbres.add(PagesBlanches)
+          #labelPbregion.add(PbMayotte,PbMartinique,PbLaRunion,PbLaRunion,PbGuadeloupe,PbGuyane,PbRhoneAlpes,PbProvenceAlpesCotedAzur,PbPoitouCharentes,PbPicardie,PbPaysdelaLoire,PbNordPasdeCalais,PbMidiPyrnes,PbLorraine,PbLimousin,PbLanguedocRoussillon,PbiledeFrance,PbHauteNormandie,PbFrancheComt,PbCorse,PbChampagneArdenne,PbCentre,PbBretagne,PbBourgogne,PbBasseNormandie,PbAuvergne,PbAquitaine,PbAlsace)
+          labelPbacu.add(PbAccurate)
 
-BingurlPlus = db.nodes.create(name="Url Important")
-BingurlMinus = db.nodes.create(name="Url Valide")
-
-YahoourlPlus = db.nodes.create(name="Url Important")
-YahoourlMinus = db.nodes.create(name="Url Valide")
-
-s1.relationships.create("Lien Website", GoogleurlPlus)
-s1.relationships.create("Lien Website", GoogleurlMinus)
-s2.relationships.create("Lien Website", BingurlPlus)
-s2.relationships.create("Lien Website", BingurlMinus)
-s3.relationships.create("Lien Website", YahoourlPlus)
-s3.relationships.create("Lien Website", YahoourlMinus)
-
-
-GooglepdfPlus = db.nodes.create(name="Pdf Important")
-GooglepdfMinus = db.nodes.create(name="Pdf Valide")
-
-BingpdfPlus = db.nodes.create(name="Pdf Important")
-BingpdfMinus = db.nodes.create(name="Pdf Valide")
-
-YahoopdfPlus = db.nodes.create(name="Pdf Important")
-YahoopdfMinus = db.nodes.create(name="Pdf Valide")
-
-s1.relationships.create("Lien Pdf", GooglepdfPlus)
-s1.relationships.create("Lien Pdf", GooglepdfMinus)
-s2.relationships.create("Lien Pdf", BingpdfPlus)
-s2.relationships.create("Lien Pdf", BingpdfMinus)
-s3.relationships.create("Lien Pdf", YahoopdfPlus)
-s3.relationships.create("Lien Pdf", YahoopdfMinus)
-
-
-Googleimgnode = db.nodes.create(name="Imgs")
-Bingimgnode = db.nodes.create(name="Imgs")
-Yahooimgnode = db.nodes.create(name="Imgs")
-
-s1.relationships.create("Fichier Image", Googleimgnode)
-s2.relationships.create("Fichier Image", Bingimgnode)
-s3.relationships.create("Fichier Image", Yahooimgnode)
-
-
-Googlespecialnode = db.nodes.create(name="Non Pris En Charge")
-
-Bingspecialnode = db.nodes.create(name="Non Pris En Charge")
-
-Yahoospecialnode = db.nodes.create(name="Non Pris En Charge")
-
-s1.relationships.create("En Attente", Googlespecialnode)
-s2.relationships.create("En Attente", Bingspecialnode)
-s3.relationships.create("En Attente", Yahoospecialnode)
-##
-PagesBlanches = db.nodes.create(name="Regions",Region="Regions", Nom="Regions", Adresse="Regions", telephone="Regions")
-s4.relationships.create("Query", PagesBlanches)
-
-PbAccurate= db.nodes.create(name="Proximite",Region="Proximite", Nom="Proximite", Adresse="Proximite", telephone="Proximite")
-s4.relationships.create("Resultats",PbAccurate)
-
-
-
-##
-
-labelPbres.add(PagesBlanches)
-
-#labelPbregion.add(PbMayotte,PbMartinique,PbLaRunion,PbLaRunion,PbGuadeloupe,PbGuyane,PbRhoneAlpes,PbProvenceAlpesCotedAzur,PbPoitouCharentes,PbPicardie,PbPaysdelaLoire,PbNordPasdeCalais,PbMidiPyrnes,PbLorraine,PbLimousin,PbLanguedocRoussillon,PbiledeFrance,PbHauteNormandie,PbFrancheComt,PbCorse,PbChampagneArdenne,PbCentre,PbBretagne,PbBourgogne,PbBasseNormandie,PbAuvergne,PbAquitaine,PbAlsace)
-
-labelPbacu.add(PbAccurate)
-
-labelwebsite.add(GoogleurlPlus, GoogleurlMinus, BingurlPlus, BingurlMinus,YahoourlPlus, YahoourlMinus)
-
-labelFile.add(BingpdfPlus,BingpdfMinus,GooglepdfPlus,GooglepdfMinus,YahoopdfPlus,YahoopdfMinus)
-
-labelIMG.add(Bingimgnode,Googleimgnode,Yahooimgnode)
-
-labelspecial.add(Googlespecialnode,Bingspecialnode,Yahoospecialnode)
 
 print()
 print()
@@ -2206,767 +2278,767 @@ print()
 
 
 print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Pages Blanches Resultats'))
-print("")
-print("Accurate:")
-for info in pageBacu:
+for item in splitengine:
+     if item.lower() == "pagesblanches":
+
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Pages Blanches Results'))
+          print("")
+          print("Accurate:")
+          for info in pageBacu:
+                         info = info.split("#***#")
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbAccurate.relationships.create("Infos",item)
+                         labelPbacu.add(item)
+                         print(item)
+          print()
+          print("global :")
+          for info in Pb:
+            try:
                info = info.split("#***#")
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbAccurate.relationships.create("Infos",item)
-               labelPbacu.add(item)
-               print(item)
-print()
-print("global :")
-for info in Pb:
-  try:
-     info = info.split("#***#")
-     print(info)
+               print(info)
      
-     if info[0] == "Alsace":
-          try:
-               type(PbAlsace)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbAlsace.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
-          except NameError:
-               PbAlsace= db.nodes.create(name="Alsace",Region="Alsace", Nom="", Adresse="", telephone="")
-               labelPbregion.add(PbAlsace)
-               PagesBlanches.relationships.create("Regions",PbAlsace)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbAlsace.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
+               if info[0] == "Alsace":
+                    try:
+                         type(PbAlsace)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbAlsace.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
+                    except NameError:
+                         PbAlsace= db.nodes.create(Pbname="Alsace",Region="Alsace", Nom="", Adresse="", telephone="")
+                         labelPbregion.add(PbAlsace)
+                         PagesBlanches.relationships.create("Regions",PbAlsace)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbAlsace.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
           
-     if info[0] == "Aquitaine":
-          try:
-               type(PbAquitaine)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbAquitaine.relationships.create("Infos",item)
-               labelPbres.add(item)
+               if info[0] == "Aquitaine":
+                    try:
+                         type(PbAquitaine)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbAquitaine.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
 
-          except NameError:
-                  PbAquitaine= db.nodes.create(name="Aquitaine",Region="Aquitaine", Nom="", Adresse="", telephone="")
-                  labelPbregion.add(PbAquitaine)
-                  PagesBlanches.relationships.create("Regions",PbAquitaine)
-                  item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-                  PbAquitaine.relationships.create("Infos",item)
-                  labelPbres.add(item)
-                  print(item)
-     if info[0] == "Auvergne":
-          try:
-               type(PbAuvergne)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbAuvergne.relationships.create("Infos",item)
-               labelPbres.add(item)
-          except NameError:
-               PbAuvergne= db.nodes.create(name="Auvergne",Region="Auvergne", Nom="", Adresse="", telephone="")
-               labelPbregion.add(PbAuvergne)
-               PagesBlanches.relationships.create("Regions",PbAuvergne)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbAuvergne.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
-     if info[0] == "Basse-Normandie":
+                    except NameError:
+                            PbAquitaine= db.nodes.create(Pbname="Aquitaine",Region="Aquitaine", Nom="", Adresse="", telephone="")
+                            labelPbregion.add(PbAquitaine)
+                            PagesBlanches.relationships.create("Regions",PbAquitaine)
+                            item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                            PbAquitaine.relationships.create("Infos",item)
+                            labelPbinfo.add(item)
+                            print(item)
+               if info[0] == "Auvergne":
+                    try:
+                         type(PbAuvergne)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbAuvergne.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                    except NameError:
+                         PbAuvergne= db.nodes.create(Pbname="Auvergne",Region="Auvergne", Nom="", Adresse="", telephone="")
+                         labelPbregion.add(PbAuvergne)
+                         PagesBlanches.relationships.create("Regions",PbAuvergne)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbAuvergne.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
+               if info[0] == "Basse-Normandie":
 
-          try:
-              type(PbBasseNormandie)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbBasseNormandie.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbBasseNormandie= db.nodes.create(name="Basse-Normandie",Region="Basse-Normandie", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbBasseNormandie)
-              PagesBlanches.relationships.create("Regions",PbBasseNormandie)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbBasseNormandie.relationships.create("Infos",item)
-              labelPbres.add(item)
+                    try:
+                        type(PbBasseNormandie)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbBasseNormandie.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbBasseNormandie= db.nodes.create(Pbname="Basse-Normandie",Region="Basse-Normandie", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbBasseNormandie)
+                        PagesBlanches.relationships.create("Regions",PbBasseNormandie)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbBasseNormandie.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
 
-     if info[0] == "Bourgogne":
+               if info[0] == "Bourgogne":
 
-          try:
-              type(PbBourgogne)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbBourgogne.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-               PbBourgogne= db.nodes.create(name="Bourgogne",Region="Bourgogne", Nom="", Adresse="", telephone="")
-               labelPbregion.add(PbBourgogne)
-               PagesBlanches.relationships.create("Regions",PbBourgogne)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbBourgogne.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
-     if info[0] == "Bretagne":
-          try:
-              type(PbBretagne)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbBretagne.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-               PbBretagne= db.nodes.create(name="Bretagne",Region="Bretagne", Nom="", Adresse="", telephone="")
-               labelPbregion.add(PbBretagne)
-               PagesBlanches.relationships.create("Regions",PbBretagne)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbBretagne.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
+                    try:
+                        type(PbBourgogne)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbBourgogne.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                         PbBourgogne= db.nodes.create(Pbname="Bourgogne",Region="Bourgogne", Nom="", Adresse="", telephone="")
+                         labelPbregion.add(PbBourgogne)
+                         PagesBlanches.relationships.create("Regions",PbBourgogne)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbBourgogne.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
+               if info[0] == "Bretagne":
+                    try:
+                        type(PbBretagne)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbBretagne.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                         PbBretagne= db.nodes.create(Pbname="Bretagne",Region="Bretagne", Nom="", Adresse="", telephone="")
+                         labelPbregion.add(PbBretagne)
+                         PagesBlanches.relationships.create("Regions",PbBretagne)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbBretagne.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
 
-     if info[0] == "Centre":
-          try:
-              type(PbCentre)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbCentre.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:  
-               PbCentre= db.nodes.create(name="Centre",Region="Centre", Nom="", Adresse="", telephone="")
-               labelPbregion.add(PbCentre)
-               PagesBlanches.relationships.create("Regions",PbCentre)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbCentre.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
-     if info[0] == "Champagne-Ardenne":
-          try:
-              type(PbChampagneArdenne)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbChampagneArdenne.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-               PbChampagneArdenne= db.nodes.create(name="Champagne-Ardenne",Region="Champagne-Ardenne", Nom="", Adresse="", telephone="")
-               labelPbregion.add(PbChampagneArdenne)
-               PagesBlanches.relationships.create("Regions",PbChampagneArdenne)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbChampagneArdenne.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)          
-     if info[0] == "Corse":
-          try:
-              type(PbCorse)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbCorse.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-               PbCorse= db.nodes.create(name="Corse",Region="Corse", Nom="", Adresse="", telephone="")
-               labelPbregion.add(PbCorse)
-               PagesBlanches.relationships.create("Regions",PbCorse)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbCorse.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
-     if info[0] == "Franche-Comté":
-          try:
-              type(PbFrancheComt)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbFrancheComt.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbFrancheComt= db.nodes.create(name="Franche-Comté",Region="Franche-Comté", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbFrancheComt)
-              PagesBlanches.relationships.create("Regions",PbFrancheComt)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbFrancheComt.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Haute-Normandie":
-          try:
-              type(PbHauteNormandie)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbHauteNormandie.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbHauteNormandie= db.nodes.create(name="Haute-Normandie",Region="Haute-Normandie", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbHauteNormandie)
-              PagesBlanches.relationships.create("Regions",PbHauteNormandie)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbHauteNormandie.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Île-de-France":
-          try:
-              type(PbiledeFrance)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbiledeFrance.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbiledeFrance= db.nodes.create(name="Île-de-France",Region="Île-de-France", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbiledeFrance)
-              PagesBlanches.relationships.create("Regions",PbiledeFrance)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbiledeFrance.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Languedoc-Roussillon":
-          try:
-              type(PbLanguedocRoussillon)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbLanguedocRoussillon.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbLanguedocRoussillon= db.nodes.create(name="Languedoc-Roussillon",Region="Languedoc-Roussillon", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbLanguedocRoussillon)
-              PagesBlanches.relationships.create("Regions",PbLanguedocRoussillon)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbLanguedocRoussillon.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Limousin":
-          try:
-               type(PbLimousin)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbLimousin.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
-          except NameError:
-               PbLimousin= db.nodes.create(name="Limousin",Region="Limousin", Nom="", Adresse="", telephone="")
-               labelPbregion.add(PbLimousin)
-               PagesBlanches.relationships.create("Regions",PbLimousin)
-               item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-               PbLimousin.relationships.create("Infos",item)
-               labelPbres.add(item)
-               print(item)
+               if info[0] == "Centre":
+                    try:
+                        type(PbCentre)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbCentre.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:  
+                         PbCentre= db.nodes.create(Pbname="Centre",Region="Centre", Nom="", Adresse="", telephone="")
+                         labelPbregion.add(PbCentre)
+                         PagesBlanches.relationships.create("Regions",PbCentre)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbCentre.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
+               if info[0] == "Champagne-Ardenne":
+                    try:
+                        type(PbChampagneArdenne)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbChampagneArdenne.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                         PbChampagneArdenne= db.nodes.create(Pbname="Champagne-Ardenne",Region="Champagne-Ardenne", Nom="", Adresse="", telephone="")
+                         labelPbregion.add(PbChampagneArdenne)
+                         PagesBlanches.relationships.create("Regions",PbChampagneArdenne)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbChampagneArdenne.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)          
+               if info[0] == "Corse":
+                    try:
+                        type(PbCorse)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbCorse.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                         PbCorse= db.nodes.create(Pbname="Corse",Region="Corse", Nom="", Adresse="", telephone="")
+                         labelPbregion.add(PbCorse)
+                         PagesBlanches.relationships.create("Regions",PbCorse)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbCorse.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
+               if info[0] == "Franche-Comté":
+                    try:
+                        type(PbFrancheComt)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbFrancheComt.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbFrancheComt= db.nodes.create(Pbname="Franche-Comté",Region="Franche-Comté", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbFrancheComt)
+                        PagesBlanches.relationships.create("Regions",PbFrancheComt)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbFrancheComt.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Haute-Normandie":
+                    try:
+                        type(PbHauteNormandie)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbHauteNormandie.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbHauteNormandie= db.nodes.create(Pbname="Haute-Normandie",Region="Haute-Normandie", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbHauteNormandie)
+                        PagesBlanches.relationships.create("Regions",PbHauteNormandie)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbHauteNormandie.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Île-de-France":
+                    try:
+                        type(PbiledeFrance)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbiledeFrance.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbiledeFrance= db.nodes.create(Pbname="Île-de-France",Region="Île-de-France", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbiledeFrance)
+                        PagesBlanches.relationships.create("Regions",PbiledeFrance)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbiledeFrance.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Languedoc-Roussillon":
+                    try:
+                        type(PbLanguedocRoussillon)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbLanguedocRoussillon.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbLanguedocRoussillon= db.nodes.create(Pbname="Languedoc-Roussillon",Region="Languedoc-Roussillon", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbLanguedocRoussillon)
+                        PagesBlanches.relationships.create("Regions",PbLanguedocRoussillon)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbLanguedocRoussillon.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Limousin":
+                    try:
+                         type(PbLimousin)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbLimousin.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
+                    except NameError:
+                         PbLimousin= db.nodes.create(Pbname="Limousin",Region="Limousin", Nom="", Adresse="", telephone="")
+                         labelPbregion.add(PbLimousin)
+                         PagesBlanches.relationships.create("Regions",PbLimousin)
+                         item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                         PbLimousin.relationships.create("Infos",item)
+                         labelPbinfo.add(item)
+                         print(item)
 
 
-     if info[0] == "Lorraine":
-          try:
-              type(PbLorraine)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbLorraine.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
+               if info[0] == "Lorraine":
+                    try:
+                        type(PbLorraine)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbLorraine.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
                
-              PbLorraine= db.nodes.create(name="Lorraine",Region="Lorraine", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbLorraine)
-              PagesBlanches.relationships.create("Regions",PbLorraine)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbLorraine.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
+                        PbLorraine= db.nodes.create(Pbname="Lorraine",Region="Lorraine", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbLorraine)
+                        PagesBlanches.relationships.create("Regions",PbLorraine)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbLorraine.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
 
-     if info[0] == "Midi-Pyrénées":
-          try:
-              type(PbMidiPyrnes)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbMidiPyrnes.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbMidiPyrnes= db.nodes.create(name="Midi-Pyrénées",Region="Midi-Pyrénées", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbMidiPyrnes)
-              PagesBlanches.relationships.create("Regions",PbMidiPyrnes)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbMidiPyrnes.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
+               if info[0] == "Midi-Pyrénées":
+                    try:
+                        type(PbMidiPyrnes)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbMidiPyrnes.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbMidiPyrnes= db.nodes.create(Pbname="Midi-Pyrénées",Region="Midi-Pyrénées", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbMidiPyrnes)
+                        PagesBlanches.relationships.create("Regions",PbMidiPyrnes)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbMidiPyrnes.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
 
-     if info[0] == "Nord-Pas-de-Calais":
-          try:
-              type(PbNordPasdeCalais)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbNordPasdeCalais.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbNordPasdeCalais= db.nodes.create(name="Nord-Pas-de-Calais",Region="Nord-Pas-de-Calais", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbNordPasdeCalais)
-              PagesBlanches.relationships.create("Regions",PbNordPasdeCalais)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbNordPasdeCalais.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Pays de la Loire":
-          try:
-              type(PbPaysdelaLoire)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbPaysdelaLoire.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
+               if info[0] == "Nord-Pas-de-Calais":
+                    try:
+                        type(PbNordPasdeCalais)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbNordPasdeCalais.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbNordPasdeCalais= db.nodes.create(Pbname="Nord-Pas-de-Calais",Region="Nord-Pas-de-Calais", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbNordPasdeCalais)
+                        PagesBlanches.relationships.create("Regions",PbNordPasdeCalais)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbNordPasdeCalais.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Pays de la Loire":
+                    try:
+                        type(PbPaysdelaLoire)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbPaysdelaLoire.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
 
-          except NameError:
-              PbPaysdelaLoire= db.nodes.create(name="Pays de la Loire",Region="Pays de la Loire", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbPaysdelaLoire)
-              PagesBlanches.relationships.create("Regions",PbPaysdelaLoire)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbPaysdelaLoire.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
+                    except NameError:
+                        PbPaysdelaLoire= db.nodes.create(Pbname="Pays de la Loire",Region="Pays de la Loire", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbPaysdelaLoire)
+                        PagesBlanches.relationships.create("Regions",PbPaysdelaLoire)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbPaysdelaLoire.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
 
-     if info[0] == "Picardie":
-          try:
-             type(PbPicardie)
-             item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-             PbPicardie.relationships.create("Infos",item)
-             labelPbres.add(item)
-             print(item)
-          except NameError:
-             PbPicardie= db.nodes.create(name="Picardie",Region="Picardie", Nom="", Adresse="", telephone="")
-             labelPbregion.add(PbPicardie)
-             PagesBlanches.relationships.create("Regions",PbPicardie)
-             item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-             PbPicardie.relationships.create("Infos",item)
-             labelPbres.add(item)
-             print(item)
+               if info[0] == "Picardie":
+                    try:
+                       type(PbPicardie)
+                       item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                       PbPicardie.relationships.create("Infos",item)
+                       labelPbinfo.add(item)
+                       print(item)
+                    except NameError:
+                       PbPicardie= db.nodes.create(Pbname="Picardie",Region="Picardie", Nom="", Adresse="", telephone="")
+                       labelPbregion.add(PbPicardie)
+                       PagesBlanches.relationships.create("Regions",PbPicardie)
+                       item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                       PbPicardie.relationships.create("Infos",item)
+                       labelPbinfo.add(item)
+                       print(item)
 
-     if info[0] == "Poitou-Charentes":
-          try:
-              type(PbPoitouCharentes)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbPoitouCharentes.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbPoitouCharentes= db.nodes.create(name="Poitou-Charentes",Region="Poitou-Charentes", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbPoitouCharentes)
-              PagesBlanches.relationships.create("Regions",PbPoitouCharentes)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbPoitouCharentes.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Provence-Alpes-Côte+d'Azur":
+               if info[0] == "Poitou-Charentes":
+                    try:
+                        type(PbPoitouCharentes)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbPoitouCharentes.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbPoitouCharentes= db.nodes.create(Pbname="Poitou-Charentes",Region="Poitou-Charentes", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbPoitouCharentes)
+                        PagesBlanches.relationships.create("Regions",PbPoitouCharentes)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbPoitouCharentes.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Provence-Alpes-Côte+d'Azur":
 
-          try:
-              type(PbProvenceAlpesCotedAzur)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbProvenceAlpesCotedAzur.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbProvenceAlpesCotedAzur= db.nodes.create(name="Provence-Alpes-Côte+d'Azur",Region="Provence-Alpes-Côte+d'Azur", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbProvenceAlpesCotedAzur)
-              PagesBlanches.relationships.create("Regions",PbProvenceAlpesCotedAzur)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbProvenceAlpesCotedAzur.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
+                    try:
+                        type(PbProvenceAlpesCotedAzur)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbProvenceAlpesCotedAzur.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbProvenceAlpesCotedAzur= db.nodes.create(Pbname="Provence-Alpes-Côte+d'Azur",Region="Provence-Alpes-Côte+d'Azur", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbProvenceAlpesCotedAzur)
+                        PagesBlanches.relationships.create("Regions",PbProvenceAlpesCotedAzur)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbProvenceAlpesCotedAzur.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
 
-     if info[0] == "Rhône-Alpes":
-          try:
-              type(PbRhoneAlpes)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbRhoneAlpes.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbRhoneAlpes= db.nodes.create(name="Rhône-Alpes",Region="Rhône-Alpes", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbRhoneAlpes)
-              PagesBlanches.relationships.create("Regions",PbRhoneAlpes)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbRhoneAlpes.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Guadeloupe":
-          try:
-              type(PbGuadeloupe)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbGuadeloupe.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbGuadeloupe= db.nodes.create(name="Guadeloupe",Region="Guadeloupe", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbGuadeloupe)
-              PagesBlanches.relationships.create("Regions",PbGuadeloupe)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbGuadeloupe.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Guyane":
-          try:
-              type(PbGuyane)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbGuyane.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbGuyane= db.nodes.create(name="Guyane",Region="Guyane", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbGuyane)
-              PagesBlanches.relationships.create("Regions",PbGuyane)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbGuyane.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "La+Réunion":
-          try:
-              type(PbLaRunion)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbLaRunion.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbLaRunion= db.nodes.create(name="La+Réunion",Region="La+Réunion", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbLaRunion)
-              PagesBlanches.relationships.create("Regions",PbLaRunion)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbLaRunion.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Martinique":
-          try:
-              type(PbMartinique)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbMartinique.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbMartinique= db.nodes.create(name="Martinique",Region="Martinique", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbMartinique)
-              PagesBlanches.relationships.create("Regions",PbMartinique)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbMartinique.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-     if info[0] == "Mayotte":
-          try:
-              type(PbMayotte)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbMayotte.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
-          except NameError:
-              PbMayotte= db.nodes.create(name="Mayotte",Region="Mayotte", Nom="", Adresse="", telephone="")
-              labelPbregion.add(PbMayotte)
-              PagesBlanches.relationships.create("Regions",PbMayotte)
-              item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
-              PbMayotte.relationships.create("Infos",item)
-              labelPbres.add(item)
-              print(item)
+               if info[0] == "Rhône-Alpes":
+                    try:
+                        type(PbRhoneAlpes)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbRhoneAlpes.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbRhoneAlpes= db.nodes.create(Pbname="Rhône-Alpes",Region="Rhône-Alpes", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbRhoneAlpes)
+                        PagesBlanches.relationships.create("Regions",PbRhoneAlpes)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbRhoneAlpes.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Guadeloupe":
+                    try:
+                        type(PbGuadeloupe)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbGuadeloupe.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbGuadeloupe= db.nodes.create(Pbname="Guadeloupe",Region="Guadeloupe", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbGuadeloupe)
+                        PagesBlanches.relationships.create("Regions",PbGuadeloupe)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbGuadeloupe.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Guyane":
+                    try:
+                        type(PbGuyane)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbGuyane.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbGuyane= db.nodes.create(Pbname="Guyane",Region="Guyane", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbGuyane)
+                        PagesBlanches.relationships.create("Regions",PbGuyane)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbGuyane.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "La+Réunion":
+                    try:
+                        type(PbLaRunion)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbLaRunion.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbLaRunion= db.nodes.create(Pbname="La+Réunion",Region="La+Réunion", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbLaRunion)
+                        PagesBlanches.relationships.create("Regions",PbLaRunion)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbLaRunion.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Martinique":
+                    try:
+                        type(PbMartinique)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbMartinique.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbMartinique= db.nodes.create(Pbname="Martinique",Region="Martinique", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbMartinique)
+                        PagesBlanches.relationships.create("Regions",PbMartinique)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbMartinique.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+               if info[0] == "Mayotte":
+                    try:
+                        type(PbMayotte)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbMayotte.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
+                    except NameError:
+                        PbMayotte= db.nodes.create(Pbname="Mayotte",Region="Mayotte", Nom="", Adresse="", telephone="")
+                        labelPbregion.add(PbMayotte)
+                        PagesBlanches.relationships.create("Regions",PbMayotte)
+                        item = db.nodes.create(Region=info[0], Nom=info[1], Adresse=info[2], telephone=info[3])
+                        PbMayotte.relationships.create("Infos",item)
+                        labelPbinfo.add(item)
+                        print(item)
 
+            except Exception as e:
+                    print(e)
 
-
-
-
-
-
-
-
-
-  except Exception as e:
-          print(e)
 
 
 print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Google Important links'))
-print()
+for item in splitengine:
+     if item.lower() == "google":
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Google Important links'))
+          print()
 
-for glink in googlelink:
 
-  try:
-    glink = glink.split("#***#")
+          for glink in googlelink:
+            try:
+              glink = glink.split("#***#")
     
-    item = db.nodes.create(Titre=glink[0], Lien=glink[1], Description=glink[2])
-    GoogleurlPlus.relationships.create("Lien Important",item)
-    labelsiteverified.add(item)
-    print(item)
-    #s1.relationships.create("Source Url", item)
-  except Exception as e:
-          print(e)
+              item = db.nodes.create(Titre=glink[0], Lien=glink[1], Description=glink[2])
+              GoogleurlPlus.relationships.create("Important Link",item)
+              labelsiteverified.add(item)
+              print(item)
+              #s1.relationships.create("Source Url", item)
+            except Exception as e:
+                    print(e)
 
 
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Google Interesting links'))
-print()
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Google Interesting links'))
+          print()
 
 
 
-for glink in googlelinkchance:
+          for glink in googlelinkchance:
 
-  try:
-    glink = glink.split("#***#")
+            try:
+              glink = glink.split("#***#")
     
-    item = db.nodes.create(Titre=glink[0], Liens=glink[1], Description=glink[2])
-    GoogleurlMinus.relationships.create("Lien Valide",item)
-    labelsitechance.add(item)
-    print(item)
-    #s1.relationships.create("Source Url", item)
-  except Exception as e:
+              item = db.nodes.create(Titre=glink[0], Liens=glink[1], Description=glink[2])
+              GoogleurlMinus.relationships.create("Valid Link",item)
+              labelsitechance.add(item)
+              print(item)
+              #s1.relationships.create("Source Url", item)
+            except Exception as e:
 
-          print(e)
+                    print(e)
 
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Google Important PDF'))
-print()
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Google Important PDF'))
+          print()
 
-for pdf in googlepdf:
-  try:
-    pdf = pdf.split("#***#")
+          for pdf in googlepdf:
+            try:
+              pdf = pdf.split("#***#")
     
-    item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
-    GooglepdfPlus.relationships.create("Pdf Important",item)
-    labelpdfverified.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-          print(e)
+              item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
+              GooglepdfPlus.relationships.create("Pdf Important",item)
+              labelpdfverified.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+                    print(e)
 
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Google Interesting PDF'))
-print()
-
-
-for pdf in googlepdfchance:
-  try:
-    pdf = pdf.split("#***#")
-    print(pdf)
-    item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
-    GooglepdfMinus.relationships.create("Pdf Valide",item)
-    labelpdfchance.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-     print(e)
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Google not parsed'))
-print()
-for spec in googlespecial:
-  try:
-    item = db.nodes.create(name=spec)
-    Googlespecialnode.relationships.create("Non pris en charge",item)
-    labelspecial.add(item)
-    print(item)
-    #s1.relationships.create("Source item", item)
-  except Exception as e:
-          print(e)
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Google Pictures'))
-print()
-for fileimg in googleimg:
-
-  try:
-    item = db.nodes.create(name=fileimg)
-    Googleimgnode.relationships.create("Photo",item)
-    labelIMG.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-          print(e)
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Google Interesting PDF'))
+          print()
 
 
+          for pdf in googlepdfchance:
+            try:
+              pdf = pdf.split("#***#")
+              print(pdf)
+              item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
+              GooglepdfMinus.relationships.create("Pdf Valid",item)
+              labelpdfchance.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+               print(e)
 
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Google not parsed'))
+          print()
+          for spec in googlespecial:
+            try:
+              item = db.nodes.create(Specname=spec)
+              Googlespecialnode.relationships.create("Not handled yet",item)
+              labelspecialres.add(item)
+              print(item)
+              #s1.relationships.create("Source item", item)
+            except Exception as e:
+                    print(e)
 
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Bing Important Links'))
-print()
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Google Pictures'))
+          print()
+          for fileimg in googleimg:
 
-for blink in binglink:
+            try:
+              item = db.nodes.create(Filename=fileimg)
+              Googleimgnode.relationships.create("Picture",item)
+              labelIMGres.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+                    print(e)
 
-  try:
-    blink = blink.split("#***#")
-    item = db.nodes.create(Titre=blink[0], Lien=blink[1], Description=blink[2])
-    BingurlPlus.relationships.create("Lien important",item)
-    labelsiteverified.add(item)
-    print(item)
-    #s1.relationships.create("Source Url", item)
-  except Exception as e:
-          print(e)
-
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Bing Interesting Links'))
-print()
-
-
-
-for blink in binglinkchance:
-
-  try:
-    blink = blink.split("#***#")
-    item = db.nodes.create(Titre=blink[0], Lien=blink[1], Description=blink[2])
-    BingurlMinus.relationships.create("Lien Valide",item)
-    labelsitechance.add(item)
-    print(item)
-    #s1.relationships.create("Source Url", item)
-  except Exception as e:
-
-          print(e)
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Bing Important PDF'))
-print()
-
-for pdf in bingpdf:
-  try:
-    pdf = pdf.split("#***#")
-    item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
-    BingpdfPlus.relationships.create("Pdf Important",item)
-    labelpdfverified.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-          print(e)
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Bing Interesting PDF'))
-print()
-
-
-for pdf in bingpdfchance:
-  try:
-    pdf = pdf.split("#***#")
-    item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
-    BingpdfMinus.relationships.create("Pdf Intéressant",item)
-    labelpdfchance.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-     print(e)
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Bing not parsed'))
-print()
-for spec in bingspecial:
-  try:
-    item = db.nodes.create(name=spec)
-    Bingspecialnode.relationships.create("Non pris en charge",item)
-    labelspecial.add(item)
-    print(item)
-    #s1.relationships.create("Source item", item)
-  except Exception as e:
-          print(e)
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Bing picture'))
-print()
-print("google actually..")
-print()
-for fileimg in bingimg:
-
-  try:
-    item = db.nodes.create(name=fileimg)
-    Bingimgnode.relationships.create("Photo",item)
-    labelIMG.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-          print(e)
 
 
 
 print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Yahoo Important Links'))
-print()
+for item in splitengine:
+     if item.lower() == "bing":
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Bing Important Links'))
+          print()
 
-for ylink in yahoolink:
+          for blink in binglink:
 
-  try:
-    ylink = ylink.split("#***#")
-    item = db.nodes.create(Titre=ylink[0], Lien=ylink[1], Description=ylink[2])
-    YahoourlPlus.relationships.create("Lien Important",item)
-    labelsiteverified.add(item)
-    print(item)
-    #s1.relationships.create("Source Url", item)
-  except Exception as e:
-          print(e)
-
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Yahoo Interesting Links'))
-print()
+            try:
+              blink = blink.split("#***#")
+              item = db.nodes.create(Titre=blink[0], Lien=blink[1], Description=blink[2])
+              BingurlPlus.relationships.create("Important Link",item)
+              labelsiteverified.add(item)
+              print(item)
+              #s1.relationships.create("Source Url", item)
+            except Exception as e:
+                    print(e)
 
 
-
-for ylink in yahoolinkchance:
-
-  try:
-    ylink = ylink.split("#***#")
-    item = db.nodes.create(Titre=ylink[0], Lien=ylink[1], Description=ylink[2])
-    YahoourlMinus.relationships.create("Lien Valide",item)
-    labelsitechance.add(item)
-    print(item)
-    #s1.relationships.create("Source Url", item)
-  except Exception as e:
-
-          print(e)
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Yahoo Important PDF'))
-print()
-
-for pdf in yahoopdf:
-  try:
-    pdf = pdf.split("#***#")
-    item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
-    YahoopdfPlus.relationships.create("Pdf Important",item)
-    labelpdfverified.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-          print(e)
-
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Yahoo Interesting PDF'))
-print()
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Bing Interesting Links'))
+          print()
 
 
-for pdf in yahoopdfchance:
-  try:
-    pdf = pdf.split("#***#")
-    item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
-    YahoopdfMinus.relationships.create("Pdf Valide",item)
-    labelpdfchance.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-     print(e)
 
-print()
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Yahoo not parsed'))
-print("")
+          for blink in binglinkchance:
 
-for spec in yahoospecial:
-  try:
-    item = db.nodes.create(name=spec)
-    Yahoospecialnode.relationships.create("Non pris en charge",item)
-    labelspecial.add(item)
-    print(item)
-    #s1.relationships.create("Source item", item)
-  except Exception as e:
-          print(e)
-Fig = Figlet(font='cybermedium')
-print(Fig.renderText('Yahoo Picture'))
-print()
-print("Still google..")
-print("")
-for fileimg in yahooimg:
+            try:
+              blink = blink.split("#***#")
+              item = db.nodes.create(Titre=blink[0], Lien=blink[1], Description=blink[2])
+              BingurlMinus.relationships.create("Valid Pdf",item)
+              labelsitechance.add(item)
+              print(item)
+              #s1.relationships.create("Source Url", item)
+            except Exception as e:
 
-  try:
-    item = db.nodes.create(name=fileimg)
-    Yahooimgnode.relationships.create("Photo",item)
-    labelIMG.add(item)
-    print(item)
-    #s1.relationships.create("Source File", item)
-  except Exception as e:
-          print(e)
+                    print(e)
 
-print()
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Bing Important PDF'))
+          print()
+
+          for pdf in bingpdf:
+            try:
+              pdf = pdf.split("#***#")
+              item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
+              BingpdfPlus.relationships.create("Pdf Important",item)
+              labelpdfverified.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+                    print(e)
+
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Bing Interesting PDF'))
+          print()
+
+
+          for pdf in bingpdfchance:
+            try:
+              pdf = pdf.split("#***#")
+              item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
+              BingpdfMinus.relationships.create("Pdf Valid",item)
+              labelpdfchance.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+               print(e)
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Bing not parsed'))
+          print()
+          for spec in bingspecial:
+            try:
+              item = db.nodes.create(Specname=spec)
+              Bingspecialnode.relationships.create("Not handled yet",item)
+              labelspecialres.add(item)
+              print(item)
+              #s1.relationships.create("Source item", item)
+            except Exception as e:
+                    print(e)
+
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Bing picture'))
+          print()
+          print("google actually..")
+          print()
+          for fileimg in bingimg:
+
+            try:
+              item = db.nodes.create(Filename=fileimg)
+              Bingimgnode.relationships.create("Picture",item)
+              labelIMGres.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+                    print(e)
+
+
+for item in splitengine:
+     if item.lower() == "yahoo":
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yahoo Important Links'))
+          print()
+
+          for ylink in yahoolink:
+
+            try:
+              ylink = ylink.split("#***#")
+              item = db.nodes.create(Titre=ylink[0], Lien=ylink[1], Description=ylink[2])
+              YahoourlPlus.relationships.create("Important Link",item)
+              labelsiteverified.add(item)
+              print(item)
+              #s1.relationships.create("Source Url", item)
+            except Exception as e:
+                    print(e)
+
+
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yahoo Interesting Links'))
+          print()
+
+
+
+          for ylink in yahoolinkchance:
+
+            try:
+              ylink = ylink.split("#***#")
+              item = db.nodes.create(Titre=ylink[0], Lien=ylink[1], Description=ylink[2])
+              YahoourlMinus.relationships.create("Valid Link",item)
+              labelsitechance.add(item)
+              print(item)
+              #s1.relationships.create("Source Url", item)
+            except Exception as e:
+
+                    print(e)
+
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yahoo Important PDF'))
+          print()
+
+          for pdf in yahoopdf:
+            try:
+              pdf = pdf.split("#***#")
+              item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
+              YahoopdfPlus.relationships.create("Pdf Important",item)
+              labelpdfverified.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+                    print(e)
+
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yahoo Interesting PDF'))
+          print()
+
+
+          for pdf in yahoopdfchance:
+            try:
+              pdf = pdf.split("#***#")
+              item = db.nodes.create(Titre=pdf[1],Lien=pdf[0], Description=pdf[1])
+              YahoopdfMinus.relationships.create("Pdf Valid",item)
+              labelpdfchance.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+               print(e)
+
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yahoo not parsed'))
+          print("")
+
+          for spec in yahoospecial:
+            try:
+              item = db.nodes.create(Specname=spec)
+              Yahoospecialnode.relationships.create("Not handled yet",item)
+              labelspecialres.add(item)
+              print(item)
+              #s1.relationships.create("Source item", item)
+            except Exception as e:
+                    print(e)
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yahoo Picture'))
+          print()
+          print("Still google..")
+          print("")
+          for fileimg in yahooimg:
+
+            try:
+              item = db.nodes.create(Filename=fileimg)
+              Yahooimgnode.relationships.create("Picture",item)
+              labelIMGres.add(item)
+              print(item)
+              #s1.relationships.create("Source File", item)
+            except Exception as e:
+                    print(e)
+
+          print()
 Fig = Figlet(font='cybermedium')
 print(Fig.renderText('=The End='))
 print()

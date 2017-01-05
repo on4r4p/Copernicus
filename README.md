@@ -3,22 +3,32 @@
 
 Osint tool to get results from Google, Bing, Yahoo, PagesBlanches about people.
 
+No Smeging Api key required.
+Will not get your ip banned.
+
+Get images from google
+
+Filter results to be sure to retreive what we looking for .
+ (including pdf)
+
+If strict search result failed for one site try another finding method.
+
 Then make a graph in neo4j .
 
- - usage: copernicus.py [-h] [-l 'LANG'] [-pb 'PB'] [-s 'NAME'] [-f
-   FAMILY NAME]
-                        [-a OPTION] [-c CITY]
+ - usage: copernicus.py [-h] [-e 'ENGINE'] [-l 'LANG'] [-pb 'PB'] [-s 'NAME'] [-f
+   FAMILY NAME] [-a OPTION] [-c CITY]
+
+>./copernicus.py -e google,yahoo,pagesblanches -s "Someone you search" -f "you search -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh  -pb true
    
-   optional arguments:   -h, --help            show this help message
-   and exit   -l 'LANG', --language 'LANG'
-                           Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...   -pb 'PB', --pagesblanches 'PB'
-                           -pb true : Only use the city arg with pagesblanches   -s 'NAME', --search 'NAME'
-                           Name to Search   -f FAMILY NAME, --family FAMILY NAME
-                           Specify Family name if any (needed with -a and to use
-                           pageblanche)ex: -s Albert Einstein -f Einstein -a
-                           relativity,physics   -a OPTION, --add OPTION
-                           Additional information to catch more results: --add
-                           Word1,Word2,Word3   -c CITY, --city CITY  Specify city
+###To do list:
+- Rewrite all this shit
+- Add Install setup 
+-   Add whitepage engine for uk,es,ru,usa...(only fr now)
+ -  Add ability to save current session and continue where it stopped in  case of uncaught error.
+-  Add graphml , gephi , cytoscape ,export format .
+-  Add image search for yahoo and bing
+- Add Search results function for other file format 
+- Add Search by language in Yahoo and Bing (Only google now)
+- Add some search engines .
 
-
-
+*Wrote this cause of the maltego community limitation (12 results only)*
