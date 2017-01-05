@@ -1719,13 +1719,13 @@ def getPDFContent(path):
 parser = ArgumentParser()
 
 parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches',
-                    help="Use specific search engine: -e yahoo,bing ", metavar="'Engine'")
+                    help="Use specific search engine: -e yahoo,bing ", metavar="Engine")
 
 parser.add_argument("-l","--language", dest="lang",default='fr',
-                    help="Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...", metavar="'LANG'")
+                    help="Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...", metavar="LANG")
 
 parser.add_argument("-pb","--pagesblanches", dest="pbarg",default='none',
-                    help="-pb true : Only use the city arg with pagesblanches", metavar="'PB'")
+                    help="-pb true : Only use the city arg with pagesblanches", metavar="TRUE-FALSE")
 
 parser.add_argument("-s","--search", dest="name",default='Marcel Menou',
                     help="Name to Search", metavar="'NAME'")
@@ -1740,7 +1740,7 @@ parser.add_argument("-c","--city", dest="city",default='none',
                     help="Specify city", metavar="CITY")
 
 parser.add_argument("-i","--img", dest="image",default='true',
-                    help="-i true Search and download pictures too ", metavar="CITY")
+                    help="-i true Search and download pictures too ", metavar="TRUE-FALSE")
 
 
 args = parser.parse_args()

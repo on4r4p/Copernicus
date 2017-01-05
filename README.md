@@ -15,7 +15,7 @@ If strict search result failed for one site try another finding method.
 
 Then make a graph in neo4j .
 
- - usage: copernicus.py [-h] [-e 'ENGINE'] [-l 'LANG'] [-pb 'PB'] [-s 'NAME'] [-f
+ - usage: copernicus.py [-h] [-e 'ENGINE'] [-i  'True/False']  [-l 'LANG'] [-pb 'True/False'] [-s 'NAME'] [-f
    FAMILY NAME] [-a OPTION] [-c CITY]
 
 >./copernicus.py -e google,yahoo,pagesblanches -s "Someone you search" -f "you search -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh  -pb true
