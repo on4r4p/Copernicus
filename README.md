@@ -15,6 +15,11 @@ If strict search result failed for one site try another finding method.
 
 Then make a graph in neo4j .
 
+
+
+
+![](http://img11.hostingpics.net/pics/703817copernicus.png) 
+
  - usage: copernicus.py [-h] [-e 'ENGINE'] [-i  'True/False']  [-l 'LANG'] [-pb 'True/False'] [-s 'NAME'] [-f
    FAMILY NAME] [-a OPTION] [-c CITY]
 
