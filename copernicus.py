@@ -513,22 +513,25 @@ def pageblanche(familyname,city):
 def getYahooLinks(link,depth): #from https://github.com/geckogecko
      
      global yahoores
-
      print()
      Fig = Figlet(font='cybermedium')
      print(Fig.renderText('Getting results from Yahoo'))
      print()
      i = 0
+     lenchk = 0
+     newlen = 0
+     oldlen = 0
      link = link.replace(" ","+")
      urls2 = []
      results_array = []
      while i<depth: 
-          oldnbr= ''
-
+          urls2 = []
+          results_array = []
           try:
-               query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+link+"&b="+str((i*100)+1)+"&pz=100"
+               query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+str(link)+"&b="+str((i*100)+1)+"&pz=100"
                i = i+1
                print()
+               print(query)
                print("Page nbr : ",i)
                print()
 
@@ -547,8 +550,8 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
                searchtext = str(search[0])
                soup1 = BeautifulSoup(searchtext,'lxml')
                list_items = soup1.findAll('li')
+               
                time.sleep(random.randint(30,60))
-
                
                for li in list_items:
                     soup2 = BeautifulSoup(str(li),'lxml')
@@ -559,22 +562,43 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
                print("Yahoo Link counter : ",len(urls2))
                print()
 
-               for link in urls2:
-                    link = link.split("/RK")
-                    link[0] = "http://"+urllib.parse.unquote(link[0])
-                    print(link[0])
-                    yahoores.append(link[0])
+               for cleanlink in urls2:
+                    try:
+                         cleanlink = cleanlink.split("/RK")
+                         cleanlink[0] = "http://"+urllib.parse.unquote(cleanlink[0])
+                         print(cleanlink[0])
+                         yahoores.append(cleanlink[0]) 
+                    except Exception as e:
+                         print(e)
+                         pass
                print()
                print()
                print("Yahoo Total : ",len(yahoores))
-               if len(yahoores) > 500 :
+               if len(yahoores) > 600 :
+                    print("ITS OVER 9000 !")
                     print("Need to fix that loop")
                     return
 
+               endofres = re.findall('<span>(.*?)results</span></div></div></li></ol></div>', str(soup),re.DOTALL)
+               try:
+                    endofres = endofres[0].replace(" ","").replace(",","")
+                    if  int(endofres) < i * 100 + 100 - len(yahoores):
+                         print()
+                         print("That's all falks!")
+                         return
+               except Exception as e:
+                    #print(e)
+                    endofres = 1
+                    if  int(endofres) < i * 100 + 100 - len(yahoores):
+                         print()
+                         print("That's all falks")
+                         return
+
+
           except Exception as e:
-                    print(e)
+                    #print(e)
                     pass
-                    if len(yahoores) > 500 :
+                    if len(yahoores) > 600 :
                          print("Need to fix that loop")
                          return
 
@@ -1842,9 +1866,9 @@ if pbarg != "none" and argscity == "none":
      sys.exit()
 
 
-
-if pbarg.lower() != "true" :
-     if pbarg.lower() != "false":
+if pbarg.lower() != "none" :
+     if pbarg.lower() != "true" :
+          if pbarg.lower() != "false":
                print()
                print("some options are missing")
                print()
@@ -1855,8 +1879,9 @@ if pbarg.lower() != "true" :
                print("")
                sys.exit()
 
-if argsimg.lower() != "true" :
-     if argsimg.lower() != "false":
+if argsimg.lower() != "none" :
+     if argsimg.lower() != "true" :
+          if argsimg.lower() != "false":
                print()
                print("some options are missing")
                print()
@@ -2822,7 +2847,7 @@ for item in splitengine:
             try:
               item = db.nodes.create(Filename=fileimg)
               Googleimgnode.relationships.create("Picture",item)
-              labelIMGres.add(item)
+              labelIMG.add(item)
               print(item)
               #s1.relationships.create("Source File", item)
             except Exception as e:
@@ -2928,7 +2953,7 @@ for item in splitengine:
             try:
               item = db.nodes.create(Filename=fileimg)
               Bingimgnode.relationships.create("Picture",item)
-              labelIMGres.add(item)
+              labelIMG.add(item)
               print(item)
               #s1.relationships.create("Source File", item)
             except Exception as e:
@@ -3032,7 +3057,7 @@ for item in splitengine:
             try:
               item = db.nodes.create(Filename=fileimg)
               Yahooimgnode.relationships.create("Picture",item)
-              labelIMGres.add(item)
+              labelIMG.add(item)
               print(item)
               #s1.relationships.create("Source File", item)
             except Exception as e:
