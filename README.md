@@ -18,7 +18,7 @@ Then make a graph in neo4j .
  - usage: copernicus.py [-h] [-e 'ENGINE'] [-i  'True/False']  [-l 'LANG'] [-pb 'True/False'] [-s 'NAME'] [-f
    FAMILY NAME] [-a OPTION] [-c CITY]
 
->./copernicus.py -e google,yahoo,pagesblanches -s "Someone you search" -f "you search -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh  -pb true -i true
+>./copernicus.py -e google,yahoo,pagesblanches -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh  -pb true -i true
    
 ###To do list:
 - Rewrite all this shit
