@@ -756,7 +756,7 @@ def google(language,searcharg,cityarg,addarg):
                                                   print()
                        
 
-                                                  print("Google new links:",len(links))
+                                                  print("Google founds new links:",len(links))
                                                   page = page + 100
                               
                                                   time.sleep(random.randint(42,84))
@@ -824,7 +824,7 @@ def google(language,searcharg,cityarg,addarg):
                                                   print()
                        
 
-                                                  print("Google links counter",len(links))
+                                                  print("Google founds new links counter",len(links))
                                                   page = page + 100
                               
                                                   time.sleep(random.randint(42,84))
