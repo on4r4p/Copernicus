@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # coding: utf8
 from argparse import ArgumentParser
-from google import search #from https://github.com/MarioVilas
-from google import get_random_user_agent
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 from functools import wraps
@@ -35,7 +33,7 @@ lang = []
 listnbr = 0
 pageBres = []
 pageBacu = []
-resultats = []
+googleresults = []
 variation1= []
 variation2= []
 variation3= []
@@ -164,7 +162,6 @@ def pageblanche(familyname,city):
 
      UserAgent = random.choice(pbuser_agent_list)
      page = 0
-     #UserAgent = {'User-Agent':UserAgent}
      if city != "none":
 
           try:
@@ -518,9 +515,6 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
      print(Fig.renderText('Getting results from Yahoo'))
      print()
      i = 0
-     lenchk = 0
-     newlen = 0
-     oldlen = 0
      link = link.replace(" ","+")
      urls2 = []
      results_array = []
@@ -535,11 +529,14 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
                print("Page nbr : ",i)
                print()
 
-               fakeua = get_random_user_agent()
+               yhuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+               UserAgent = random.choice(yhuser_agent_list)
 
 
                opener = urllib.request.build_opener()
-               opener.addheaders = [('User-Agent', fakeua)]
+               opener.addheaders = [('User-Agent', UserAgent)]
 
                htmltext = opener.open(query)
 
@@ -701,13 +698,13 @@ def get_soup(url,header):
 	
     return BeautifulSoup(urllib.request.urlopen(urllib.request.Request(url,headers=header)),'html.parser')
 
-def fetchurl(language,searcharg,cityarg,addarg):
+def google(language,searcharg,cityarg,addarg):
 
-     global resultats
+     global googleresults
 
      for boka in language:
             print()
-            inc = "Google Fetching Result in : " + str(boka)
+            inc = "Google Fetching Results in : " + str(boka)
             print() 
             Fig = Figlet(font='cybermedium')
             print(Fig.renderText(str(inc)))
@@ -723,53 +720,141 @@ def fetchurl(language,searcharg,cityarg,addarg):
                     cityarg = "none"
 
 
-            if cityarg == "none":
+            if cityarg != "none":
                 #print("without cityarg")
                 try:
-                        for url in search(searcharg, lang=boka, pause=random.randint(30,60), num=100, stop=400, only_standard=False):
 
-                                #print(url)
 
-                                if not url in resultats:
-                                    resultats.append(url)
-                                else:
-                                     #print("Already Saved !"),resultats
-                                     pass
+
+                         gguseragent = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                                     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+                         UserAgent = random.choice(gguseragent)
+                         #print(UserAgent)
+                         page = 0
+                         stop = 0
+                         fuckingstop = 0
+
+                         try:
+                                        while stop != 1:
+                                             query = "https://www.google.com/search?hl="+boka+"&q="+str(searcharg).replace(" ","+")+"+"+cityarg+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
+                                             opener = urllib.request.build_opener()
+                                             opener.addheaders = [('User-Agent', UserAgent)]
+                                             send = opener.open(query)
+                                             soup = BeautifulSoup(send,'lxml')
+                                             theend = re.findall('id="pnnext"',str(soup))
+                                             if len(theend) >0:
+                                                  links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                  for link in links:
+
+                                                       if not link in googleresults:
+                                                            #print(link)
+                                                            googleresults.append(link)
+                                                       else:
+                                                                 #print("Already Saved !"),googleresults
+                                                                 pass
+                                                  print()
+                       
+
+                                                  print("Google links counter",len(links))
+                                                  page = page + 100
+                              
+                                                  time.sleep(random.randint(42,123))
+                              
+                                             else:
+                                                  links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                  for link in links:
+                                                  
+                                                       if not link in googleresults:
+                                                               #print(link)
+                                                               googleresults.append(link)
+                                                       else:
+                                                                 #print("Already Saved !"),googleresults
+                                                                 pass
+
+                                                  print()
+                                                  print("Google total Links :",len(googleresults))
+                                                  print("End of results")
+                              
+                                                  stop = 1
+
+                         except Exception as e:
+                                   print(e)
+                                   fuckingstop =  fuckingstop + 1
+                                   if fuckingstop > 3:
+                                        stop = 1
                 except Exception as e:
                 
                     print(("error : ",e))
                     pass
-            if cityarg != "none":
+            if cityarg == "none":
                      #print("with cityarg")
-                     searchargcity = searcharg + " " + cityarg
-                     try:
-
-                             for url in search(searchargcity, lang=boka, pause=random.randint(30,60), num=100, stop=400, only_standard=False):
-
-                                 #print(url)
-
-                                 if not url in resultats:
-
-                                     resultats.append(url)
-                                 else:
-                                     #print("Already Saved !")
-                                     pass
-                     except Exception as e:
-                             print(("error : ",e))
-                             pass
+                try:
 
 
 
-     print()
-     print("===")
-     print("Google Results :",len(resultats))
-     print("===")
-     print()
+                         gguseragent = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                                     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
 
-#     for item in resultats:
+                         UserAgent = random.choice(gguseragent)
+                         print(UserAgent)
+                         page = 0
+                         stop = 0
+                         fuckingstop = 0
+                         
 
-#             print(item)
+                         try:
+                                        while stop != 1:
+                                             query = "https://www.google.com/search?hl="+boka+"&q="+str(searcharg).replace(" ","+")+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
+                                             opener = urllib.request.build_opener()
+                                             opener.addheaders = [('User-Agent', UserAgent)]
+                                             send = opener.open(query)
+                                             soup = BeautifulSoup(send,'lxml')
+                                             theend = re.findall('id="pnnext"',str(soup))
+                                             if len(theend) >0:
+                                                  links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                  for link in links:
 
+                                                       if not link in googleresults:
+                                                            #print(link)
+                                                            googleresults.append(link)
+                                                       else:
+                                                                 #print("Already Saved !"),googleresults
+                                                                 pass
+                                                  print()
+                       
+
+                                                  print("Google links counter",len(links))
+                                                  page = page + 100
+                              
+                                                  time.sleep(random.randint(42,123))
+                              
+                                             else:
+                                                  links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                  for link in links:
+                                                       
+                                                       if not link in googleresults:
+                                                               print(link)
+                                                               googleresults.append(link)
+                                                       else:
+                                                                 #print("Already Saved !"),googleresults
+                                                                 pass
+
+                                                  print()
+                                                  print("Google total Links :",len(googleresults))
+                                                  print("End of results")
+                              
+                                                  stop = 1
+
+                         except Exception as e:
+                                   print(e)
+                                   fuckingstop =  fuckingstop + 1
+                                   if fuckingstop > 3:
+                                        stop = 1
+                except Exception as e:
+                
+                    print(("error : ",e))
+                    pass
 
 
      try:
@@ -788,7 +873,7 @@ def fetchurl(language,searcharg,cityarg,addarg):
      filelog = open("./Data/Search.log","a")
      filelog.write("\n"+str(timer)+"\n"+"For : "+str(searcharg)+"\nIn :"+str(cityarg)+"\nMay Contain :"+str(addarg)+"\n")
 
-     for item in resultats:
+     for item in googleresults:
 
              filelog.write("\n"+str(item))
      filelog.close
@@ -829,12 +914,7 @@ def getimg(query,cityarg):
     #add the directory for your image here
     DIR="./Data/Pictures/"
 
-    fakeua = get_random_user_agent()
-    #print(fakeua)
     header={'User-Agent':"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"}
-    header2={'User-Agent':str(fakeua)}
-    #print("header2 : ",header2)
-    #print("header : ",header)
     soup = get_soup(url,header)
 
     ActualImages=[]# contains the link for Large original images, type of  image
@@ -859,7 +939,7 @@ def getimg(query,cityarg):
     ###print images
     for i , (img , Type) in enumerate( ActualImages):
         try:
-            req = urllib.request.Request(img, headers={'User-Agent' : str(header2)})
+            req = urllib.request.Request(img, headers={'User-Agent' : str(header)})
             raw_img = urllib.request.urlopen(req).read()
             cntr = len([i for i in os.listdir(DIR) if image_type in i]) + 1
             #print(cntr)
@@ -1074,43 +1154,45 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
 
                try:
 
-	                     done = 0
-	                     fakeua = get_random_user_agent()
+                          done = 0
+                          agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                          'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
                      
                      
-	                     opener = urllib.request.build_opener()
-	                     opener.addheaders = [('User-Agent', fakeua)]           
+                          opener = urllib.request.build_opener()
+                          opener.addheaders = [('User-Agent', agent_list)]           
 
-	                     html = opener.open(item)
+                          html = opener.open(item)
 
-	                     soup = BeautifulSoup(html,'lxml')
+                          soup = BeautifulSoup(html,'lxml')
      
-	                     titre = str(soup.title.string).replace("\n","")
-	                     result = soup.get_text()
-	                     print()
-	                     print()
-	                     print("############")
-	                     print(("Google Scanning  : ",item))
-	                     print("############")
-	                     print("title: ",titre)
-	                     print()
-	                     print()
-	                     for comb in allcombparsed:
-	                          splitemcase = []
-	                          Dbl = 0
-	                          splitem = comb.split(' ')
-	                          for case in splitem:
-	                                     splitemcase.append(case.lower())
+                          titre = str(soup.title.string).replace("\n","")
+                          result = soup.get_text()
+                          print()
+                          print()
+                          print("############")
+                          print(("Google Scanning  : ",item))
+                          print("############")
+                          print("title: ",titre)
+                          print()
+                          print()
+                          for comb in allcombparsed:
+                               splitemcase = []
+                               Dbl = 0
+                               splitem = comb.split(' ')
+                               for case in splitem:
+                                          splitemcase.append(case.lower())
 	     
-	                          for word in splitemcase:
-	                             if Dbl == 0:
+                               for word in splitemcase:
+                                  if Dbl == 0:
 
-	                                  if splitemcase.count(word.lower()) > 1:
-	                                              Dbl = Dbl + 1
+                                       if splitemcase.count(word.lower()) > 1:
+                                                   Dbl = Dbl + 1
 
 
 
-	                          if Dbl == 0:
+                               if Dbl == 0:
      
                                              if comb in result:
                                                      print()
@@ -1143,12 +1225,12 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
 
 
      
-	                          else:
+                               else:
      
      
                                             pass
 
-	                     if lastchance(result,item,searcharg,addarg,cityarg) == 1 and addarg != "none":
+                          if lastchance(result,item,searcharg,addarg,cityarg) == 1 and addarg != "none":
                               
                               if done == 0:
                                                      print()
@@ -1202,11 +1284,12 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
                try:
 
                           done = 0
-                          fakeua = get_random_user_agent()
+                          agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                           'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
 
 
                           opener = urllib.request.build_opener()
-                          opener.addheaders = [('User-Agent', fakeua)]           
+                          opener.addheaders = [('User-Agent', agent_list)]           
 
                           html = opener.open(item)
                           soup = BeautifulSoup(html,'lxml')
@@ -1327,43 +1410,44 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
 
                try:
 
-	                     done = 0
-	                     fakeua = get_random_user_agent()
+                          done = 0
+                          agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                           'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
                      
                      
-	                     opener = urllib.request.build_opener()
-	                     opener.addheaders = [('User-Agent', fakeua)]           
+                          opener = urllib.request.build_opener()
+                          opener.addheaders = [('User-Agent', agent_list)]           
 
-	                     html = opener.open(item)
+                          html = opener.open(item)
 
-	                     soup = BeautifulSoup(html,'lxml')
+                          soup = BeautifulSoup(html,'lxml')
      
-	                     titre = str(soup.title.string).replace("\n","")
-	                     result = soup.get_text()
-	                     print()
-	                     print()
-	                     print("############")
-	                     print(("Scanning  : ",item))
-	                     print("############")
-	                     print("title: ",titre)
-	                     print()
-	                     print()
-	                     for comb in allcombparsed:
-	                          splitemcase = []
-	                          Dbl = 0
-	                          splitem = comb.split(' ')
-	                          for case in splitem:
-	                                     splitemcase.append(case.lower())
-	     
-	                          for word in splitemcase:
-	                             if Dbl == 0:
+                          titre = str(soup.title.string).replace("\n","")
+                          result = soup.get_text()
+                          print()
+                          print()
+                          print("############")
+                          print(("Scanning  : ",item))
+                          print("############")
+                          print("title: ",titre)
+                          print()
+                          print()
+                          for comb in allcombparsed:
+                               splitemcase = []
+                               Dbl = 0
+                               splitem = comb.split(' ')
+                               for case in splitem:
+                                          splitemcase.append(case.lower())
+          
+                               for word in splitemcase:
+                                  if Dbl == 0:
 
-	                                  if splitemcase.count(word.lower()) > 1:
-	                                              Dbl = Dbl + 1
+                                       if splitemcase.count(word.lower()) > 1:
+                                                   Dbl = Dbl + 1
 
 
 
-	                          if Dbl == 0:
+                               if Dbl == 0:
      
                                              if comb in result:
                                                      print()
@@ -1396,12 +1480,12 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
 
 
      
-	                          else:
+                               else:
      
      
                                             pass
 
-	                     if lastchance(result,item,searcharg,addarg,cityarg) == 1 and addarg != "none":
+                          if lastchance(result,item,searcharg,addarg,cityarg) == 1 and addarg != "none":
                               
                               if done == 0:
                                                      print()
@@ -1931,7 +2015,7 @@ if argsimg.lower() == "true":
 
 for item in splitengine:
      if item.lower() == "google":
-          fetchurl(lng,argsname,argscity,argsadd)
+          google(lng,argsname,argscity,argsadd)
 
 
 
@@ -1948,7 +2032,7 @@ for item in splitengine:
           print(Fig.renderText('Google Searching in Results'))
           print()
           print()
-          for link in resultats:
+          for link in googleresults:
 
                try:
                     searchhtml(link,argsadd,argsname,argscity,"placehold","google")
