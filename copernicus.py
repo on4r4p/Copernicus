@@ -1286,7 +1286,7 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
 
 
                           opener = urllib.request.build_opener()
-                          opener.addheaders = [('User-Agent', agent_list)]           
+                          opener.addheaders = [('User-Agent', str(agent_list))]           
 
                           html = opener.open(item)
                           soup = BeautifulSoup(html,'lxml')
@@ -1413,7 +1413,7 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
                      
                      
                           opener = urllib.request.build_opener()
-                          opener.addheaders = [('User-Agent', agent_list)]           
+                          opener.addheaders = [('User-Agent', str(agent_list))]           
 
                           html = opener.open(item)
 
