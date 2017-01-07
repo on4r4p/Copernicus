@@ -168,7 +168,7 @@ def pageblanche(familyname,city):
                          query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+familyname+"&ou="+city+"&proximite=1"
      
                          opener = urllib.request.build_opener()
-                         opener.addheaders = [('User-Agent', UserAgent)]
+                         opener.addheaders = [('User-Agent', str(UserAgent))]
 
                          send = opener.open(query)
      
@@ -193,7 +193,7 @@ def pageblanche(familyname,city):
                                    query2 = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+familyname+"&ou="+str(codepostal)
                                    
                                    opener2 = urllib.request.build_opener()
-                                   opener2.addheaders = [('User-Agent', UserAgent)]
+                                   opener2.addheaders = [('User-Agent', str(UserAgent))]
 
                                    send2 = opener2.open(query2)
 
@@ -315,7 +315,7 @@ def pageblanche(familyname,city):
                query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+familyname+"&ou="+region
      
                opener = urllib.request.build_opener()
-               opener.addheaders = [('User-Agent', UserAgent)]
+               opener.addheaders = [('User-Agent', str(UserAgent))]
 
                send = opener.open(query)
      
@@ -424,7 +424,7 @@ def pageblanche(familyname,city):
                                query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+familyname+"&ou="+region+"&page="+str(page)
 
                                opener = urllib.request.build_opener()
-                               opener.addheaders = [('User-Agent', UserAgent)]
+                               opener.addheaders = [('User-Agent', str(UserAgent))]
 
                                send = opener.open(query)
 
@@ -536,7 +536,7 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
 
 
                opener = urllib.request.build_opener()
-               opener.addheaders = [('User-Agent', UserAgent)]
+               opener.addheaders = [('User-Agent', str(UserAgent))]
 
                htmltext = opener.open(query)
 
@@ -610,7 +610,7 @@ def random_user_agent_bing():
                  'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36']
 
     UserAgent = random.choice(binguser_agent_list)
-    UserAgent = {'User-Agent':UserAgent}
+    UserAgent = {'User-Agent':str(UserAgent)}
     return UserAgent
 
 
@@ -739,7 +739,7 @@ def google(language,searcharg,cityarg,addarg):
                                         while stop != 1:
                                              query = "https://www.google.com/search?hl="+boka+"&q="+str(searcharg).replace(" ","+")+"+"+cityarg+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
                                              opener = urllib.request.build_opener()
-                                             opener.addheaders = [('User-Agent', UserAgent)]
+                                             opener.addheaders = [('User-Agent', str(UserAgent))]
                                              send = opener.open(query)
                                              soup = BeautifulSoup(send,'lxml')
                                              theend = re.findall('id="pnnext"',str(soup))
@@ -756,11 +756,11 @@ def google(language,searcharg,cityarg,addarg):
                                                   print()
                        
 
-                                                  print("Google links counter",len(links))
+                                                  print("Google new links:",len(links))
                                                   page = page + 100
                               
-                                                  time.sleep(random.randint(42,123))
-                              
+                                                  time.sleep(random.randint(42,84))
+                                                  
                                              else:
                                                   links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
                                                   for link in links:
@@ -797,7 +797,7 @@ def google(language,searcharg,cityarg,addarg):
                                      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
 
                          UserAgent = random.choice(gguseragent)
-                         print(UserAgent)
+                         #print(UserAgent)
                          page = 0
                          stop = 0
                          fuckingstop = 0
@@ -807,7 +807,7 @@ def google(language,searcharg,cityarg,addarg):
                                         while stop != 1:
                                              query = "https://www.google.com/search?hl="+boka+"&q="+str(searcharg).replace(" ","+")+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
                                              opener = urllib.request.build_opener()
-                                             opener.addheaders = [('User-Agent', UserAgent)]
+                                             opener.addheaders = [('User-Agent', str(UserAgent))]
                                              send = opener.open(query)
                                              soup = BeautifulSoup(send,'lxml')
                                              theend = re.findall('id="pnnext"',str(soup))
@@ -827,7 +827,7 @@ def google(language,searcharg,cityarg,addarg):
                                                   print("Google links counter",len(links))
                                                   page = page + 100
                               
-                                                  time.sleep(random.randint(42,123))
+                                                  time.sleep(random.randint(42,84))
                               
                                              else:
                                                   links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
@@ -1159,14 +1159,11 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
                           'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
 
                      
-                     
                           opener = urllib.request.build_opener()
-                          opener.addheaders = [('User-Agent', agent_list)]           
-
-                          html = opener.open(item)
-
+                          opener.addheaders = [('User-Agent', str(agent_list))]           
+                          html = opener.open(str(item))
                           soup = BeautifulSoup(html,'lxml')
-     
+                         
                           titre = str(soup.title.string).replace("\n","")
                           result = soup.get_text()
                           print()
