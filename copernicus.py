@@ -737,9 +737,11 @@ def google(language,searcharg,cityarg,addarg):
 
                          try:
                                         while stop != 1:
-                                             query = "https://www.google.com/search?hl="+boka+"&q="+str(searcharg).replace(" ","+")+"+"+cityarg+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
+                                             print('tst1')
+                                             query = "https://www.google.com/search?hl="+boka+"&q="+urllib.parse.quote(searcharg)+"+"+urllib.parse.quote(cityarg)+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
+
                                              opener = urllib.request.build_opener()
-                                             opener.addheaders = [('User-Agent', str(UserAgent))]
+                                             opener.addheaders = [('User-Agent', UserAgent)]
                                              send = opener.open(query)
                                              soup = BeautifulSoup(send,'lxml')
                                              theend = re.findall('id="pnnext"',str(soup))
@@ -792,7 +794,6 @@ def google(language,searcharg,cityarg,addarg):
                 try:
 
 
-
                          gguseragent = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
                                      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
 
@@ -805,7 +806,7 @@ def google(language,searcharg,cityarg,addarg):
 
                          try:
                                         while stop != 1:
-                                             query = "https://www.google.com/search?hl="+boka+"&q="+str(searcharg).replace(" ","+")+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
+                                             query = "https://www.google.com/search?hl="+boka+"&q="+urllib.parse.quote(searcharg)+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
                                              opener = urllib.request.build_opener()
                                              opener.addheaders = [('User-Agent', str(UserAgent))]
                                              send = opener.open(query)
@@ -2001,6 +2002,10 @@ for item in splitengine:
                pageblanche(family,args.city)
 
 for item in splitengine:
+     if item.lower() == "google":
+          google(lng,argsname,argscity,argsadd)
+
+for item in splitengine:
      if item.lower() == "yahoo":
           getYahooLinks(argsname,5)
 
@@ -2009,11 +2014,6 @@ for item in splitengine:
           bing(argsname)
 if argsimg.lower() == "true":
      getimg(argsname,argscity)
-
-for item in splitengine:
-     if item.lower() == "google":
-          google(lng,argsname,argscity,argsadd)
-
 
 
 
@@ -2199,10 +2199,45 @@ for item in splitengine:
           yahoospecial = yahoospecialreslink
           yahooimg = ActualImages
 
+stop = 0
 
-
-db = GraphDatabase("http://localhost:7474")
- 
+try:
+     db = GraphDatabase("http://localhost:7474")
+except:
+     while stop == 0:
+          print()
+          print("Can not establishe connection with neo4j's server.")
+          print("Either the server is down or it needs an user and password values.")
+          print()
+          proceed = ""
+          while proceed.lower() != "retry" and proceed.lower() != "login" and proceed.lower() != "quit":
+               proceed = input('Type "retry" Or "login" to enter user and password Or "quit" to exit.\nInput: ')
+          if proceed.lower() == "retry":
+               try:
+                    db = GraphDatabase("http://localhost:7474")
+                    stop = 1
+               except Exception as e:
+                    print()
+                    print(e) 
+                    print('Still not working sorry ..')
+                    print()
+          if proceed.lower() == "login":
+               Username = input('Enter Username :')
+               Password = input('Enter Password :')
+               print()
+               print('Trying to connect to neo4j with Username: %s and Password : %s'%(Username,Password))
+               print()
+               try:
+                    db = GraphDatabase("http://localhost:7474", username=Username, password=Password)
+                    stop = 1
+               except Exception as e:
+                    print()
+                    print(e)
+                    print("Still not working sorry ...")
+                    print()
+          if proceed.lower() == "quit":
+               print("Until next time then ..")
+               sys.exit()
 
 stitle = db.labels.create("Search")  
 s0 = db.nodes.create(Searchname=argsname)
