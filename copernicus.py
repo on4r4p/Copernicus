@@ -295,7 +295,7 @@ def pageblanche(familyname,city):
 
           except Exception as e:
 
-             print(e)
+#             print(e)
              pass
 
 
@@ -501,7 +501,7 @@ def pageblanche(familyname,city):
                
           except Exception as e:
 
-             print(e)
+#             print(e)
              pass
 
 
@@ -528,6 +528,10 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
                if argscity != "none" and pbarg != "true":
                     print("With city arg")
                     query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+urllib.parse.quote(link)+"%20"+urllib.parse.quote(argscity)+"&b="+str((i*100)+1)+"&pz=100"
+               if argscity != "none" and pbarg == "true":
+                    print("Without city arg")
+                    query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
+               i
                i = i+1
                print()
                print(query)
@@ -633,6 +637,10 @@ def make_request_bing(keyword,first):
                     if bingdone == 0:
                          print("Without city arg")
                          bingdone = 1
+    if argscity != "none" and pbarg == "true":
+                    print("Without city arg")
+                    bingdone = 1
+
     base_url = 'http://www.bing.com/search?q='
     result_count = '&count=50'
     try:
