@@ -752,7 +752,7 @@ def google(language,searcharg,cityarg,addarg):
 
                          try:
                                         while stop != 1:
-                                             print('tst1')
+                                             
                                              query = "https://www.google.com/search?hl="+boka+"&q="+urllib.parse.quote(searcharg)+"+"+urllib.parse.quote(cityarg)+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
 
                                              opener = urllib.request.build_opener()
