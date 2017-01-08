@@ -45,7 +45,7 @@ ActualImages = []
 family = ""
 joinvar = []
 allcomb = ""
-
+bingdone = 0
 bingtitles =[]
 bingurls = []
 bingmeta_descs = []
@@ -515,14 +515,19 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
      print(Fig.renderText('Getting results from Yahoo'))
      print()
      i = 0
-     link = link.replace(" ","+")
      urls2 = []
      results_array = []
      while i<depth: 
           urls2 = []
           results_array = []
           try:
-               query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+str(link)+"&b="+str((i*100)+1)+"&pz=100"
+               
+               if argscity == "none":
+                    print("Without city arg")
+                    query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
+               if argscity != "none" and pbarg != "true":
+                    print("With city arg")
+                    query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+urllib.parse.quote(link)+"%20"+urllib.parse.quote(argscity)+"&b="+str((i*100)+1)+"&pz=100"
                i = i+1
                print()
                print(query)
@@ -566,7 +571,7 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
                          print(cleanlink[0])
                          yahoores.append(cleanlink[0]) 
                     except Exception as e:
-                         print(e)
+                         #print(e)
                          pass
                print()
                print()
@@ -584,7 +589,9 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
                          print("That's all falks!")
                          return
                except Exception as e:
-                    #print(e)
+                    
+                    print(e)
+                    time.sleep(30)
                     endofres = 1
                     if  int(endofres) < i * 100 + 100 - len(yahoores):
                          print()
@@ -593,7 +600,8 @@ def getYahooLinks(link,depth): #from https://github.com/geckogecko
 
 
           except Exception as e:
-                    #print(e)
+                    print(e)
+                    time.sleep(30)
                     pass
                     if len(yahoores) > 600 :
                          print("Need to fix that loop")
@@ -615,13 +623,20 @@ def random_user_agent_bing():
 
 
 def make_request_bing(keyword,first):
-
-     
-    keyword = keyword.replace(' ','+')
+    global bingdone
+    if argscity != "none" and pbarg != "true":
+                    if bingdone == 0:
+                         print("With city arg")
+                         bingdone = 1
+                    keyword = keyword + " " + argscity
+    if argscity == "none":
+                    if bingdone == 0:
+                         print("Without city arg")
+                         bingdone = 1
     base_url = 'http://www.bing.com/search?q='
     result_count = '&count=50'
     try:
-        r = requests.get('{}{}{}{}'.format(base_url,keyword,result_count,first),headers=random_user_agent_bing())
+        r = requests.get('{}{}{}{}'.format(base_url,urllib.parse.quote(keyword),result_count,first),headers=random_user_agent_bing())
         #print("\n\n",r)
         return r
     except Exception as e:
