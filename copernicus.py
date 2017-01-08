@@ -165,7 +165,7 @@ def pageblanche(familyname,city):
      if city != "none":
 
           try:
-                         query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+familyname+"&ou="+city+"&proximite=1"
+                         query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+city+"&proximite=1"
      
                          opener = urllib.request.build_opener()
                          opener.addheaders = [('User-Agent', str(UserAgent))]
@@ -295,7 +295,7 @@ def pageblanche(familyname,city):
 
           except Exception as e:
 
-#             print(e)
+             print(e)
              pass
 
 
@@ -312,7 +312,7 @@ def pageblanche(familyname,city):
           
           
           try:
-               query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+familyname+"&ou="+region
+               query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+region
      
                opener = urllib.request.build_opener()
                opener.addheaders = [('User-Agent', str(UserAgent))]
@@ -501,7 +501,7 @@ def pageblanche(familyname,city):
                
           except Exception as e:
 
-#             print(e)
+             print(e)
              pass
 
 
