@@ -45,6 +45,8 @@ ActualImages = []
 family = ""
 joinvar = []
 allcomb = ""
+googledone = 0
+yahoodone = 0
 bingdone = 0
 bingtitles =[]
 bingurls = []
@@ -162,6 +164,9 @@ def pageblanche(familyname,city):
 
      UserAgent = random.choice(pbuser_agent_list)
      page = 0
+
+
+
      if city != "none":
 
           try:
@@ -183,6 +188,7 @@ def pageblanche(familyname,city):
                          if len(loca) >0:
 
                               for item in loca:
+                                   
                                    item = item.replace("   ","").replace("\n"," ").replace("<br>"," ")
                                    loca[initial] = item
                                    mask = re.compile('\d{5}')
@@ -226,6 +232,10 @@ def pageblanche(familyname,city):
                                    if len(locations) >0:
      
                                         for item in locations:
+                                             if '</a><a class="more-adresse' in item:
+                                                  item.split('</a><a class="more-adresse')
+                                                  item = item[0]
+
                                              item = item.replace("   ","").replace("\n"," ").replace("<br>"," ")
                                              locations[i] = item
                                              
@@ -313,7 +323,7 @@ def pageblanche(familyname,city):
           
           try:
                query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+region
-     
+               print(query)
                opener = urllib.request.build_opener()
                opener.addheaders = [('User-Agent', str(UserAgent))]
 
@@ -359,6 +369,10 @@ def pageblanche(familyname,city):
                          if len(locations) >0:
 
                               for item in locations:
+                                   if '</a><a class="more-adresse' in item:
+                                        item.split('</a><a class="more-adresse')
+                                        item = item[0]
+
                                    item = item.replace("   ","").replace("\n"," ").replace("<br>"," ")
                                    locations[i] = item
 #                                   print(locations[i])
@@ -507,109 +521,115 @@ def pageblanche(familyname,city):
 
 
 
-def getYahooLinks(link,depth): #from https://github.com/geckogecko
-     
+def getYahooLinks(language,link,depth): #from https://github.com/geckogecko
+     global yahoodone
      global yahoores
-     print()
-     Fig = Figlet(font='cybermedium')
-     print(Fig.renderText('Getting results from Yahoo'))
-     print()
-     i = 0
-     urls2 = []
-     results_array = []
-     while i<depth: 
-          urls2 = []
-          results_array = []
-          try:
-               
-               if argscity == "none":
-                    print("Without city arg")
-                    query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
-               if argscity != "none" and pbarg != "true":
-                    print("With city arg")
-                    query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+urllib.parse.quote(link)+"%20"+urllib.parse.quote(argscity)+"&b="+str((i*100)+1)+"&pz=100"
-               if argscity != "none" and pbarg == "true":
-                    print("Without city arg")
-                    query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
-               i
-               i = i+1
-               print()
-               print(query)
-               print("Page nbr : ",i)
-               print()
-
-               yhuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
-                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
-
-               UserAgent = random.choice(yhuser_agent_list)
-
-
-               opener = urllib.request.build_opener()
-               opener.addheaders = [('User-Agent', str(UserAgent))]
-
-               htmltext = opener.open(query)
-
-
-
-               soup = BeautifulSoup(htmltext,'lxml')
-               search = soup.findAll('div',attrs={'id':'web'})
-               searchtext = str(search[0])
-               soup1 = BeautifulSoup(searchtext,'lxml')
-               list_items = soup1.findAll('li')
-               
-               time.sleep(random.randint(30,60))
-               
-               for li in list_items:
-                    soup2 = BeautifulSoup(str(li),'lxml')
-                    links = soup2.findAll('a')
-                    if len(links)>0:
-                         results_array.append(links)
-               urls2 = (re.findall('www(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',str(results_array)))
-               print("Yahoo Link counter : ",len(urls2))
-               print()
-
-               for cleanlink in urls2:
-                    try:
-                         cleanlink = cleanlink.split("/RK")
-                         cleanlink[0] = "http://"+urllib.parse.unquote(cleanlink[0])
-                         print(cleanlink[0])
-                         yahoores.append(cleanlink[0]) 
-                    except Exception as e:
-                         #print(e)
-                         pass
-               print()
-               print()
-               print("Yahoo Total : ",len(yahoores))
-               if len(yahoores) > 600 :
-                    print("ITS OVER 9000 !")
-                    print("Need to fix that loop")
-                    return
-
-               endofres = re.findall('<span>(.*?)results</span></div></div></li></ol></div>', str(soup),re.DOTALL)
+     for boka in language:
+          print()
+          txtfig = "Getting results from Yahoo in "+ str(boka)
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText(str(txtfig)))
+          print()
+          i = 0
+          while i<depth: 
+               urls2 = []
+               results_array = []
                try:
-                    endofres = endofres[0].replace(" ","").replace(",","")
-                    if  int(endofres) < i * 100 + 100 - len(yahoores):
-                         print()
-                         print("That's all falks!")
-                         return
-               except Exception as e:
-                    
-                    print(e)
-                    time.sleep(30)
-                    endofres = 1
-                    if  int(endofres) < i * 100 + 100 - len(yahoores):
-                         print()
-                         print("That's all falks")
-                         return
+               
+                    if argscity == "none":
+                         if yahoodone != 1:
+                              print("Without city arg")
+                              yahoodone = 1
+                         query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
+                    if argscity != "none" and pbarg != "true":
+                         if yahoodone != 1:
+                              print("With city arg")
+                              yahoodone = 1
+                         query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"%20"+urllib.parse.quote(argscity)+"&b="+str((i*100)+1)+"&pz=100"
+                    if argscity != "none" and pbarg == "true":
+                         if yahoodone != 1:
+                              print("Without city arg")
+                              yahoodone = 1
+                         query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
+                    i
+                    i = i+1
+                    print()
+#                    print(query)
+                    print("Page nbr : ",i)
+                    print()
+
+                    yhuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+                    UserAgent = random.choice(yhuser_agent_list)
 
 
-          except Exception as e:
-                    print(e)
-                    time.sleep(30)
-                    pass
+                    opener = urllib.request.build_opener()
+                    opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                    htmltext = opener.open(query)
+
+
+
+                    soup = BeautifulSoup(htmltext,'lxml')
+                    search = soup.findAll('div',attrs={'id':'web'})
+                    searchtext = str(search[0])
+                    soup1 = BeautifulSoup(searchtext,'lxml')
+                    list_items = soup1.findAll('li')
+               
+                    time.sleep(random.randint(60,120))
+               
+                    for li in list_items:
+                         soup2 = BeautifulSoup(str(li),'lxml')
+                         links = soup2.findAll('a')
+                         if len(links)>0:
+                              results_array.append(links)
+                    urls2 = (re.findall('www(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',str(results_array)))
+                    print("Yahoo Link counter : ",len(urls2))
+                    print()
+
+                    for cleanlink in urls2:
+                         try:
+                              cleanlink = cleanlink.split("/RK")
+                              cleanlink[0] = "http://"+urllib.parse.unquote(cleanlink[0])
+#                              print(cleanlink[0])
+                              yahoores.append(cleanlink[0]) 
+                         except Exception as e:
+                              #print(e)
+                              pass
+                    print()
+                    print()
+                    print("Yahoo Total : ",len(yahoores))
                     if len(yahoores) > 600 :
+                         print("ITS OVER 9000 !")
                          print("Need to fix that loop")
                          return
+
+                    endofres = re.findall('<span>(.*?)results</span></div></div></li></ol></div>', str(soup),re.DOTALL)
+                    try:
+                         endofres = endofres[0].replace(" ","").replace(",","")
+                         if  int(endofres) < i * 100 + 100 - len(yahoores):
+                              print()
+                              print("That's all falks!")
+                              return
+                    except Exception as e:
+                    
+                         #print(e)
+                         time.sleep(30)
+                         endofres = 1
+                         if  int(endofres) < i * 100 + 100 - len(yahoores):
+                              print()
+                              print("That's all falks")
+                              return
+
+
+               except Exception as e:
+                         #print(e)
+                         time.sleep(30)
+                         pass
+                         if len(yahoores) > 600 :
+                              print("Need to fix that loop")
+                              return
 
 
 
@@ -696,7 +716,7 @@ def bing(keyword): #from https://github.com/EdmundMartin
 
                respage.append(make_request_bing(keyword,valuepage))
                page = page + 50
-               time.sleep(random.randint(30,60))
+               time.sleep(random.randint(60,120))
         
 
         for response in respage:
@@ -722,7 +742,7 @@ def get_soup(url,header):
     return BeautifulSoup(urllib.request.urlopen(urllib.request.Request(url,headers=header)),'html.parser')
 
 def google(language,searcharg,cityarg,addarg):
-
+     global googledone
      global googleresults
 
      for boka in language:
@@ -735,11 +755,14 @@ def google(language,searcharg,cityarg,addarg):
             if cityarg != "none":
                
                if pbarg.lower() != "true":
-                    #cityarg = cityarg
-                    print("with cityarg")
+                    if googledone != 1:
+                         print("with cityarg")
+                         googledone = 1
                     pass
                if pbarg.lower() == "true":
-                    print("without cityarg")
+                    if googledone != 1:
+                         print("without cityarg")
+                         googledone = 1
                     cityarg = "none"
 
 
@@ -773,6 +796,7 @@ def google(language,searcharg,cityarg,addarg):
                                                   for link in links:
 
                                                        if not link in googleresults:
+                                                            
                                                             #print(link)
                                                             googleresults.append(link)
                                                        else:
@@ -784,7 +808,7 @@ def google(language,searcharg,cityarg,addarg):
                                                   print("Google founds new links:",len(links))
                                                   page = page + 100
                               
-                                                  time.sleep(random.randint(42,84))
+                                                  time.sleep(random.randint(60,123))
                                                   
                                              else:
                                                   links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
@@ -804,13 +828,13 @@ def google(language,searcharg,cityarg,addarg):
                                                   stop = 1
 
                          except Exception as e:
-                                   print(e)
+                                  # print(e)
                                    fuckingstop =  fuckingstop + 1
                                    if fuckingstop > 3:
                                         stop = 1
                 except Exception as e:
                 
-                    print(("error : ",e))
+                    #print(("error : ",e))
                     pass
             if cityarg == "none":
                      #print("with cityarg")
@@ -851,7 +875,7 @@ def google(language,searcharg,cityarg,addarg):
                                                   print("Google founds new links counter",len(links))
                                                   page = page + 100
                               
-                                                  time.sleep(random.randint(42,84))
+                                                  time.sleep(random.randint(60,123))
                               
                                              else:
                                                   links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
@@ -871,13 +895,13 @@ def google(language,searcharg,cityarg,addarg):
                                                   stop = 1
 
                          except Exception as e:
-                                   print(e)
+                                  #print(e)
                                    fuckingstop =  fuckingstop + 1
                                    if fuckingstop > 3:
                                         stop = 1
                 except Exception as e:
                 
-                    print(("error : ",e))
+                    #print(("error : ",e))
                     pass
 
 
@@ -1277,10 +1301,7 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
 
                except Exception as e:
                                      print()
-                                     print()
-                                     print(("Error : ",e))
-                                     print()
-                                     print()
+                                     #print(("Error : ",e))
                                      pass
           else:
      
@@ -1399,11 +1420,8 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
 
                except Exception as e:
                                      print()
-                                     print()
-                                     print("searchtml error")
-                                     print(("Error : ",e))
-                                     print()
-                                     print()
+                                     #print("searchtml error")
+                                     #print(("Error : ",e))
                                      pass
           else:
      
@@ -1532,10 +1550,7 @@ def searchhtml(item,addarg,searcharg,cityarg,listpos,engine):
 
                except Exception as e:
                                      print()
-                                     print()
-                                     print(("Error : ",e))
-                                     print()
-                                     print()
+                                     #print(("Error : ",e))
                                      pass
           else:
      
@@ -1649,7 +1664,7 @@ def searchpdf(pdf,addarg,searcharg,cityarg,engine):
 
 
              except Exception as e:
-                     print(e)
+                     #print(e)
                      pass
 
     if engine == "yahoo":
@@ -1734,7 +1749,7 @@ def searchpdf(pdf,addarg,searcharg,cityarg,engine):
 
 
              except Exception as e:
-                     print(e)
+                     #print(e)
                      pass
 
     if engine == "bing":
@@ -1819,8 +1834,8 @@ def searchpdf(pdf,addarg,searcharg,cityarg,engine):
 
 
              except Exception as e:
-                     print("searchpdf error")
-                     print(e)
+                     #print("searchpdf error")
+                     #print(e)
                      pass
 
 
@@ -1903,10 +1918,10 @@ if lang != "none":
           if split in alllng:
                lng.append(split)
      if len(lng) == 0:
-          lng = ['en','fr']
+          lng = ['fr']
 else:
 
-     lng = ['en','fr']
+     lng = ['fr']
 
 print()
 
@@ -2015,6 +2030,14 @@ print()
 print("Which may contain : ",args.add)
 print()
 
+correct = input('Is this correct? y/n : ')
+if not "y" in correct.lower():
+     print("Better luck next time.")
+     sys.exit()
+else:
+     print("Ok here we go.")
+
+
 permutation(argsname)
 
 
@@ -2023,14 +2046,16 @@ for item in splitengine:
      if item.lower() == "pagesblanches":
           if family != "none":
                pageblanche(family,args.city)
-
+          if family == "none":
+               quickfix= input("What's the familly name already?\nInput:")
+               pageblanche(str(quickfix),args.city)
 for item in splitengine:
      if item.lower() == "google":
           google(lng,argsname,argscity,argsadd)
 
 for item in splitengine:
      if item.lower() == "yahoo":
-          getYahooLinks(argsname,5)
+          getYahooLinks(lng,argsname,5)
 
 for item in splitengine:
      if item.lower() == "bing":
@@ -2057,7 +2082,7 @@ for item in splitengine:
                try:
                     searchhtml(link,argsadd,argsname,argscity,"placehold","google")
                except Exception as e:
-                    print(e)
+                    #print(e)
                     pass
 
           print()
@@ -2073,7 +2098,7 @@ for item in splitengine:
                try:
                     searchpdf(links,argsadd,argsname,argscity,"google")
                except Exception as e:
-                    print(e)
+                    #print(e)
                     pass
 
 
@@ -2095,7 +2120,7 @@ for item in splitengine:
                          searchhtml(link,argsadd,argsname,argscity,listnbr,"bing")
                          listnbr = listnbr + 1
                except Exception as e:
-                    print(e)
+                    #print(e)
                     listnbr = listnbr + 1
                     pass
 
@@ -2114,7 +2139,7 @@ for item in splitengine:
                try:
                     searchpdf(links,argsadd,argsname,argscity,"bing")
                except Exception as e:
-                    print(e)
+                    #print(e)
                     pass
 ######################################################################
 
@@ -2136,7 +2161,7 @@ for item in splitengine:
                try:
                     searchhtml(link,argsadd,argsname,argscity,"placehold","yahoo")
                except Exception as e:
-                    print(e)
+                    #print(e)
                     pass
 
           print()
@@ -2156,7 +2181,7 @@ for item in splitengine:
                try:
                     searchpdf(links,argsadd,argsname,argscity,"yahoo")
                except Exception as e:
-                    print(e)
+                    #print(e)
                     pass
 
 
@@ -2172,7 +2197,7 @@ print()
 proceed = ""
 
 while proceed.lower() != "ok":
-     proceed = input('Make sure neo4j is up and running then type ok : ')
+     proceed = input('Make sure neo4j is up and running then type ok.\nInput: ')
 
 
 

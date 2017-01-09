@@ -15,6 +15,8 @@ If strict search result failed for one site try another finding method.
 
 Then make a graph in neo4j .
 
+~(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to use neo4j as it is .)~
+
 
 
 
@@ -32,8 +34,9 @@ Then make a graph in neo4j .
 -  Add ability to save current session and continue where it stopped in  case of uncaught error.
 -  Add graphml , gephi , cytoscape ,export format .
 -  Add image search for yahoo and bing
+- Add Email search
 - Add Search results function for other file format 
-- Add Search by language in Yahoo and Bing (Only google now)
+- Add Search by language in Bing
 - Add some search engines .
 
 *Wrote this cause of the maltego community limitation (12 results only)*
