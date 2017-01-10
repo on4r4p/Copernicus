@@ -200,7 +200,7 @@ def pageblanche(familyname,city):
                                    
                                    time.sleep(10)
 
-                                   query2 = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+familyname+"&ou="+str(codepostal)
+                                   query2 = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+str(codepostal)
                                    
                                    opener2 = urllib.request.build_opener()
                                    opener2.addheaders = [('User-Agent', str(UserAgent))]
@@ -309,8 +309,9 @@ def pageblanche(familyname,city):
 
           except Exception as e:
 
-#             print(e)
+             #print(e)
              pass
+
 
 
      if fullauto != "true":
@@ -470,7 +471,9 @@ def pageblanche(familyname,city):
 
                                     locations = re.findall(' href="#" title="Voir le plan(.*?)</a></div>', str(soup),re.DOTALL)
                                     if len(locations) >0:
-     
+                                             if '</a><a class="more-adresse' in item:
+                                                  item.split('</a><a class="more-adresse')
+                                                  item = item[0]     
                                          for item in locations:
                                               item = item.replace("   "," ").replace('"','').replace("\n"," ").replace("<br>"," ")
                                               locations[i] = item
