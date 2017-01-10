@@ -23,7 +23,7 @@ Then make a graph in neo4j .
 ![](http://img11.hostingpics.net/pics/703817copernicus.png) 
 
  - usage: copernicus.py [-h] [-e 'ENGINE'] [-i  'True/False']  [-l 'LANG'] [-pb 'True/False'] [-s 'NAME'] [-f
-   FAMILY NAME] [-a OPTION] [-c CITY]
+   FAMILY NAME] [-a OPTION] [-c CITY] [-fa TRUE-FALSE]
 
 >./copernicus.py -e google,yahoo,pagesblanches -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh  -pb true -i true
    
@@ -38,5 +38,6 @@ Then make a graph in neo4j .
 - Add Search results function for other file format 
 - Add Search by language in Bing
 - Add some search engines .
+- ~~Add FullAuto mode for PagesBlanches (testings all cities with more than 10 000 inhabitants )~~
 
 *Wrote this cause of the maltego community limitation (12 results only)*
