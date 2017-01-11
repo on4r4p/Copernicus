@@ -185,12 +185,12 @@ def btelecom(fname,city):
                for ville in cityuk:
                     pagenbr = 1
                     stopwhile = 0
-                    while stopwhile != 1:
+                    while stopwhile != 1 and len(btres) < 60:
                               btname=""
                               btloc=""
                               bttel=""                         
                               query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(ville)+"&Page="+str(pagenbr)
-                              print("query:",query)
+                              #print("query:",query)
                               opener = urllib.request.build_opener()
                               opener.addheaders = [('User-Agent', str(UserAgent))]
 
@@ -216,24 +216,25 @@ def btelecom(fname,city):
                                    print()
                                    
                                    if "a href" in item:
-                                        print("found next page")
+                                        #print("found next page")
                                         pagenbr = pagenbr +1
                                    else:
-                                        print("End of res")
+                                        #print("End of res")
                                         stopwhile = 1
                                    print()
                               if len(nextpage) == 0:
                                    stopwhile = 1
                                                             
                               time.sleep(random.randint(32,123))
-                    print()
-                    print("British Telecom results counter : ",len(btres))
-                    print()
-               print()
-               print("British Telecom Total results : ",len(btres))
+                              print()
+                              print("British Telecom results counter : ",len(btres))
+                              print()
+
           except Exception as e:
                print(e)
-               
+
+          print()
+          print("British Telecom Total results : ",len(btres))               
 
      if city != "none":
           try:
@@ -245,7 +246,7 @@ def btelecom(fname,city):
                               btloc=""
                               bttel=""                         
                               query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(city)+"&Page="+str(pagenbr)
-                              print("query:",query)
+                              #print("query:",query)
                               opener = urllib.request.build_opener()
                               opener.addheaders = [('User-Agent', str(UserAgent))]
 
@@ -280,9 +281,9 @@ def btelecom(fname,city):
                               if len(nextpage) == 0:
                                    stopwhile = 1                        
                               time.sleep(random.randint(32,123))
-                    print()
-                    print("British Telecom results counter : ",len(btres))
-                    print()
+                              print()
+                              print("British Telecom results counter : ",len(btres))
+                              print()
                
           except Exception as e:
                print(e)
@@ -3031,13 +3032,12 @@ for item in splitengine:
           print(Fig.renderText('British Telecom Results'))
           print("")
           for info in btres:
-               info = info.split("#***#")
-               for node in cityuknode:
+                    info = info.split("#***#")
 
-                    if node in info[1].lower():
+                    if "aberdeen" in info[1].lower():
                          try:
                               type(Btaberdeen)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="aberdeen", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btaberdeen.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3045,16 +3045,16 @@ for item in splitengine:
                               Btaberdeen= db.nodes.create(Btname="aberdeen",BtCity="aberdeen", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btaberdeen)
                               BritishTelecom.relationships.create("Cities",Btaberdeen)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="aberdeen", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btaberdeen.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "armagh" in info[1].lower():
                          try:
                               type(Btarmagh)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="armagh", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btarmagh.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3062,16 +3062,16 @@ for item in splitengine:
                               Btarmagh= db.nodes.create(Btname="armagh",BtCity="armagh", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btarmagh)
                               BritishTelecom.relationships.create("Cities",Btarmagh)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="armagh", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btarmagh.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "bangor" in info[1].lower():
                          try:
                               type(Btbangor)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="bangor", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbangor.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3079,16 +3079,16 @@ for item in splitengine:
                               Btbangor= db.nodes.create(Btname="bangor",BtCity="bangor", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btbangor)
                               BritishTelecom.relationships.create("Cities",Btbangor)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="bangor", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbangor.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "bath" in info[1].lower():
                          try:
                               type(Btbath)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="bath", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbath.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3096,16 +3096,16 @@ for item in splitengine:
                               Btbath= db.nodes.create(Btname="bath",BtCity="bath", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btbath)
                               BritishTelecom.relationships.create("Cities",Btbath)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="bath", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbath.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "belfast" in info[1].lower():
                          try:
                               type(Btbelfast)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="belfast", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbelfast.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3113,16 +3113,16 @@ for item in splitengine:
                               Btbelfast= db.nodes.create(Btname="belfast",BtCity="belfast", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btbelfast)
                               BritishTelecom.relationships.create("Cities",Btbelfast)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="belfast", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbelfast.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "birmingham" in info[1].lower():
                          try:
                               type(Btbirmingham)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="birmingham", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbirmingham.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3130,16 +3130,16 @@ for item in splitengine:
                               Btbirmingham= db.nodes.create(Btname="birmingham",BtCity="birmingham", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btbirmingham)
                               BritishTelecom.relationships.create("Cities",Btbirmingham)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="birmingham", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbirmingham.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "bradford" in info[1].lower():
                          try:
                               type(Btbradford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="bradford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbradford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3147,16 +3147,16 @@ for item in splitengine:
                               Btbradford= db.nodes.create(Btname="bradford",BtCity="bradford", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btbradford)
                               BritishTelecom.relationships.create("Cities",Btbradford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="bradford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbradford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "brighton" in info[1].lower():
                          try:
                               type(Btbrighton)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="brighton", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbrighton.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3164,16 +3164,16 @@ for item in splitengine:
                               Btbrighton= db.nodes.create(Btname="brighton",BtCity="brighton", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btbrighton)
                               BritishTelecom.relationships.create("Cities",Btbrighton)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="brighton", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbrighton.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "hove" in info[1].lower():
                          try:
                               type(Bthove)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="hove", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Bthove.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3181,16 +3181,16 @@ for item in splitengine:
                               Bthove= db.nodes.create(Btname="hove",BtCity="hove", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Bthove)
                               BritishTelecom.relationships.create("Cities",Bthove)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="hove", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Bthove.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "bristol" in info[1].lower():
                          try:
                               type(Btbristol)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="bristol", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbristol.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3198,16 +3198,16 @@ for item in splitengine:
                               Btbristol= db.nodes.create(Btname="bristol",BtCity="bristol", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btbristol)
                               BritishTelecom.relationships.create("Cities",Btbristol)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="bristol", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btbristol.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "cambridge" in info[1].lower():
                          try:
                               type(Btcambridge)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="cambridge", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcambridge.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3215,16 +3215,16 @@ for item in splitengine:
                               Btcambridge= db.nodes.create(Btname="cambridge",BtCity="cambridge", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btcambridge)
                               BritishTelecom.relationships.create("Cities",Btcambridge)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="cambridge", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcambridge.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "canterbury" in info[1].lower():
                          try:
                               type(Btcanterbury)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="canterbury", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcanterbury.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3232,16 +3232,16 @@ for item in splitengine:
                               Btcanterbury= db.nodes.create(Btname="canterbury",BtCity="canterbury", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btcanterbury)
                               BritishTelecom.relationships.create("Cities",Btcanterbury)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="canterbury", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcanterbury.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "canterbury" in info[1].lower():
                          try:
                               type(Btcanterbury)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="canterbury", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcanterbury.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3249,16 +3249,16 @@ for item in splitengine:
                               Btcanterbury= db.nodes.create(Btname="canterbury",BtCity="canterbury", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btcanterbury)
                               BritishTelecom.relationships.create("Cities",Btcanterbury)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="canterbury", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcanterbury.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "cardiff" in info[1].lower():
                          try:
                               type(Btcardiff)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="cardiff", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcardiff.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3266,16 +3266,16 @@ for item in splitengine:
                               Btcardiff= db.nodes.create(Btname="cardiff",BtCity="cardiff", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btcardiff)
                               BritishTelecom.relationships.create("Cities",Btcardiff)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="cardiff", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcardiff.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "carlisle" in info[1].lower():
                          try:
                               type(Btcarlisle)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="carlisle", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcarlisle.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3283,16 +3283,16 @@ for item in splitengine:
                               Btcarlisle= db.nodes.create(Btname="carlisle",BtCity="carlisle", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btcarlisle)
                               BritishTelecom.relationships.create("Cities",Btcarlisle)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="carlisle", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcarlisle.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "chelmsford" in info[1].lower():
                          try:
                               type(Btchelmsford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="chelmsford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btchelmsford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3300,16 +3300,16 @@ for item in splitengine:
                               Btchelmsford= db.nodes.create(Btname="chelmsford",BtCity="chelmsford", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btchelmsford)
                               BritishTelecom.relationships.create("Cities",Btchelmsford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="chelmsford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btchelmsford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "chester" in info[1].lower():
                          try:
                               type(Btchester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="chester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btchester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3317,16 +3317,16 @@ for item in splitengine:
                               Btchester= db.nodes.create(Btname="chester",BtCity="chester", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btchester)
                               BritishTelecom.relationships.create("Cities",Btchester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="chester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btchester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "chichester" in info[1].lower():
                          try:
                               type(Btchichester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="chichester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btchichester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3334,16 +3334,16 @@ for item in splitengine:
                               Btchichester= db.nodes.create(Btname="chichester",BtCity="chichester", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btchichester)
                               BritishTelecom.relationships.create("Cities",Btchichester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="chichester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btchichester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "coventry" in info[1].lower():
                          try:
                               type(Btcoventry)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="coventry", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcoventry.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3351,16 +3351,16 @@ for item in splitengine:
                               Btcoventry= db.nodes.create(Btname="coventry",BtCity="coventry", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btcoventry)
                               BritishTelecom.relationships.create("Cities",Btcoventry)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="coventry", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btcoventry.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "derby" in info[1].lower():
                          try:
                               type(Btderby)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="derby", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btderby.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3368,16 +3368,16 @@ for item in splitengine:
                               Btderby= db.nodes.create(Btname="derby",BtCity="derby", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btderby)
                               BritishTelecom.relationships.create("Cities",Btderby)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="derby", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btderby.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "londonderry" in info[1].lower():
                          try:
                               type(Btlondonderry)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="londonderry", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlondonderry.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3385,16 +3385,16 @@ for item in splitengine:
                               Btlondonderry= db.nodes.create(Btname="londonderry",BtCity="londonderry", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btlondonderry)
                               BritishTelecom.relationships.create("Cities",Btlondonderry)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="londonderry", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlondonderry.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "dundee" in info[1].lower():
                          try:
                               type(Btdundee)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="dundee", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btdundee.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3402,16 +3402,16 @@ for item in splitengine:
                               Btdundee= db.nodes.create(Btname="dundee",BtCity="dundee", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btdundee)
                               BritishTelecom.relationships.create("Cities",Btdundee)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="dundee", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btdundee.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "durham" in info[1].lower():
                          try:
                               type(Btdurham)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="durham", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btdurham.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3419,16 +3419,16 @@ for item in splitengine:
                               Btdurham= db.nodes.create(Btname="durham",BtCity="durham", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btdurham)
                               BritishTelecom.relationships.create("Cities",Btdurham)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="durham", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btdurham.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "edinburgh" in info[1].lower():
                          try:
                               type(Btedinburgh)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="edinburgh", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btedinburgh.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3436,16 +3436,16 @@ for item in splitengine:
                               Btedinburgh= db.nodes.create(Btname="edinburgh",BtCity="edinburgh", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btedinburgh)
                               BritishTelecom.relationships.create("Cities",Btedinburgh)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="edinburgh", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btedinburgh.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "ely" in info[1].lower():
                          try:
                               type(Btely)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="ely", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btely.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3453,16 +3453,16 @@ for item in splitengine:
                               Btely= db.nodes.create(Btname="ely",BtCity="ely", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btely)
                               BritishTelecom.relationships.create("Cities",Btely)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="ely", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btely.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "exeter" in info[1].lower():
                          try:
                               type(Btexeter)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="exeter", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btexeter.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3470,16 +3470,16 @@ for item in splitengine:
                               Btexeter= db.nodes.create(Btname="exeter",BtCity="exeter", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btexeter)
                               BritishTelecom.relationships.create("Cities",Btexeter)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="exeter", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btexeter.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "glasgow" in info[1].lower():
                          try:
                               type(Btglasgow)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="glasgow", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btglasgow.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3487,16 +3487,16 @@ for item in splitengine:
                               Btglasgow= db.nodes.create(Btname="glasgow",BtCity="glasgow", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btglasgow)
                               BritishTelecom.relationships.create("Cities",Btglasgow)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="glasgow", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btglasgow.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "gloucester" in info[1].lower():
                          try:
                               type(Btgloucester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="gloucester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btgloucester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3504,16 +3504,16 @@ for item in splitengine:
                               Btgloucester= db.nodes.create(Btname="gloucester",BtCity="gloucester", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btgloucester)
                               BritishTelecom.relationships.create("Cities",Btgloucester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="gloucester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btgloucester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "hereford" in info[1].lower():
                          try:
                               type(Bthereford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="hereford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Bthereford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3521,16 +3521,16 @@ for item in splitengine:
                               Bthereford= db.nodes.create(Btname="hereford",BtCity="hereford", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Bthereford)
                               BritishTelecom.relationships.create("Cities",Bthereford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="hereford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Bthereford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "inverness" in info[1].lower():
                          try:
                               type(Btinverness)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="inverness", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btinverness.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3538,16 +3538,16 @@ for item in splitengine:
                               Btinverness= db.nodes.create(Btname="inverness",BtCity="inverness", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btinverness)
                               BritishTelecom.relationships.create("Cities",Btinverness)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="inverness", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btinverness.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "kingston upon hull" in info[1].lower():
                          try:
                               type(Btkingstonuponhull)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="kingston upon hull", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btkingstonuponhull.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3555,16 +3555,16 @@ for item in splitengine:
                               Btkingstonuponhull= db.nodes.create(Btname="kingston upon hull",BtCity="kingston upon hull", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btkingstonuponhull)
                               BritishTelecom.relationships.create("Cities",Btkingstonuponhull)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="kingston upon hull", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btkingstonuponhull.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "lancaster" in info[1].lower():
                          try:
                               type(Btlancaster)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="lancaster", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlancaster.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3572,16 +3572,16 @@ for item in splitengine:
                               Btlancaster= db.nodes.create(Btname="lancaster",BtCity="lancaster", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btlancaster)
                               BritishTelecom.relationships.create("Cities",Btlancaster)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="lancaster", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlancaster.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "leeds" in info[1].lower():
                          try:
                               type(Btleeds)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="leeds", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btleeds.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3589,16 +3589,16 @@ for item in splitengine:
                               Btleeds= db.nodes.create(Btname="leeds",BtCity="leeds", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btleeds)
                               BritishTelecom.relationships.create("Cities",Btleeds)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="leeds", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btleeds.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "leicester" in info[1].lower():
                          try:
                               type(Btleicester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="leicester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btleicester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3606,16 +3606,16 @@ for item in splitengine:
                               Btleicester= db.nodes.create(Btname="leicester",BtCity="leicester", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btleicester)
                               BritishTelecom.relationships.create("Cities",Btleicester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="leicester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btleicester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "lichfield" in info[1].lower():
                          try:
                               type(Btlichfield)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="lichfield", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlichfield.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3623,16 +3623,16 @@ for item in splitengine:
                               Btlichfield= db.nodes.create(Btname="lichfield",BtCity="lichfield", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btlichfield)
                               BritishTelecom.relationships.create("Cities",Btlichfield)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="lichfield", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlichfield.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "lincoln" in info[1].lower():
                          try:
                               type(Btlincoln)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="lincoln", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlincoln.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3640,16 +3640,16 @@ for item in splitengine:
                               Btlincoln= db.nodes.create(Btname="lincoln",BtCity="lincoln", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btlincoln)
                               BritishTelecom.relationships.create("Cities",Btlincoln)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="lincoln", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlincoln.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "lisburn" in info[1].lower():
                          try:
                               type(Btlisburn)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="lisburn", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlisburn.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3657,16 +3657,16 @@ for item in splitengine:
                               Btlisburn= db.nodes.create(Btname="lisburn",BtCity="lisburn", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btlisburn)
                               BritishTelecom.relationships.create("Cities",Btlisburn)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="lisburn", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlisburn.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "liverpool" in info[1].lower():
                          try:
                               type(Btliverpool)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="liverpool", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btliverpool.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3674,16 +3674,16 @@ for item in splitengine:
                               Btliverpool= db.nodes.create(Btname="liverpool",BtCity="liverpool", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btliverpool)
                               BritishTelecom.relationships.create("Cities",Btliverpool)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="liverpool", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btliverpool.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "liverpool" in info[1].lower():
                          try:
                               type(Btliverpool)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="liverpool", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btliverpool.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3691,16 +3691,16 @@ for item in splitengine:
                               Btliverpool= db.nodes.create(Btname="liverpool",BtCity="liverpool", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btliverpool)
                               BritishTelecom.relationships.create("Cities",Btliverpool)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="liverpool", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btliverpool.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "london" in info[1].lower():
                          try:
                               type(Btlondon)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="london", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlondon.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3708,16 +3708,16 @@ for item in splitengine:
                               Btlondon= db.nodes.create(Btname="london",BtCity="london", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btlondon)
                               BritishTelecom.relationships.create("Cities",Btlondon)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="london", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btlondon.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "manchester" in info[1].lower():
                          try:
                               type(Btmanchester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="manchester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btmanchester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3725,16 +3725,16 @@ for item in splitengine:
                               Btmanchester= db.nodes.create(Btname="manchester",BtCity="manchester", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btmanchester)
                               BritishTelecom.relationships.create("Cities",Btmanchester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="manchester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btmanchester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "newcastle upon tyne" in info[1].lower():
                          try:
                               type(Btnewcastleupontyne)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="newcastle upon tyne", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnewcastleupontyne.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3742,16 +3742,16 @@ for item in splitengine:
                               Btnewcastleupontyne= db.nodes.create(Btname="newcastle upon tyne",BtCity="newcastle upon tyne", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btnewcastleupontyne)
                               BritishTelecom.relationships.create("Cities",Btnewcastleupontyne)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="newcastle upon tyne", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnewcastleupontyne.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "newport" in info[1].lower():
                          try:
                               type(Btnewport)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="newport", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnewport.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3759,16 +3759,16 @@ for item in splitengine:
                               Btnewport= db.nodes.create(Btname="newport",BtCity="newport", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btnewport)
                               BritishTelecom.relationships.create("Cities",Btnewport)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="newport", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnewport.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "newry" in info[1].lower():
                          try:
                               type(Btnewry)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="newry", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnewry.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3776,16 +3776,16 @@ for item in splitengine:
                               Btnewry= db.nodes.create(Btname="newry",BtCity="newry", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btnewry)
                               BritishTelecom.relationships.create("Cities",Btnewry)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="newry", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnewry.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "norwich" in info[1].lower():
                          try:
                               type(Btnorwich)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="norwich", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnorwich.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3793,16 +3793,16 @@ for item in splitengine:
                               Btnorwich= db.nodes.create(Btname="norwich",BtCity="norwich", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btnorwich)
                               BritishTelecom.relationships.create("Cities",Btnorwich)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="norwich", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnorwich.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "nottingham" in info[1].lower():
                          try:
                               type(Btnottingham)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="nottingham", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnottingham.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3810,16 +3810,16 @@ for item in splitengine:
                               Btnottingham= db.nodes.create(Btname="nottingham",BtCity="nottingham", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btnottingham)
                               BritishTelecom.relationships.create("Cities",Btnottingham)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="nottingham", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btnottingham.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "oxford" in info[1].lower():
                          try:
                               type(Btoxford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="oxford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btoxford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3827,16 +3827,16 @@ for item in splitengine:
                               Btoxford= db.nodes.create(Btname="oxford",BtCity="oxford", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btoxford)
                               BritishTelecom.relationships.create("Cities",Btoxford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="oxford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btoxford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "perth" in info[1].lower():
                          try:
                               type(Btperth)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="perth", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btperth.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3844,16 +3844,16 @@ for item in splitengine:
                               Btperth= db.nodes.create(Btname="perth",BtCity="perth", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btperth)
                               BritishTelecom.relationships.create("Cities",Btperth)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="perth", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btperth.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "peterborough" in info[1].lower():
                          try:
                               type(Btpeterborough)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="peterborough", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btpeterborough.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3861,16 +3861,16 @@ for item in splitengine:
                               Btpeterborough= db.nodes.create(Btname="peterborough",BtCity="peterborough", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btpeterborough)
                               BritishTelecom.relationships.create("Cities",Btpeterborough)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="peterborough", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btpeterborough.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "plymouth" in info[1].lower():
                          try:
                               type(Btplymouth)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="plymouth", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btplymouth.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3878,16 +3878,16 @@ for item in splitengine:
                               Btplymouth= db.nodes.create(Btname="plymouth",BtCity="plymouth", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btplymouth)
                               BritishTelecom.relationships.create("Cities",Btplymouth)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="plymouth", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btplymouth.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "portsmouth" in info[1].lower():
                          try:
                               type(Btportsmouth)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="portsmouth", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btportsmouth.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3895,16 +3895,16 @@ for item in splitengine:
                               Btportsmouth= db.nodes.create(Btname="portsmouth",BtCity="portsmouth", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btportsmouth)
                               BritishTelecom.relationships.create("Cities",Btportsmouth)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="portsmouth", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btportsmouth.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "preston" in info[1].lower():
                          try:
                               type(Btpreston)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="preston", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btpreston.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3912,16 +3912,16 @@ for item in splitengine:
                               Btpreston= db.nodes.create(Btname="preston",BtCity="preston", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btpreston)
                               BritishTelecom.relationships.create("Cities",Btpreston)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="preston", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btpreston.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "ripon" in info[1].lower():
                          try:
                               type(Btripon)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="ripon", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btripon.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3929,16 +3929,16 @@ for item in splitengine:
                               Btripon= db.nodes.create(Btname="ripon",BtCity="ripon", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btripon)
                               BritishTelecom.relationships.create("Cities",Btripon)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="ripon", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btripon.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "st albans" in info[1].lower():
                          try:
                               type(Btstalbans)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="st albans", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstalbans.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3946,16 +3946,16 @@ for item in splitengine:
                               Btstalbans= db.nodes.create(Btname="st albans",BtCity="st albans", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btstalbans)
                               BritishTelecom.relationships.create("Cities",Btstalbans)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="st albans", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstalbans.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "st asaph" in info[1].lower():
                          try:
                               type(Btstasaph)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="st asaph", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstasaph.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3963,16 +3963,16 @@ for item in splitengine:
                               Btstasaph= db.nodes.create(Btname="st asaph",BtCity="st asaph", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btstasaph)
                               BritishTelecom.relationships.create("Cities",Btstasaph)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="st asaph", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstasaph.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "st davids" in info[1].lower():
                          try:
                               type(Btstdavids)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="st davids", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstdavids.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3980,16 +3980,16 @@ for item in splitengine:
                               Btstdavids= db.nodes.create(Btname="st davids",BtCity="st davids", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btstdavids)
                               BritishTelecom.relationships.create("Cities",Btstdavids)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="st davids", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstdavids.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "salford" in info[1].lower():
                          try:
                               type(Btsalford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="salford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsalford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -3997,16 +3997,16 @@ for item in splitengine:
                               Btsalford= db.nodes.create(Btname="salford",BtCity="salford", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btsalford)
                               BritishTelecom.relationships.create("Cities",Btsalford)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="salford", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsalford.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "salisbury" in info[1].lower():
                          try:
                               type(Btsalisbury)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="salisbury", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsalisbury.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4014,16 +4014,16 @@ for item in splitengine:
                               Btsalisbury= db.nodes.create(Btname="salisbury",BtCity="salisbury", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btsalisbury)
                               BritishTelecom.relationships.create("Cities",Btsalisbury)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="salisbury", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsalisbury.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "sheffield" in info[1].lower():
                          try:
                               type(Btsheffield)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="sheffield", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsheffield.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4031,16 +4031,16 @@ for item in splitengine:
                               Btsheffield= db.nodes.create(Btname="sheffield",BtCity="sheffield", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btsheffield)
                               BritishTelecom.relationships.create("Cities",Btsheffield)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="sheffield", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsheffield.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "southampton" in info[1].lower():
                          try:
                               type(Btsouthampton)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="southampton", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsouthampton.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4048,16 +4048,16 @@ for item in splitengine:
                               Btsouthampton= db.nodes.create(Btname="southampton",BtCity="southampton", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btsouthampton)
                               BritishTelecom.relationships.create("Cities",Btsouthampton)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="southampton", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsouthampton.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "stirling" in info[1].lower():
                          try:
                               type(Btstirling)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="stirling", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstirling.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4065,16 +4065,16 @@ for item in splitengine:
                               Btstirling= db.nodes.create(Btname="stirling",BtCity="stirling", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btstirling)
                               BritishTelecom.relationships.create("Cities",Btstirling)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="stirling", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstirling.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "stoke-on-trent" in info[1].lower():
                          try:
                               type(Btstokeontrent)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="stoke-on-trent", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstokeontrent.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4082,16 +4082,16 @@ for item in splitengine:
                               Btstokeontrent= db.nodes.create(Btname="stoke-on-trent",BtCity="stoke-on-trent", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btstokeontrent)
                               BritishTelecom.relationships.create("Cities",Btstokeontrent)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="stoke-on-trent", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btstokeontrent.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "sunderland" in info[1].lower():
                          try:
                               type(Btsunderland)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="sunderland", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsunderland.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4099,16 +4099,16 @@ for item in splitengine:
                               Btsunderland= db.nodes.create(Btname="sunderland",BtCity="sunderland", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btsunderland)
                               BritishTelecom.relationships.create("Cities",Btsunderland)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="sunderland", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btsunderland.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "swansea" in info[1].lower():
                          try:
                               type(Btswansea)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="swansea", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btswansea.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4116,16 +4116,16 @@ for item in splitengine:
                               Btswansea= db.nodes.create(Btname="swansea",BtCity="swansea", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btswansea)
                               BritishTelecom.relationships.create("Cities",Btswansea)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="swansea", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btswansea.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "truro" in info[1].lower():
                          try:
                               type(Bttruro)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="truro", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Bttruro.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4133,16 +4133,16 @@ for item in splitengine:
                               Bttruro= db.nodes.create(Btname="truro",BtCity="truro", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Bttruro)
                               BritishTelecom.relationships.create("Cities",Bttruro)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="truro", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Bttruro.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "wakefield" in info[1].lower():
                          try:
                               type(Btwakefield)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="wakefield", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwakefield.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4150,16 +4150,16 @@ for item in splitengine:
                               Btwakefield= db.nodes.create(Btname="wakefield",BtCity="wakefield", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btwakefield)
                               BritishTelecom.relationships.create("Cities",Btwakefield)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="wakefield", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwakefield.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "wells" in info[1].lower():
                          try:
                               type(Btwells)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="wells", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwells.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4167,16 +4167,16 @@ for item in splitengine:
                               Btwells= db.nodes.create(Btname="wells",BtCity="wells", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btwells)
                               BritishTelecom.relationships.create("Cities",Btwells)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="wells", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwells.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "westminster" in info[1].lower():
                          try:
                               type(Btwestminster)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="westminster", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwestminster.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4184,16 +4184,16 @@ for item in splitengine:
                               Btwestminster= db.nodes.create(Btname="westminster",BtCity="westminster", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btwestminster)
                               BritishTelecom.relationships.create("Cities",Btwestminster)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="westminster", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwestminster.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "winchester" in info[1].lower():
                          try:
                               type(Btwinchester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="winchester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwinchester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4201,16 +4201,16 @@ for item in splitengine:
                               Btwinchester= db.nodes.create(Btname="winchester",BtCity="winchester", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btwinchester)
                               BritishTelecom.relationships.create("Cities",Btwinchester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="winchester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwinchester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "wolverhampton" in info[1].lower():
                          try:
                               type(Btwolverhampton)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="wolverhampton", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwolverhampton.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4218,16 +4218,16 @@ for item in splitengine:
                               Btwolverhampton= db.nodes.create(Btname="wolverhampton",BtCity="wolverhampton", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btwolverhampton)
                               BritishTelecom.relationships.create("Cities",Btwolverhampton)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="wolverhampton", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btwolverhampton.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "worcester" in info[1].lower():
                          try:
                               type(Btworcester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="worcester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btworcester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4235,16 +4235,16 @@ for item in splitengine:
                               Btworcester= db.nodes.create(Btname="worcester",BtCity="worcester", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btworcester)
                               BritishTelecom.relationships.create("Cities",Btworcester)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="worcester", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btworcester.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
 
 
-                    if node in info[1].lower():
+                    if "york" in info[1].lower():
                          try:
                               type(Btyork)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="york", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btyork.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
@@ -4252,7 +4252,7 @@ for item in splitengine:
                               Btyork= db.nodes.create(Btname="york",BtCity="york", BtNom="", BtAdresse="", Bttelephone="")
                               labelBtcity.add(Btyork)
                               BritishTelecom.relationships.create("Cities",Btyork)
-                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              item = db.nodes.create(BtCity="york", BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
                               Btyork.relationships.create("Infos",item)
                               labelBtinfo.add(item)
                               print(item)
