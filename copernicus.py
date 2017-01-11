@@ -216,12 +216,15 @@ def btelecom(fname,city):
                                    print()
                                    
                                    if "a href" in item:
-                                        #print("found next page")
+                                        print("found next page")
                                         pagenbr = pagenbr +1
                                    else:
-                                        #print("End of res")
+                                        print("End of res")
                                         stopwhile = 1
-                                   print()                         
+                                   print()
+                              if len(nextpage) == 0:
+                                   stopwhile = 1
+                                                            
                               time.sleep(random.randint(32,123))
                     print()
                     print("British Telecom results counter : ",len(btres))
