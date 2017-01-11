@@ -185,7 +185,7 @@ def btelecom(fname,city):
                for ville in cityuk:
                     pagenbr = 1
                     stopwhile = 0
-                    while stopwhile != 1 and len(btres) < 60:
+                    while stopwhile != 1:
                               btname=""
                               btloc=""
                               bttel=""                         
