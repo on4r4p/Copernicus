@@ -276,7 +276,9 @@ def btelecom(fname,city):
                                    else:
                                         #print("End of res")
                                         stopwhile = 1
-                                   print()                         
+                                   print() 
+                              if len(nextpage) == 0:
+                                   stopwhile = 1                        
                               time.sleep(random.randint(32,123))
                     print()
                     print("British Telecom results counter : ",len(btres))
