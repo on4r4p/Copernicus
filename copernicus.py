@@ -33,6 +33,7 @@ lang = []
 listnbr = 0
 pageBres = []
 pageBacu = []
+newemailres = []
 googleresults = []
 variation1= []
 variation2= []
@@ -112,6 +113,8 @@ yahoopdfinalinkchance =[]
 
 pageBresfullauto =[]
 
+btres = []
+
 searcharglist = []
 
 
@@ -119,11 +122,24 @@ searcharglist = []
 allcombparsedfinal = []
 allcombparsed = []
 tmpchance = []
-enginelist = ['google','yahoo','bing','pagesblanches']
+
+enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom']
+
+cityuk=['Aberdeen','Armagh','Bangor++{+-+CAERNARFONSHIRE}','Bath','Belfast','Birmingham','BRADFORD++{+-+YORKSHIRE}','BRIGHTON++{+-+SUSSEX}','HOVE++{+-+SUSSEX}','Bristol','CAMBRIDGE++{+-+CAMBRIDGESHIRE}','Canterbury','Canterbury','CARDIFF&OriginalLocation=CARDIFF&Range=xloc','Carlisle','Chelmsford','CHESTER++{+-+CHESHIRE}','Chichester','Coventry','Derby','LONDONDERRY++{+-+COUNTY+LONDONDERRY}','Dundee','Durham','Edinburgh','ELY++{+-+CAMBRIDGESHIRE}','Exeter','Glasgow','Gloucester','Hereford','INVERNESS+SHIRE&OriginalLocation=INVERNESS+SHIRE&Range=xloc','Kingston+upon+Hull','LANCASTER++{+-+LANCASHIRE}','LEEDS++{+-+YORKSHIRE}','LEICESTER++{+-+LEICESTERSHIRE}','Lichfield','Lincoln','Lisburn','Liverpool','LIVERPOOL&OriginalLocation=Liverpool&Range=xloc','LONDON&OriginalLocation=london&Range=xloc','Manchester','Newcastle+upon+Tyne','NEWPORT++{+-+MONMOUTHSHIRE}','Newry','Norwich','Nottingham','OXFORD++{+-+OXFORDSHIRE}','Perth','Peterborough','Plymouth','Portsmouth','PRESTON++{+-+LANCASHIRE}','Ripon','ST+ALBANS++{+-+HERTFORDSHIRE}','St+Asaph','ST+DAVIDS++{+Haverfordwest+-+PEMBROKESHIRE}','SALFORD++{+-+LANCASHIRE}','Salisbury','SHEFFIELD++{+-+YORKSHIRE}','Southampton','Stirling','Stoke-on-Trent','SUNDERLAND++{+-+TYNE+AND+WEAR}','Swansea','Truro','Wakefield','WELLS++{+-+SOMERSET}','Westminster','Winchester','Wolverhampton','WORCESTER++{+-+WORCESTERSHIRE}','York']
+
+cityuknode=['aberdeen', 'armagh', 'bangor', 'bath', 'belfast', 'birmingham', 'bradford', 'brighton', 'hove', 'bristol', 'cambridge', 'canterbury', 'canterbury', 'cardiff', 'carlisle', 'chelmsford', 'chester', 'chichester', 'coventry', 'derby', 'londonderry', 'dundee', 'durham', 'edinburgh', 'ely', 'exeter', 'glasgow', 'gloucester', 'hereford', 'inverness', 'kingston upon hull', 'lancaster', 'leeds', 'leicester', 'lichfield', 'lincoln', 'lisburn', 'liverpool', 'liverpool', 'london', 'manchester', 'newcastle upon tyne', 'newport', 'newry', 'norwich', 'nottingham', 'oxford', 'perth', 'peterborough', 'plymouth', 'portsmouth', 'preston', 'ripon', 'st albans', 'st asaph', 'st davids', 'salford', 'salisbury', 'sheffield', 'southampton', 'stirling', 'stoke-on-trent', 'sunderland', 'swansea', 'truro', 'wakefield', 'wells', 'westminster', 'winchester', 'wolverhampton', 'worcester', 'york']
+
+
 regionfr = ["Alsace","Aquitaine","Auvergne","Basse-Normandie","Bourgogne","Bretagne","Centre","Champagne-Ardenne","Corse","Franche-Comté","Haute-Normandie","Île-de-France","Languedoc-Roussillon","Limousin","Lorraine","Midi-Pyrénées","Nord-Pas-de-Calais","Pays de la Loire","Picardie","Poitou-Charentes","Provence-Alpes-Côte d'Azur","Rhône-Alpes","Guadeloupe","Guyane","La Réunion","Martinique","Mayotte"]
+
+
 villefr=['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice', 'Nantes', 'Strasbourg', 'Montpellier', 'Bordeaux', 'Lille', 'Rennes', 'Reims', 'Le Havre', 'Saint-Étienne', 'Toulon', 'Grenoble', 'Angers', 'Dijon', 'Brest', 'Le Mans', 'Nîmes', 'Aix-en-Provence', 'Clermont-Ferrand', 'Tours', 'Saint-Denis', 'Amiens', 'Limoges', 'Villeurbanne', 'Metz', 'Besançon', 'Perpignan', 'Orléans', 'Caen', 'Mulhouse', 'Boulogne-Billancourt', 'Rouen', 'Nancy', 'Argenteuil', 'Montreuil', 'Saint-Paul', 'Saint-Denis', 'Roubaix', 'Avignon', 'Tourcoing', 'Fort-de-France', 'Poitiers', 'Nanterre', 'Créteil', 'Versailles', 'Pau', 'Courbevoie', 'Vitry-sur-Seine', 'Asnières-sur-Seine', 'Colombes', 'Aulnay-sous-Bois', 'La Rochelle', 'Rueil-Malmaison', 'Antibes', 'Saint-Maur-des-Fossés', 'Calais', 'Champigny-sur-Marne', 'Saint-Pierre', 'Aubervilliers', 'Béziers', 'Bourges', 'Cannes', 'Saint-Nazaire', 'Le Tampon', 'Dunkerque', 'Quimper', 'Valence', 'Colmar', 'Drancy', 'Mérignac', 'Ajaccio', 'Levallois-Perret', 'Troyes', 'Neuilly-sur-Seine', 'Issy-les-Moulineaux', "Villeneuve-d'Ascq", 'Noisy-le-Grand', 'Antony', 'Les Abymes', 'Niort', 'Lorient', 'Sarcelles', 'Chambéry', 'Cayenne', 'Saint-Quentin', 'Pessac', 'Vénissieux', 'Cergy', 'La Seyne-sur-Mer', 'Clichy', 'Beauvais', 'Cholet', 'Hyères', 'Ivry-sur-Seine', 'Montauban', 'Vannes', 'La Roche-sur-Yon', 'Charleville-Mézières', 'Pantin', 'Laval', 'Maisons-Alfort', 'Bondy', 'Évry', 'Évreux', 'Arles', 'Annecy', 'Fréjus', 'Fontenay-sous-Bois', 'Saint-André', 'Sartrouville', 'Narbonne', 'Épinay-sur-Seine', 'Belfort', 'Brive-la-Gaillarde', 'Le Blanc-Mesnil', 'Sevran', 'Saint-Malo', 'Albi', 'Clamart', 'Villejuif', 'Blois', 'Meaux', 'Saint-Louis', 'Grasse', 'Châteauroux', 'Chelles', 'Cagnes-sur-Mer', 'Saint-Brieuc', 'Chalon-sur-Saône', 'Carcassonne', 'Bobigny', 'Vincennes', 'Châlons-en-Champagne', 'Tarbes', 'Martigues', 'Bayonne', 'Meudon', 'Montrouge', 'Angoulême', 'Aubagne', 'Boulogne-sur-Mer', 'Castres', 'Saint-Herblain', 'Suresnes', 'Bastia', 'Douai', 'Compiègne', 'Sète', 'Arras', 'Valenciennes', 'Gennevilliers', 'Saint-Ouen', 'Puteaux', 'Wattrelos', 'Istres', 'Saint-Germain-en-Laye', 'Alfortville', 'Le Cannet', 'Mantes-la-Jolie', 'Bourg-en-Bresse', 'Talence', 'Cherbourg-Octeville', 'Thionville', 'Caluire-et-Cuire', 'Livry-Gargan', 'Corbeil-Essonnes', 'Chartres', 'Rosny-sous-Bois', 'Montluçon', 'Saint-Priest', 'Alès', 'Salon-de-Provence', 'Vaulx-en-Velin', 'Massy', 'Le Lamentin', 'Nevers', 'Auxerre', 'Garges-lès-Gonesse', 'Marcq-en-Baroeul', 'Bron', 'Bagneux', 'Gap', 'Anglet', 'Noisy-le-Sec', 'Melun', 'Rezé', 'Le Port', 'Draguignan', 'Gagny', 'Roanne', 'Vitrolles', 'Savigny-sur-Orge', 'La Courneuve', 'Joué-lès-Tours', 'Choisy-le-Roi', 'Saint-Chamond', 'Lens', 'Poissy', 'Échirolles', 'Villepinte', 'Épinal', 'Tremblay-en-France', 'Châtellerault', "Saint-Martin-d'Hères", 'Haguenau', 'Mâcon', 'Montélimar', 'Agen', 'Stains', 'Pontault-Combault', 'Six-Fours-les-Plages', 'Dieppe', 'Villefranche-sur-Saône', 'Montigny-le-Bretonneux', 'Saint-Raphaël', 'Bagnolet', 'Sainte-Geneviève-des-Bois', 'Conflans-Sainte-Honorine', 'Saint-Joseph', 'Creil', 'Romans-sur-Isère', 'Saint-Laurent-du-Maroni', 'Neuilly-sur-Marne', 'Cambrai', 'Saint-Benoît', 'Dreux', 'Franconville', 'Marignane', 'Maubeuge', 'Liévin', 'Les Mureaux', 'La Ciotat', 'Colomiers', 'Thonon-les-Bains', 'Châtillon', 'Le Perreux-sur-Marne', 'Châtenay-Malabry', 'Mont-de-Marsan', 'Plaisir', 'Vandoeuvre-lès-Nancy', 'Viry-Châtillon', 'Schiltigheim', 'Aurillac', 'Houilles', 'Périgueux', 'Athis-Mons', 'Nogent-sur-Marne', 'Sainte-Marie', 'Vallauris', 'Palaiseau', 'Malakoff', 'Sotteville-lès-Rouen', "L'Haÿ-les-Roses", 'Villeneuve-Saint-Georges', 'Vienne', 'Orange', 'Goussainville', 'Saint-Laurent-du-Var', "Villenave-d'Ornon", 'Le Chesnay', 'Saumur', 'Rillieux-la-Pape', 'Chatou', 'Pontoise', 'Saint-Cloud', 'Trappes', 'Thiais', 'Alençon', 'Clichy-sous-Bois', 'Villiers-sur-Marne', 'Soissons', 'Saint-Leu', 'Annemasse', 'Meyzieu', 'Draveil', 'Lambersart', 'Yerres', 'Vierzon', 'Bergerac', 'Guyancourt', 'Charenton-le-Pont', 'Villemomble', 'Baie-Mahault', 'Carpentras', 'Ermont', 'Saint-Étienne-du-Rouvray', 'Menton', 'Saintes', 'Élancourt', 'Aix-les-Bains', 'Bezons', 'Cachan', 'Saint-Dizier', 'Le Gosier', 'Sens', 'Pierrefitte-sur-Seine', 'Laon', 'Saint-Médard-en-Jalles', 'Villiers-le-Bel', 'Biarritz', 'La Garenne-Colombes', 'Bois-Colombes', 'Montbéliard', 'Béthune', 'Rochefort', 'Vanves', 'Illkirch-Graffenstaden', 'Ris-Orangis', 'Taverny', 'La Possession', 'Sucy-en-Brie', 'Vigneux-sur-Seine', 'Vichy', 'Sannois', 'Le Grand-Quevilly', 'Gonesse', 'Rambouillet', 'Montfermeil', 'Hénin-Beaumont', 'Cavaillon', 'Herblay', 'Brunoy', 'Grigny', 'Oullins', 'Rodez', 'La Garde', 'Chaumont', 'Tournefeuille', 'Fresnes', 'Le Kremlin-Bicêtre', 'Dole', 'La Teste-de-Buch', 'Savigny-le-Temple', 'Romainville', 'Saint-Sébastien-sur-Loire', 'Armentières', 'Les Ulis', 'Épernay', 'Décines-Charpieu', 'Matoury', 'Vernon', 'Miramas', 'Orvault', 'Abbeville', 'Villeneuve-la-Garenne', 'Champs-sur-Marne', 'Bègles', 'Villeneuve-sur-Lot', 'Le Creusot', 'Bourgoin-Jallieu', 'Muret', 'Oyonnax', 'Bruay-la-Buissière', 'Lisieux', 'Fontenay-aux-Roses', 'Lunel', 'Le Robert', 'Sèvres', 'Kourou', 'Libourne', 'Eaubonne', 'Le Bouscat', 'Gradignan', 'Villeparisis', 'Le Plessis-Robinson', 'Cenon', 'Montigny-lès-Metz', 'Sainte-Anne', 'Montgeron', 'Lanester', 'Coudekerque-Branche', 'Hérouville-Saint-Clair', 'Fontaine', 'Brétigny-sur-Orge', 'Maisons-Laffitte', 'Millau', 'La Madeleine', "Saint-Ouen-l'Aumône", 'Étampes', 'Auch', 'Sainte-Foy-lès-Lyon', 'Frontignan', 'Saint-Dié-des-Vosges', 'Mons-en-Baroeul', 'Beaune', 'Torcy', 'La Valette-du-Var', 'Forbach', 'Saint-Mandé', 'Le Petit-Quevilly', 'Saint-Pol-sur-Mer', 'Gif-sur-Yvette', 'Sarreguemines', 'Les Lilas', 'Loos', 'Manosque', 'Morsang-sur-Orge', 'Schoelcher', 'Sainte-Suzanne', 'Fougères', 'Combs-la-Ville', 'Grande-Synthe', 'Dax', 'Agde', 'Cormeilles-en-Parisis', 'Fleury-les-Aubrais', 'Montmorency', 'Vertou', 'Olivet', 'Hazebrouck', 'Saint-Gratien', 'La Celle-Saint-Cloud', 'Blagnac', 'Petit-Bourg', 'Deuil-la-Barre', 'Orly', 'Roissy-en-Brie', 'Gardanne', 'Moulins', 'Lormont', 'Le Moule', 'Voiron', 'Croix', 'Longjumeau', 'Mont-Saint-Aignan', 'Mandelieu-la-Napoule', 'Cahors', 'Dammarie-les-Lys', 'Le Mée-sur-Seine', 'Concarneau', 'Annecy-le-Vieux', 'Saint-Genis-Laval', 'Saint-Lô', 'Le Puy-en-Velay', 'Denain', 'Sedan', 'Ozoir-la-Ferrière', 'Les Pavillons-sous-Bois', 'Verdun', 'Les Pennes-Mirabeau', 'Lunéville', 'Lagny-sur-Marne', 'Lannion', 'Vélizy-Villacoublay', 'Saint-Michel-sur-Orge', 'Sainte-Rose', 'Saint-Louis', 'Neuilly-Plaisance', 'Halluin', 'Cognac', 'Montceau-les-Mines', 'Achères', 'Fécamp', 'Capesterre-Belle-Eau', 'Sélestat', 'Bourg-la-Reine', 'Sainte-Marie', 'Sceaux', 'Mougins', 'Eysines', 'Nogent-sur-Oise', 'Pontarlier', 'Le François', 'Allauch', 'Arcueil', 'Ploemeur', 'Bressuire', 'Digne-les-Bains', 'Saint-Jean-de-Braye', 'Wasquehal', 'Vence', 'Montigny-lès-Cormeilles', 'Limeil-Brévannes', 'Bagnols-sur-Cèze', 'Bourg-lès-Valence', 'Bussy-Saint-Georges', 'Maurepas', 'Albertville', 'Couëron', 'Pertuis', 'Royan', 'Ronchin', "Cournon-d'Auvergne", 'Chaville', 'Riom', 'Chevilly-Larue', 'Louviers', 'Chilly-Mazarin', 'Lons-le-Saunier', 'Villefontaine', 'Mantes-la-Ville', 'Sorgues', 'Villeneuve-le-Roi', 'Givors', 'Écully', 'Tassin-la-Demi-Lune', "L'Isle-sur-la-Sorgue", 'Garches', 'Hem', 'Challans', 'Cluses', 'Chamalières', 'Sanary-sur-Mer', 'Carquefou', 'Romorantin-Lanthenay', 'Firminy', 'Remire-Montjoly', 'Avion', 'Marmande', 'Équeurdreville-Hainneville', 'Bischheim', 'Mitry-Mory', 'Seynod', 'Meylan', 'Carvin', 'Le Plessis-Trévise', 'Chennevières-sur-Marne', 'Pointe-à-Pitre', 'Port-de-Bouc', 'Vendôme', 'Soisy-sous-Montmorency', 'Annonay', 'Le Pontet', 'Gujan-Mestras', 'Elbeuf', 'Saint-Avold', 'Saint-Joseph', 'Jouy-le-Moutier', 'Le Pré-Saint-Gervais', 'Joinville-le-Pont', 'Vesoul', 'Les Clayes-sous-Bois', 'Cran-Gevrier', 'La Chapelle-sur-Erdre', 'Tourlaville', 'Gentilly', 'Lattes', 'Senlis', 'Cestas', 'Bouguenais', 'Montereau-Fault-Yonne', "Morne-à-l'Eau", 'Lingolsheim', 'Le Vésinet', 'Toul', 'Marly-le-Roi', 'Bar-le-Duc', 'Sin-le-Noble', 'Saint-Cyr-sur-Loire', 'Orsay', 'Saint-Jean-de-la-Ruelle', 'Saint-Amand-les-Eaux', 'Vitré', 'Morlaix', 'Bonneuil-sur-Marne', 'Moissy-Cramayel', 'Saint-Fons', 'Montargis', 'Flers', 'Éragny', 'La Baule-Escoublac', 'Tulle', 'Faches-Thumesnil', 'Boissy-Saint-Léger', 'Montivilliers', 'Lucé', 'La Flèche', 'Ducos', "Saint-Cyr-l'École", 'Viroflay', 'Floirac', 'Osny', 'La Crau', 'Fontainebleau', 'Cesson-Sévigné', 'Cugnaux', 'Douarnenez', 'Verrières-le-Buisson', 'Gien', "Les Sables-d'Olonne", 'Autun', 'Saint-Pierre-des-Corps', 'Sallanches', 'Yutz', 'Limay', 'Lamentin', 'Le Pecq', 'Fos-sur-Mer', 'Montbrison', 'Guérande', 'Saran', 'Laxou', 'Saint-Omer', 'Verneuil-sur-Seine', 'Villers-lès-Nancy', "L'Isle-d'Abeau", 'Pamiers', 'Lourdes', 'Mauguio', 'Blanquefort', 'Saint-Égrève', 'Vitry-le-François', 'Berck', 'Vauréal', 'Carrières-sur-Seine', 'Landerneau', 'Castelnau-le-Lez', 'Plaisance-du-Touch', 'Noisiel', 'Argentan', 'Les Herbiers', 'Brignoles', 'Hautmont', 'Illzach', 'Beaucaire', 'Château-Thierry', 'Brie-Comte-Robert', 'Fontenay-le-Comte', 'Chenôve', 'Bry-sur-Marne', 'Hayange', 'Saint-Just-Saint-Rambert', 'Domont', 'Montesson', 'Haubourdin', 'Audincourt', 'Bayeux', 'Rive-de-Gier', 'Tergnier', 'Guéret', 'Lognes', 'Saint-Leu-la-Forêt', 'Mayenne', 'Saint-Maurice', 'Canteleu', 'Noyon', 'Outreau', 'Avon', 'Longwy', 'Courcouronnes', 'Crépy-en-Valois', 'Hennebont', 'Saint-Maximin-la-Sainte-Baume', 'Wittenheim', 'Bruz', 'Issoire', 'Pontivy', 'Le Raincy', 'Châteaudun', 'Hendaye', 'Saint-Avertin', 'Romilly-sur-Seine', 'Villeneuve-Loubet', 'Issoudun', 'Anzin', 'Coulommiers', 'Pont-à-Mousson', 'Châteaurenard', 'Bollène', 'Montmagny', 'Carrières-sous-Poissy', 'Saint-Jean-de-Luz', 'Juvisy-sur-Orge', "Berre-l'Étang", 'Sainte-Maxime', 'Pornic', 'Bouc-Bel-Air', 'Guipavas', 'Cusset', 'Wattignies', 'Plérin', 'Creutzwald', 'La Chapelle-Saint-Luc', 'La Trinité', 'Saint-Brice-sous-Forêt', 'Bailleul', 'Val-de-Reuil', 'Caudry', 'Freyming-Merlebach', 'Granville', 'Rivière-Pilote', 'Ollioules', 'Raismes', 'Mennecy', 'Tarascon', 'Saint-François', 'Beausoleil', 'Billère', "Bois-d'Arcy", 'Fourmies', "L'Étang-Salé", 'Mende', "Château-d'Olonne", 'Woippy', 'Châlette-sur-Loing', 'Rivière-Salée', 'Saint-Gilles', 'Bois-Guillaume', 'Kingersheim', 'Rixheim', 'Mouvaux', 'Plougastel-Daoulas', 'Épinay-sous-Sénart', 'Castelsarrasin', 'Roquebrune-Cap-Martin', 'Rumilly', 'Basse-Terre', 'Bruges', 'Ambérieu-en-Bugey', 'Sablé-sur-Sarthe', 'Sarrebourg', 'Chauny', 'Roncq', 'Amboise', 'Châteaubriant', 'Seyssinet-Pariset', 'Balma', 'Harnes', 'Yzeure', 'Vire', 'Arnouville-lès-Gonesse', 'Fontenay-le-Fleury', 'Le Chambon-Feugerolles', 'Ambarès-et-Lagrave', 'Bischwiller', 'Villeneuve-lès-Avignon', 'Auray', 'Olonne-sur-Mer', 'Méru', 'Villefranche-de-Rouergue', 'Stiring-Wendel', 'Le Bourget', 'Gaillac', 'Voisins-le-Bretonneux', 'Moissac', 'Lys-lez-Lannoy', 'Andrésy', 'Pierrelatte', 'Aubenas', 'Fameck', 'Thiers', 'Valbonne', 'Avrillé', 'Nemours', 'Barentin', 'Arcachon', "L'Union", 'Trélazé', 'Saint-Claude', 'Seclin', 'Amilly', 'Montataire', 'Pont-Sainte-Maxence', 'Graulhet', 'Biscarrosse', 'Noeux-les-Mines', 'Saint-Paul-lès-Dax', 'La Motte-Servolex', 'Riedisheim', 'Enghien-les-Bains', 'Comines', 'Bolbec', 'Provins', 'Aubergenville', 'Somain', 'Talant', 'Valenton', 'Saverne', 'Lons', 'Gravelines', 'Saint-Amand-Montrond', 'Sainte-Luce-sur-Loire', 'Saint-Fargeau-Ponthierry', 'Bully-les-Mines', 'Plouzané', 'Ramonville-Saint-Agne', 'Villetaneuse', 'Triel-sur-Seine', 'Rognac', 'Longuenesse', 'Saint-Brevin-les-Pins', 'Marly', 'Castelnaudary', 'Les Ponts-de-Cé', 'Vernouillet', 'Guebwiller', 'Maromme', 'Étaples', 'Saint-Cyr-sur-Mer', 'Châteauneuf-les-Martigues', 'Saint-Junien', 'Nogent-le-Rotrou', 'Méricourt', 'Francheville', 'Canet-en-Roussillon', 'Briançon', 'Brignais', 'Bellegarde-sur-Valserine', 'Gisors', 'Dinan', 'Valentigney', 'Saint-Martin-Boulogne', 'Le Pont-de-Claix', "Bruay-sur-l'Escaut", 'Vaires-sur-Marne', 'Genas', 'Tarnos', 'Passy', 'Roquebrune-sur-Argens', 'Gaillard', 'Oissel', 'Cosne-Cours-sur-Loire', 'Oloron-Sainte-Marie', 'Apt', 'Morangis', 'Carros', 'Vaux-le-Pénil', 'Auriol', 'Saint-Gaudens', 'Saint-Martin-de-Crau', 'Saint-André-les-Vergers', 'Beaumont', 'La Queue-en-Brie', 'Obernai', 'Lamballe', 'Auchel', 'Château-Gontier', 'Allonnes', "L'Isle-Adam", 'Yvetot', "Ville-d'Avray", 'Petite-Île', 'Quimperlé', 'Mions', 'Ploufragan', 'Chantilly', 'Saint-Julien-en-Genevois', 'Claye-Souilly', 'Cogolin', 'Tournon-sur-Rhône', 'Saint-Estève', 'Dinard', 'Bras-Panon', 'Bernay', 'Parthenay', 'Saint-Orens-de-Gameville', 'Soyaux', 'Clermont', 'Vauvert', 'Florange', 'Gros-Morne', 'Orthez', 'Bonneville', 'Cernay', 'Guilherand-Granges', 'Vieux-Condé', 'Le Relecq-Kerhuon', 'Onet-le-Château', 'Solliès-Pont', 'Saint-André-lez-Lille', 'Coutances', 'Monteux', 'Saint-Claude', 'Wittelsheim', 'Sainte-Savine', 'Tarare', 'Sassenage', 'Ifs', 'Le Pradet', 'Saint-Saulve', 'Ostwald', 'Chambray-lès-Tours', 'Joigny', 'Pornichet', 'Ussel', 'Hoenheim', 'Igny', 'Mazamet', 'Dugny', 'Figeac', 'Mainvilliers', 'Plan-de-Cuques', 'Pernes-les-Fontaines', 'Héricourt', 'Montlouis-sur-Loire', 'Thouars', 'Fonsorbes', 'Roche-la-Molière', 'Oignies', 'Déville-lès-Rouen', 'Castanet-Tolosan', 'Sallaumines', 'Andernos-les-Bains', 'Villers-Cotterêts', 'Riorges', 'Carmaux', 'Saint-Max', 'Redon', 'Mouans-Sartoux', 'Courrières', 'Mondeville', 'Albert', 'Saint-Rémy-de-Provence', 'Pont-du-Château', 'Bondues', 'Lavaur', 'Croissy-sur-Seine', 'Montigny-en-Gohelle', 'Saint-Hilaire-de-Riez', 'Aubière', 'Fondettes', 'Saint-Cyprien', 'Panazol', 'Amnéville', 'Limoux', 'Jeumont', 'Le Portel', 'Guidel', 'Épinay-sur-Orge', 'Persan', 'Tinqueux', "Condé-sur-l'Escaut", 'Lescar', 'Trets', 'Bourg-de-Péage', 'La Londe-les-Maures', 'Septèmes-les-Vallons', 'Saint-Avé', 'La Roche-sur-Foron', 'Mèze', 'Rombas', 'Douchy-les-Mines', 'Fouesnant', 'Argelès-sur-Mer', 'Pierre-Bénite', 'Lillers', 'Aniche', 'Gerzat', 'Loudéac', 'Valréas', 'Luçon', 'Villepreux', 'Marquette-lez-Lille', 'La Trinité', 'Vedène']
+
 regionnode =["PbMayotte","PbMartinique","PbLaRunion","PbLaRunion","PbGuadeloupe","PbGuyane","PbRhoneAlpes","PbProvenceAlpesCotedAzur","PbPoitouCharentes","PbPicardie","PbPaysdelaLoire","PbNordPasdeCalais","PbMidiPyrnes","PbLorraine","PbLimousin","PbLanguedocRoussillon","PbiledeFrance","PbHauteNormandie","PbFrancheComt","PbCorse","PbChampagneArdenne","PbCentre","PbBretagne","PbBourgogne","PbBasseNormandie","PbAuvergne","PbAquitaine","PbAlsace"]
+
+
 alllng = ['af','ar','hy','be','bg','ca','zh-CN','hr','cs','da','nl','en','et','tl','fi','fr','de','el','hi','hu','is','id','it','ja','ko','lv','lt','no','fa','pl','pt','ro','ru','sr','sk','sl','es','sv','th','tr','uk','vi']
+
 lng = []
 
 
@@ -151,6 +167,171 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
         return wraps(func)(wrapper)
 
     return decorator
+
+def btelecom(fname,city):
+     global btres
+     print()
+     Fig = Figlet(font='cybermedium')
+     print(Fig.renderText('Searching Family Name in British Telecom'))
+     print()
+     pbuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+     UserAgent = random.choice(pbuser_agent_list)
+
+     
+     if city == "none":
+          try:
+               for ville in cityuk:
+                    pagenbr = 1
+                    stopwhile = 0
+                    while stopwhile != 1:
+                              btname=""
+                              btloc=""
+                              bttel=""                         
+                              query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(ville)+"&Page="+str(pagenbr)
+                              print("query:",query)
+                              opener = urllib.request.build_opener()
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              send = opener.open(query)
+     
+
+
+                              soup = BeautifulSoup(send,'lxml')
+                              #Do a Barrel Roll
+                              #print(soup)
+                         
+                              btname = re.findall('<div class="recordTitle">(.*?)</div>', str(soup),re.DOTALL)
+                              btloc = re.findall('<div class="recordAddress">(.*?) - <a data-coord="', str(soup),re.DOTALL)
+                              bttel = re.findall('<span class="phone">(.*?)</span>', str(soup),re.DOTALL)
+                              for n,l,t in zip(btname,btloc,bttel):
+                                   n = n.replace("\n"," ").replace('\r', ' ')
+                                   l = l.replace("\n"," ").replace('\r', ' ')
+                                   t = t.replace("\n"," ").replace('\r', ' ')
+                                   #if len(btname) and len(btloc) and len(bttel) > 0
+                                   btres.append(n+"#***#"+l+"#***#"+t)
+                              nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
+                              for item in nextpage:
+                                   print()
+                                   
+                                   if "a href" in item:
+                                        #print("found next page")
+                                        pagenbr = pagenbr +1
+                                   else:
+                                        #print("End of res")
+                                        stopwhile = 1
+                                   print()                         
+                              time.sleep(random.randint(32,123))
+                    print()
+                    print("British Telecom results counter : ",len(btres))
+                    print()
+               print()
+               print("British Telecom Total results : ",len(btres))
+          except Exception as e:
+               print(e)
+               
+
+     if city != "none":
+          try:
+               
+                    pagenbr = 1
+                    stopwhile = 0
+                    while stopwhile != 1:
+                              btname=""
+                              btloc=""
+                              bttel=""                         
+                              query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(city)+"&Page="+str(pagenbr)
+                              print("query:",query)
+                              opener = urllib.request.build_opener()
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              send = opener.open(query)
+     
+
+
+                              soup = BeautifulSoup(send,'lxml')
+                              #Do a Barrel Roll
+                              #print(soup)
+                         
+                              btname = re.findall('<div class="recordTitle">(.*?)</div>', str(soup),re.DOTALL)
+                              btloc = re.findall('<div class="recordAddress">(.*?) - <a data-coord="', str(soup),re.DOTALL)
+                              bttel = re.findall('<span class="phone">(.*?)</span>', str(soup),re.DOTALL)
+                              for n,l,t in zip(btname,btloc,bttel):
+                                   n = n.replace("\n"," ").replace('\r', ' ')
+                                   l = l.replace("\n"," ").replace('\r', ' ')
+                                   t = t.replace("\n"," ").replace('\r', ' ')
+                                   #if len(btname) and len(btloc) and len(bttel) > 0
+                                   btres.append(n+"#***#"+l+"#***#"+t)
+                              nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
+                              for item in nextpage:
+                                   print()
+                                   
+                                   if "a href" in item:
+                                        #print("found next page")
+                                        pagenbr = pagenbr +1
+                                   else:
+                                        #print("End of res")
+                                        stopwhile = 1
+                                   print()                         
+                              time.sleep(random.randint(32,123))
+                    print()
+                    print("British Telecom results counter : ",len(btres))
+                    print()
+               
+          except Exception as e:
+               print(e)
+          print()
+          print("British Telecom Total results : ",len(btres))
+     
+
+
+
+def lullaremail(email):
+     global newemailres
+     print()
+     Fig = Figlet(font='cybermedium')
+     print(Fig.renderText('Searching Emails relations in lullar.com'))
+     print()
+     pbuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+     UserAgent = random.choice(pbuser_agent_list)
+
+
+     try:
+                         query = "http://lullar-com-3.appspot.com/en?q="+email
+     
+                         opener = urllib.request.build_opener()
+                         opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                         send = opener.open(query)
+     
+
+
+                         soup = BeautifulSoup(send,'lxml')
+                         #Do a Barrel Roll
+
+                         #print(soup)
+
+                         newemailres=[]
+                         emailspokeo = re.findall('<div><a href="http://www.spokeo.com(.*?)" target="_blank">', str(soup),re.DOTALL)
+                         emailres = re.findall('<div id="(.*?)target="_blank"><b>', str(soup),re.DOTALL)
+                         for item in emailres:
+                              item = item.replace('"><a class="urllink2" href="',' ')
+                              item = item.replace(">","").replace("<a","").replace('"','')
+                              item = item.split(" ")
+                              item = item[0]+"#***#"+item[1]
+                              newemailres.append(item)
+                         for item in emailspokeo:
+                              item = "spokeo#***#"+ "http://www.spokeo.com"+item
+                              newemailres.append(item)
+                         for item in newemailres:
+                              print(item)     
+                         
+                         
+     except Exception as e:
+               print(e)
 
 
 def pageblanche(familyname,city):
@@ -471,7 +652,7 @@ def pageblanche(familyname,city):
 
                                     locations = re.findall(' href="#" title="Voir le plan(.*?)</a></div>', str(soup),re.DOTALL)
                                     if len(locations) >0:
-                                             if '</a><a class="more-adresse' in item:
+                                         if '</a><a class="more-adresse' in item:
                                                   item.split('</a><a class="more-adresse')
                                                   item = item[0]     
                                          for item in locations:
@@ -528,7 +709,7 @@ def pageblanche(familyname,city):
 
           print()
           Fig = Figlet(font='cybermedium')
-          print(Fig.renderText('!! Fucking FullAuto Mode !!'))
+          print(Fig.renderText('!! Fucking Crazy FullAuto Mode !!'))
           print()
 
 
@@ -2094,7 +2275,7 @@ def getPDFContent(path):
 
 parser = ArgumentParser()
 
-parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches',
+parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches,britishtelecom',
                     help="Use specific search engine: -e yahoo,bing ", metavar="Engine")
 
 parser.add_argument("-l","--language", dest="lang",default='fr',
@@ -2118,6 +2299,9 @@ parser.add_argument("-c","--city", dest="city",default='none',
 parser.add_argument("-i","--img", dest="image",default='true',
                     help="-i true Search and download pictures too ", metavar="TRUE-FALSE")
 
+parser.add_argument("-m","--mail", dest="mail",default='none',
+                    help="-m an@email.com will ask lullar.com about it.", metavar="EMAIL")
+
 parser.add_argument("-fa","--fullauto", dest="fullauto",default='false',
                     help="Crawl PagesBlanches to get Family name in all cities in france with more than 10 thousand inhabitants.\nTake more than 3 hours can get your ip banned.", metavar="TRUE-FALSE")
 
@@ -2132,6 +2316,8 @@ argsname = args.name
 argscity = args.city
 
 argsfamily = args.family
+
+emails = args.mail
 
 argsadd = args.add
 
@@ -2166,7 +2352,7 @@ if argsengine.lower() != "none" :
                print()
                print("some options are missing")
                print()
-               print("-e option must match the following names : google,bing,yahoo,pagesblanches")
+               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom")
                print()
                print("Example: -e google,pagesblanches  -s Albert Einstein -f Einstein -c Berne")
                print()
@@ -2259,6 +2445,26 @@ if fullauto.lower() != "none" :
                print("FullAuto is a bad idea anyway.")
                sys.exit()
 
+if emails != "none" :
+          if not "@" in emails:
+               print()
+               print("some options are missing")
+               print()
+               print("-m option must contains a valid email .")
+               print()
+               print()
+               print("-m like@that.doh ")
+               sys.exit()
+
+          if not "." in emails:
+               print()
+               print("some options are missing")
+               print()
+               print("-m option must contains a valid email .")
+               print()
+               print()
+               print("-m like@that.doh ")
+               sys.exit()
 
 
 print()
@@ -2267,6 +2473,8 @@ print()
 print("Results Languages : ",lng)
 print()
 print("Search related pictures :",argsimg)
+print()
+print("Search emails :",emails)
 print()
 print("FullAuto Mode :",fullauto)
 print()
@@ -2296,7 +2504,18 @@ if fullauto == "true":
 
 permutation(argsname)
 
+for item in splitengine:
+     if item.lower() == "britishtelecom":
+          if family != "none":
+               btelecom(family,args.city)
+          if family == "none":
+               quickfix= input("What's the familly name already?\nInput:")
+               btelecom(str(quickfix),args.city)
 
+for item in splitengine:
+     if item.lower() == "lullar":
+          if emails != "none":
+               lullaremail(emails)
 
 for item in splitengine:
      if item.lower() == "pagesblanches":
@@ -2505,6 +2724,10 @@ for item in splitengine:
           yahoospecial = yahoospecialreslink
           yahooimg = ActualImages
 
+for item in splitengine:
+     if item.lower() == "lullar":
+          lullarres = newemailres
+
 stop = 0
 
 try:
@@ -2577,6 +2800,20 @@ for item in splitengine:
           s0.relationships.create("Query", s4)
 
 
+for item in splitengine:
+     if item.lower() == "lullar":
+          s5 = db.nodes.create(Enginename="Lullar")
+          srcheng.add(s5)
+          s0.relationships.create("Query", s5)
+
+for item in splitengine:
+     if item.lower() == "britishtelecom":
+
+          s6 = db.nodes.create(Enginename="britishtelecom")
+          srcheng.add(s6)
+          s0.relationships.create("Query", s6)
+
+
 labelwebsite = db.labels.create("Website")
 labelFile = db.labels.create("File")
 labelIMG = db.labels.create("Image")
@@ -2592,6 +2829,12 @@ labelPbres = db.labels.create("National")
 labelPbregion = db.labels.create("Regions")
 labelPbcity = db.labels.create("Cities")
 labelPbinfo = db.labels.create("InfoPageBlanches")
+labelBtres = db.labels.create("National")
+labelBtcity = db.labels.create("Cities")
+labelBtinfo = db.labels.create("InfoBritishTelecom")
+labelLullarres = db.labels.create("EmailsRelated")
+labelLullarsite = db.labels.create("LullareSite")
+labelLullarinfo = db.labels.create("LullareInfo")
 
 for item in splitengine:
      if item.lower() == "google":
@@ -2665,6 +2908,24 @@ for item in splitengine:
                labelPbres.add(PagesBlanches)
                labelPbacu.add(PbAccurate)
 
+for item in splitengine:
+     if item.lower() == "lullar":
+
+               Lullarnode = db.nodes.create(Lullarname="Site",LullarSite="Site", LullarUrl="Site")
+               s5.relationships.create("LullarResults", Lullarnode)
+               labelLullarres.add(Lullarnode)
+
+
+
+for item in splitengine:
+     if item.lower() == "britishtelecom":
+               BritishTelecom = db.nodes.create(Btname="Cities", Nom="Cities", Adresse="Cities", telephone="Cities")
+               s6.relationships.create("LinkResults", BritishTelecom)
+               #BtAccurate= db.nodes.create(Pbname="Proximity",Region="Proximity", Nom="Proximity", Adresse="Proximity", telephone="Proximity")
+               #s6.relationships.create("Results",BtAccurate)
+               labelBtres.add(BritishTelecom)
+               #labelPbacu.add(PbAccurate)
+
 
 print()
 print()
@@ -2734,6 +2995,1265 @@ print()
 
 
 print()
+for item in splitengine:
+     if item.lower() == "lullar":
+
+
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Lullar Emails Related Results'))
+          print("")
+
+ 
+
+          for mailr in lullarres:
+            try:
+              mailr = mailr.split("#***#")
+              item = db.nodes.create(LullarSite=mailr[0], LullarUrl=mailr[1])
+              Lullarnode.relationships.create("EmailRelated",item)
+              #s5.relationships.create("LullarResults", Lullarnode)
+              labelLullarinfo.add(item)
+              print(item)
+              #s1.relationships.create("Source item", item)
+            except Exception as e:
+                    print(e)
+
+
+
+for item in splitengine:
+     if item.lower() == "britishtelecom":
+
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('British Telecom Results'))
+          print("")
+          for info in btres:
+               info = info.split("#***#")
+               for node in cityuknode:
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btaberdeen)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btaberdeen.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btaberdeen= db.nodes.create(Btname="aberdeen",BtCity="aberdeen", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btaberdeen)
+                              BritishTelecom.relationships.create("Cities",Btaberdeen)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btaberdeen.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btarmagh)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btarmagh.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btarmagh= db.nodes.create(Btname="armagh",BtCity="armagh", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btarmagh)
+                              BritishTelecom.relationships.create("Cities",Btarmagh)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btarmagh.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btbangor)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbangor.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btbangor= db.nodes.create(Btname="bangor",BtCity="bangor", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btbangor)
+                              BritishTelecom.relationships.create("Cities",Btbangor)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbangor.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btbath)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbath.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btbath= db.nodes.create(Btname="bath",BtCity="bath", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btbath)
+                              BritishTelecom.relationships.create("Cities",Btbath)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbath.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btbelfast)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbelfast.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btbelfast= db.nodes.create(Btname="belfast",BtCity="belfast", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btbelfast)
+                              BritishTelecom.relationships.create("Cities",Btbelfast)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbelfast.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btbirmingham)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbirmingham.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btbirmingham= db.nodes.create(Btname="birmingham",BtCity="birmingham", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btbirmingham)
+                              BritishTelecom.relationships.create("Cities",Btbirmingham)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbirmingham.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btbradford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbradford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btbradford= db.nodes.create(Btname="bradford",BtCity="bradford", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btbradford)
+                              BritishTelecom.relationships.create("Cities",Btbradford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbradford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btbrighton)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbrighton.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btbrighton= db.nodes.create(Btname="brighton",BtCity="brighton", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btbrighton)
+                              BritishTelecom.relationships.create("Cities",Btbrighton)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbrighton.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Bthove)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Bthove.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Bthove= db.nodes.create(Btname="hove",BtCity="hove", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Bthove)
+                              BritishTelecom.relationships.create("Cities",Bthove)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Bthove.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btbristol)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbristol.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btbristol= db.nodes.create(Btname="bristol",BtCity="bristol", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btbristol)
+                              BritishTelecom.relationships.create("Cities",Btbristol)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btbristol.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btcambridge)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcambridge.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btcambridge= db.nodes.create(Btname="cambridge",BtCity="cambridge", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btcambridge)
+                              BritishTelecom.relationships.create("Cities",Btcambridge)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcambridge.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btcanterbury)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcanterbury.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btcanterbury= db.nodes.create(Btname="canterbury",BtCity="canterbury", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btcanterbury)
+                              BritishTelecom.relationships.create("Cities",Btcanterbury)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcanterbury.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btcanterbury)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcanterbury.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btcanterbury= db.nodes.create(Btname="canterbury",BtCity="canterbury", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btcanterbury)
+                              BritishTelecom.relationships.create("Cities",Btcanterbury)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcanterbury.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btcardiff)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcardiff.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btcardiff= db.nodes.create(Btname="cardiff",BtCity="cardiff", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btcardiff)
+                              BritishTelecom.relationships.create("Cities",Btcardiff)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcardiff.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btcarlisle)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcarlisle.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btcarlisle= db.nodes.create(Btname="carlisle",BtCity="carlisle", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btcarlisle)
+                              BritishTelecom.relationships.create("Cities",Btcarlisle)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcarlisle.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btchelmsford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btchelmsford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btchelmsford= db.nodes.create(Btname="chelmsford",BtCity="chelmsford", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btchelmsford)
+                              BritishTelecom.relationships.create("Cities",Btchelmsford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btchelmsford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btchester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btchester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btchester= db.nodes.create(Btname="chester",BtCity="chester", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btchester)
+                              BritishTelecom.relationships.create("Cities",Btchester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btchester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btchichester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btchichester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btchichester= db.nodes.create(Btname="chichester",BtCity="chichester", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btchichester)
+                              BritishTelecom.relationships.create("Cities",Btchichester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btchichester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btcoventry)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcoventry.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btcoventry= db.nodes.create(Btname="coventry",BtCity="coventry", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btcoventry)
+                              BritishTelecom.relationships.create("Cities",Btcoventry)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btcoventry.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btderby)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btderby.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btderby= db.nodes.create(Btname="derby",BtCity="derby", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btderby)
+                              BritishTelecom.relationships.create("Cities",Btderby)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btderby.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btlondonderry)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlondonderry.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btlondonderry= db.nodes.create(Btname="londonderry",BtCity="londonderry", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btlondonderry)
+                              BritishTelecom.relationships.create("Cities",Btlondonderry)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlondonderry.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btdundee)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btdundee.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btdundee= db.nodes.create(Btname="dundee",BtCity="dundee", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btdundee)
+                              BritishTelecom.relationships.create("Cities",Btdundee)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btdundee.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btdurham)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btdurham.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btdurham= db.nodes.create(Btname="durham",BtCity="durham", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btdurham)
+                              BritishTelecom.relationships.create("Cities",Btdurham)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btdurham.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btedinburgh)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btedinburgh.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btedinburgh= db.nodes.create(Btname="edinburgh",BtCity="edinburgh", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btedinburgh)
+                              BritishTelecom.relationships.create("Cities",Btedinburgh)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btedinburgh.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btely)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btely.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btely= db.nodes.create(Btname="ely",BtCity="ely", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btely)
+                              BritishTelecom.relationships.create("Cities",Btely)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btely.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btexeter)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btexeter.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btexeter= db.nodes.create(Btname="exeter",BtCity="exeter", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btexeter)
+                              BritishTelecom.relationships.create("Cities",Btexeter)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btexeter.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btglasgow)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btglasgow.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btglasgow= db.nodes.create(Btname="glasgow",BtCity="glasgow", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btglasgow)
+                              BritishTelecom.relationships.create("Cities",Btglasgow)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btglasgow.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btgloucester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btgloucester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btgloucester= db.nodes.create(Btname="gloucester",BtCity="gloucester", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btgloucester)
+                              BritishTelecom.relationships.create("Cities",Btgloucester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btgloucester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Bthereford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Bthereford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Bthereford= db.nodes.create(Btname="hereford",BtCity="hereford", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Bthereford)
+                              BritishTelecom.relationships.create("Cities",Bthereford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Bthereford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btinverness)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btinverness.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btinverness= db.nodes.create(Btname="inverness",BtCity="inverness", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btinverness)
+                              BritishTelecom.relationships.create("Cities",Btinverness)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btinverness.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btkingstonuponhull)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btkingstonuponhull.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btkingstonuponhull= db.nodes.create(Btname="kingston upon hull",BtCity="kingston upon hull", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btkingstonuponhull)
+                              BritishTelecom.relationships.create("Cities",Btkingstonuponhull)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btkingstonuponhull.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btlancaster)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlancaster.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btlancaster= db.nodes.create(Btname="lancaster",BtCity="lancaster", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btlancaster)
+                              BritishTelecom.relationships.create("Cities",Btlancaster)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlancaster.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btleeds)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btleeds.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btleeds= db.nodes.create(Btname="leeds",BtCity="leeds", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btleeds)
+                              BritishTelecom.relationships.create("Cities",Btleeds)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btleeds.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btleicester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btleicester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btleicester= db.nodes.create(Btname="leicester",BtCity="leicester", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btleicester)
+                              BritishTelecom.relationships.create("Cities",Btleicester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btleicester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btlichfield)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlichfield.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btlichfield= db.nodes.create(Btname="lichfield",BtCity="lichfield", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btlichfield)
+                              BritishTelecom.relationships.create("Cities",Btlichfield)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlichfield.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btlincoln)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlincoln.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btlincoln= db.nodes.create(Btname="lincoln",BtCity="lincoln", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btlincoln)
+                              BritishTelecom.relationships.create("Cities",Btlincoln)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlincoln.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btlisburn)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlisburn.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btlisburn= db.nodes.create(Btname="lisburn",BtCity="lisburn", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btlisburn)
+                              BritishTelecom.relationships.create("Cities",Btlisburn)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlisburn.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btliverpool)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btliverpool.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btliverpool= db.nodes.create(Btname="liverpool",BtCity="liverpool", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btliverpool)
+                              BritishTelecom.relationships.create("Cities",Btliverpool)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btliverpool.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btliverpool)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btliverpool.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btliverpool= db.nodes.create(Btname="liverpool",BtCity="liverpool", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btliverpool)
+                              BritishTelecom.relationships.create("Cities",Btliverpool)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btliverpool.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btlondon)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlondon.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btlondon= db.nodes.create(Btname="london",BtCity="london", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btlondon)
+                              BritishTelecom.relationships.create("Cities",Btlondon)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btlondon.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btmanchester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btmanchester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btmanchester= db.nodes.create(Btname="manchester",BtCity="manchester", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btmanchester)
+                              BritishTelecom.relationships.create("Cities",Btmanchester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btmanchester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btnewcastleupontyne)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnewcastleupontyne.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btnewcastleupontyne= db.nodes.create(Btname="newcastle upon tyne",BtCity="newcastle upon tyne", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btnewcastleupontyne)
+                              BritishTelecom.relationships.create("Cities",Btnewcastleupontyne)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnewcastleupontyne.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btnewport)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnewport.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btnewport= db.nodes.create(Btname="newport",BtCity="newport", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btnewport)
+                              BritishTelecom.relationships.create("Cities",Btnewport)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnewport.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btnewry)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnewry.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btnewry= db.nodes.create(Btname="newry",BtCity="newry", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btnewry)
+                              BritishTelecom.relationships.create("Cities",Btnewry)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnewry.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btnorwich)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnorwich.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btnorwich= db.nodes.create(Btname="norwich",BtCity="norwich", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btnorwich)
+                              BritishTelecom.relationships.create("Cities",Btnorwich)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnorwich.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btnottingham)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnottingham.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btnottingham= db.nodes.create(Btname="nottingham",BtCity="nottingham", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btnottingham)
+                              BritishTelecom.relationships.create("Cities",Btnottingham)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btnottingham.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btoxford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btoxford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btoxford= db.nodes.create(Btname="oxford",BtCity="oxford", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btoxford)
+                              BritishTelecom.relationships.create("Cities",Btoxford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btoxford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btperth)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btperth.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btperth= db.nodes.create(Btname="perth",BtCity="perth", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btperth)
+                              BritishTelecom.relationships.create("Cities",Btperth)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btperth.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btpeterborough)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btpeterborough.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btpeterborough= db.nodes.create(Btname="peterborough",BtCity="peterborough", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btpeterborough)
+                              BritishTelecom.relationships.create("Cities",Btpeterborough)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btpeterborough.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btplymouth)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btplymouth.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btplymouth= db.nodes.create(Btname="plymouth",BtCity="plymouth", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btplymouth)
+                              BritishTelecom.relationships.create("Cities",Btplymouth)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btplymouth.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btportsmouth)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btportsmouth.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btportsmouth= db.nodes.create(Btname="portsmouth",BtCity="portsmouth", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btportsmouth)
+                              BritishTelecom.relationships.create("Cities",Btportsmouth)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btportsmouth.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btpreston)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btpreston.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btpreston= db.nodes.create(Btname="preston",BtCity="preston", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btpreston)
+                              BritishTelecom.relationships.create("Cities",Btpreston)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btpreston.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btripon)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btripon.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btripon= db.nodes.create(Btname="ripon",BtCity="ripon", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btripon)
+                              BritishTelecom.relationships.create("Cities",Btripon)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btripon.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btstalbans)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstalbans.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btstalbans= db.nodes.create(Btname="st albans",BtCity="st albans", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btstalbans)
+                              BritishTelecom.relationships.create("Cities",Btstalbans)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstalbans.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btstasaph)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstasaph.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btstasaph= db.nodes.create(Btname="st asaph",BtCity="st asaph", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btstasaph)
+                              BritishTelecom.relationships.create("Cities",Btstasaph)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstasaph.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btstdavids)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstdavids.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btstdavids= db.nodes.create(Btname="st davids",BtCity="st davids", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btstdavids)
+                              BritishTelecom.relationships.create("Cities",Btstdavids)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstdavids.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btsalford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsalford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btsalford= db.nodes.create(Btname="salford",BtCity="salford", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btsalford)
+                              BritishTelecom.relationships.create("Cities",Btsalford)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsalford.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btsalisbury)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsalisbury.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btsalisbury= db.nodes.create(Btname="salisbury",BtCity="salisbury", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btsalisbury)
+                              BritishTelecom.relationships.create("Cities",Btsalisbury)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsalisbury.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btsheffield)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsheffield.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btsheffield= db.nodes.create(Btname="sheffield",BtCity="sheffield", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btsheffield)
+                              BritishTelecom.relationships.create("Cities",Btsheffield)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsheffield.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btsouthampton)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsouthampton.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btsouthampton= db.nodes.create(Btname="southampton",BtCity="southampton", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btsouthampton)
+                              BritishTelecom.relationships.create("Cities",Btsouthampton)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsouthampton.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btstirling)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstirling.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btstirling= db.nodes.create(Btname="stirling",BtCity="stirling", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btstirling)
+                              BritishTelecom.relationships.create("Cities",Btstirling)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstirling.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btstokeontrent)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstokeontrent.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btstokeontrent= db.nodes.create(Btname="stoke-on-trent",BtCity="stoke-on-trent", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btstokeontrent)
+                              BritishTelecom.relationships.create("Cities",Btstokeontrent)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btstokeontrent.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btsunderland)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsunderland.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btsunderland= db.nodes.create(Btname="sunderland",BtCity="sunderland", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btsunderland)
+                              BritishTelecom.relationships.create("Cities",Btsunderland)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btsunderland.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btswansea)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btswansea.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btswansea= db.nodes.create(Btname="swansea",BtCity="swansea", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btswansea)
+                              BritishTelecom.relationships.create("Cities",Btswansea)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btswansea.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Bttruro)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Bttruro.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Bttruro= db.nodes.create(Btname="truro",BtCity="truro", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Bttruro)
+                              BritishTelecom.relationships.create("Cities",Bttruro)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Bttruro.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btwakefield)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwakefield.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btwakefield= db.nodes.create(Btname="wakefield",BtCity="wakefield", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btwakefield)
+                              BritishTelecom.relationships.create("Cities",Btwakefield)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwakefield.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btwells)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwells.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btwells= db.nodes.create(Btname="wells",BtCity="wells", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btwells)
+                              BritishTelecom.relationships.create("Cities",Btwells)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwells.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btwestminster)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwestminster.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btwestminster= db.nodes.create(Btname="westminster",BtCity="westminster", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btwestminster)
+                              BritishTelecom.relationships.create("Cities",Btwestminster)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwestminster.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btwinchester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwinchester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btwinchester= db.nodes.create(Btname="winchester",BtCity="winchester", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btwinchester)
+                              BritishTelecom.relationships.create("Cities",Btwinchester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwinchester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btwolverhampton)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwolverhampton.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btwolverhampton= db.nodes.create(Btname="wolverhampton",BtCity="wolverhampton", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btwolverhampton)
+                              BritishTelecom.relationships.create("Cities",Btwolverhampton)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btwolverhampton.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btworcester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btworcester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btworcester= db.nodes.create(Btname="worcester",BtCity="worcester", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btworcester)
+                              BritishTelecom.relationships.create("Cities",Btworcester)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btworcester.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+
+                    if node in info[1].lower():
+                         try:
+                              type(Btyork)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btyork.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+                         except NameError:
+                              Btyork= db.nodes.create(Btname="york",BtCity="york", BtNom="", BtAdresse="", Bttelephone="")
+                              labelBtcity.add(Btyork)
+                              BritishTelecom.relationships.create("Cities",Btyork)
+                              item = db.nodes.create(BtCity=node, BtName=info[0], BtAdresse=info[1], Bttelephone=info[2])
+                              Btyork.relationships.create("Infos",item)
+                              labelBtinfo.add(item)
+                              print(item)
+
+            
+
 for item in splitengine:
      if item.lower() == "pagesblanches":
 

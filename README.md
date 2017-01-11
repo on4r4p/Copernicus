@@ -1,21 +1,30 @@
 #Copernicus
 
 
-Osint tool to get results from Google, Bing, Yahoo, PagesBlanches about people.
+Osint tool to get results from Google, Bing, Yahoo, PagesBlanches,lullar, about people.
 
-No Smeging Api key required.
-Will not get your ip banned.
+1. No Smeging Api key required.
 
-Get images from google
+2. Will not get your ip banned.
 
-Filter results to be sure to retreive what we looking for .
- (including pdf)
+3. Get images from google
 
-If strict search result failed for one site try another finding method.
+4. Filter each websites results to be sure to retreive what we looking for . (including pdf)
 
-Then make a graph in neo4j .
+5. If strict search result failed for one website try another finding method helped by a list of words provided by user.
 
-~(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to use neo4j as it is .)~
+6. Search in french city specified by user for family name ,adresses,phone numbers.
+Search in all regions in France for family name ,adresses,phone numbers.
+ Search in all cities in France with more than 10 thousand inhabitants for family name ,adresses,phone numbers (never tested  yet suspected to block your ip)
+ 
+7. Search in United-Kingdom city specified by user for family name ,adresses,phone numbers.
+ Search in all cities in United-Kingdom for family name ,adresses,phone numbers.
+ 
+8. Search social relations with Lullar if email is provided
+ 
+9. Then make a graph in neo4j .
+
+^(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to work directly in neo4j .)^
 
 
 
@@ -23,21 +32,26 @@ Then make a graph in neo4j .
 ![](http://img11.hostingpics.net/pics/703817copernicus.png) 
 
  - usage: copernicus.py [-h] [-e 'ENGINE'] [-i  'True/False']  [-l 'LANG'] [-pb 'True/False'] [-s 'NAME'] [-f
-   FAMILY NAME] [-a OPTION] [-c CITY] [-fa TRUE-FALSE]
+   FAMILY NAME] [-a OPTION] [-c CITY] [-fa TRUE-FALSE] [-m EMAIL]
 
->./copernicus.py -e google,yahoo,pagesblanches -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh  -pb true -i true
+>./copernicus.py -e google,yahoo,pagesblanches,lullar -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh  -pb true -i true -m some@mail.something
    
 ###To do list:
 - Rewrite all this shit
 - Add Install setup 
--   Add whitepage engine for uk,es,ru,usa...(only fr now)
+-   ~~Add whitepage engine for fr.~~
+-   ~~Add whitepage engine for uk.~~
+-   Add whitepage engine for es.
+-   Add whitepage engine for ru.
+-   Add whitepage engine for usa.
 -  Add ability to save current session and continue where it stopped in  case of uncaught error.
 -  Add graphml , gephi , cytoscape ,export format .
 -  Add image search for yahoo and bing
-- Add Email search
+- ~~Add Email search~~
 - Add Search results function for other file format 
 - Add Search by language in Bing
-- Add some search engines .
+- Add nickname guessing function.
+- Add email guessing function.
 - ~~Add FullAuto mode for PagesBlanches (testings all cities with more than 10 000 inhabitants )~~
 
 *Wrote this cause of the maltego community limitation (12 results only)*
