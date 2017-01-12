@@ -115,6 +115,8 @@ pageBresfullauto =[]
 
 btres = []
 
+pblancasres= []
+
 searcharglist = []
 
 
@@ -123,7 +125,10 @@ allcombparsedfinal = []
 allcombparsed = []
 tmpchance = []
 
-enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom']
+enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom','paginasblancas']
+
+
+proves=['A%20Coru%F1a','Albacete','Alicante','Almer%EDa','Araba%2F%C1lava','Asturias','%C1vila','Badajoz','Barcelona','Bizkaia','Burgos','C%E1ceres','C%E1diz','Cantabria','Castell%F3n','Ceuta','Ciudad%20Real','C%F3rdoba','Cuenca','Gipuzkoa','Girona','Granada','Guadalajara','Huelva','Huesca','Illes%20Balears','Ja%E9n','La%20Rioja','Las%20Palmas','Le%F3n','Lleida','Lugo','Madrid','M%E1laga','Melilla','Murcia','Navarra','Ourense','Palencia','Pontevedra','Salamanca','Santa%20Cruz%20De%20Tenerife','Segovia','Sevilla','Soria','Tarragona','Teruel','Toledo','Valencia','Valladolid','Zamora','Zaragoza']
 
 cityuk=['Aberdeen','Armagh','Bangor++{+-+CAERNARFONSHIRE}','Bath','Belfast','Birmingham','BRADFORD++{+-+YORKSHIRE}','BRIGHTON++{+-+SUSSEX}','HOVE++{+-+SUSSEX}','Bristol','CAMBRIDGE++{+-+CAMBRIDGESHIRE}','Canterbury','Canterbury','CARDIFF&OriginalLocation=CARDIFF&Range=xloc','Carlisle','Chelmsford','CHESTER++{+-+CHESHIRE}','Chichester','Coventry','Derby','LONDONDERRY++{+-+COUNTY+LONDONDERRY}','Dundee','Durham','Edinburgh','ELY++{+-+CAMBRIDGESHIRE}','Exeter','Glasgow','Gloucester','Hereford','INVERNESS+SHIRE&OriginalLocation=INVERNESS+SHIRE&Range=xloc','Kingston+upon+Hull','LANCASTER++{+-+LANCASHIRE}','LEEDS++{+-+YORKSHIRE}','LEICESTER++{+-+LEICESTERSHIRE}','Lichfield','Lincoln','Lisburn','Liverpool','LIVERPOOL&OriginalLocation=Liverpool&Range=xloc','LONDON&OriginalLocation=london&Range=xloc','Manchester','Newcastle+upon+Tyne','NEWPORT++{+-+MONMOUTHSHIRE}','Newry','Norwich','Nottingham','OXFORD++{+-+OXFORDSHIRE}','Perth','Peterborough','Plymouth','Portsmouth','PRESTON++{+-+LANCASHIRE}','Ripon','ST+ALBANS++{+-+HERTFORDSHIRE}','St+Asaph','ST+DAVIDS++{+Haverfordwest+-+PEMBROKESHIRE}','SALFORD++{+-+LANCASHIRE}','Salisbury','SHEFFIELD++{+-+YORKSHIRE}','Southampton','Stirling','Stoke-on-Trent','SUNDERLAND++{+-+TYNE+AND+WEAR}','Swansea','Truro','Wakefield','WELLS++{+-+SOMERSET}','Westminster','Winchester','Wolverhampton','WORCESTER++{+-+WORCESTERSHIRE}','York']
 
@@ -167,6 +172,193 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
         return wraps(func)(wrapper)
 
     return decorator
+
+
+
+def pblancas(fname,city):
+     global pblancasres
+     print()
+     Fig = Figlet(font='cybermedium')
+     print(Fig.renderText('Searching Family Name in Paginas Blancas'))
+     print()
+     pbuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+     UserAgent = random.choice(pbuser_agent_list)
+
+     
+     if city == "none":
+          try:
+               for ville in proves:
+                    pagenbr = 1
+                    stopwhile = 0
+                    while stopwhile != 1:
+                              pblancasname=""
+                              pblancasloc=""
+                              pblancastel=""                         
+                              query = "http://blancas.paginasamarillas.es/jsp/resultados.jsp?no="+urllib.parse.quote(fname)+"&nomprov="+ville+"&idioma=spa&pg="+str(pagenbr)
+                              #print("query:",query)
+                              opener = urllib.request.build_opener()
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              send = opener.open(query)
+     
+
+
+                              soup = BeautifulSoup(send,'lxml')
+                              #Do a Barrel Roll
+                              #print(soup)
+                         
+                              Pblancasres = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
+                              
+                              for item in Pblancasres:
+               
+                                   item = item.replace("'resultados_imp.jsp?","").replace("&nbsp;Imprimir Ficha","").replace("</a>","").replace("-->","").replace(" >","").replace("(","").replace(")","").replace("\t","").replace("\n","").replace("\r","")
+                                   
+                                   item = item.split('<a class="yellcardprint"') 
+                                   
+                                   item = item[0].replace("'","")
+                                   item = item.split("&")
+                                   for subtem in item:
+                                        if "NO=" in subtem:
+                                             pblancasname = subtem.replace("NO=","")
+                                        if "LO1=" in subtem:
+                                             pblancasloc = subtem.replace("LO1=","")
+                                        if "CALL=" in subtem:
+                                             pblancasloc += " " + subtem.replace("CALL=","")
+                                        if "PR=" in subtem:
+                                             pblancasloc += " " + subtem.replace("PR=","")
+                                        if "CP=" in subtem:
+                                             pblancasloc += " " + subtem.replace("CP=","")
+                                        if "tel=" in subtem and not "listatel=" in subtem:
+                                             pblancastel = subtem.replace("tel=","")
+                                        if "listatel=" in subtem:
+                                                  subtem = subtem.split("^")
+                                                  for lastem in subtem:
+                                                       lastem = lastem.replace("!"," : ").replace("\\","")
+                                                       pblancastel += " " + lastem.replace("listatel=","")
+                              
+                                   pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+
+                              endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
+
+                              for item in endofresults:
+                                   item = item.replace("\n","").replace("\t","").replace("\r","")#putain d'espakek..
+                                   
+                                   if "<b>Siguiente</b>" in item:
+                                        print("Paginas Blancas results counter : ",len(pblancasres))
+                                        pagenbr = pagenbr + 1
+                                   else:
+                                        print("Paginas Blancas results counter : ",len(pblancasres))
+                                        stopwhile = 1
+                                   time.sleep(random.randint(5,15))
+                    #print()
+                    #for item in pblancasres:
+                    #     print()
+                    #     print(item)
+                    #     print()
+                    #
+
+
+          except Exception as e:
+               print(e)
+               stopwhile = 1
+
+          print()
+          print("Paginas Blancas Total results : ",len(pblancasres)) 
+          for item in pblancasres:
+               print()
+               print(item)
+               print()     
+
+
+     if city != "none":
+          try:
+               
+                    pagenbr = 1
+                    stopwhile = 0
+                    while stopwhile != 1:
+                              pblancasname=""
+                              pblancasloc=""
+                              pblancastel=""                         
+                              query = "http://blancas.paginasamarillas.es/jsp/resultados.jsp?no="+urllib.parse.quote(fname)+"&nomprov="+urllib.parse.quote(city)+"&idioma=spa&pg="+str(pagenbr)
+                              #print("query:",query)
+                              opener = urllib.request.build_opener()
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              send = opener.open(query)
+     
+
+
+                              soup = BeautifulSoup(send,'lxml')
+                              #Do a Barrel Roll
+                              #print(soup)
+                         
+                              Pblancasres = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
+                              
+                              for item in Pblancasres:
+               
+                                   item = item.replace("'resultados_imp.jsp?","").replace("&nbsp;Imprimir Ficha","").replace("</a>","").replace("-->","").replace(" >","").replace("(","").replace(")","").replace("\t","").replace("\n","").replace("\r","")
+                                   
+                                   item = item.split('<a class="yellcardprint"') 
+                                   
+                                   item = item[0].replace("'","")
+                                   item = item.split("&")
+                                   for subtem in item:
+                                        if "NO=" in subtem:
+                                             pblancasname = subtem.replace("NO=","")
+                                        if "LO1=" in subtem:
+                                             pblancasloc = subtem.replace("LO1=","")
+                                        if "CALL=" in subtem:
+                                             pblancasloc += " " + subtem.replace("CALL=","")
+                                        if "PR=" in subtem:
+                                             pblancasloc += " " + subtem.replace("PR=","")
+                                        if "CP=" in subtem:
+                                             pblancasloc += " " + subtem.replace("CP=","")
+                                        if "tel=" in subtem and not "listatel=" in subtem:
+                                             pblancastel = subtem.replace("tel=","")
+                                        if "listatel=" in subtem:
+                                                  subtem = subtem.split("^")
+                                                  for lastem in subtem:
+                                                       lastem = lastem.replace("!"," : ").replace("\\","")
+                                                       pblancastel += " " + lastem.replace("listatel=","")
+                              
+                                   pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+
+                              endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
+
+                              for item in endofresults:
+                                   item = item.replace("\n","").replace("\t","").replace("\r","")#putain d'espakek..
+                                   
+                                   if "<b>Siguiente</b>" in item:
+                                        print("Paginas Blancas results counter : ",len(pblancasres))
+                                        pagenbr = pagenbr + 1
+                                   else:
+                                        print("Paginas Blancas results counter : ",len(pblancasres))
+                                        stopwhile = 1
+                                   time.sleep(random.randint(5,15))
+                    #print()
+                    #for item in pblancasres:
+                    #     print()
+                    #     print(item)
+                    #     print()
+                    #
+
+
+          except Exception as e:
+               print(e)
+               stopwhile = 1
+
+          print()
+          print("Paginas Blancas Total results : ",len(pblancasres)) 
+          print
+
+          for item in pblancasres:
+               print()
+               print(item)
+               print()
+
+
 
 def btelecom(fname,city):
      global btres
@@ -2358,7 +2550,7 @@ if argsengine.lower() != "none" :
                print()
                print("some options are missing")
                print()
-               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom")
+               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom,paginasblancas")
                print()
                print("Example: -e google,pagesblanches  -s Albert Einstein -f Einstein -c Berne")
                print()
@@ -2509,6 +2701,18 @@ if fullauto == "true":
 
 
 permutation(argsname)
+
+
+
+for item in splitengine:
+     if item.lower() == "paginasblancas":
+          if family != "none":
+               pblancas(family,args.city)
+          if family == "none":
+               quickfix= input("What's the familly name already?\nInput:")
+               pblancas(str(quickfix),args.city)
+
+
 
 for item in splitengine:
      if item.lower() == "britishtelecom":
