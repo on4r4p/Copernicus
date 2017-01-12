@@ -2475,7 +2475,7 @@ def getPDFContent(path):
 
 parser = ArgumentParser()
 
-parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches,britishtelecom',
+parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches,britishtelecom,paginasblancas',
                     help="Use specific search engine: -e yahoo,bing ", metavar="Engine")
 
 parser.add_argument("-l","--language", dest="lang",default='fr',
