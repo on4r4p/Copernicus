@@ -130,6 +130,8 @@ enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom',
 
 proves=['A%20Coru%F1a','Albacete','Alicante','Almer%EDa','Araba%2F%C1lava','Asturias','%C1vila','Badajoz','Barcelona','Bizkaia','Burgos','C%E1ceres','C%E1diz','Cantabria','Castell%F3n','Ceuta','Ciudad%20Real','C%F3rdoba','Cuenca','Gipuzkoa','Girona','Granada','Guadalajara','Huelva','Huesca','Illes%20Balears','Ja%E9n','La%20Rioja','Las%20Palmas','Le%F3n','Lleida','Lugo','Madrid','M%E1laga','Melilla','Murcia','Navarra','Ourense','Palencia','Pontevedra','Salamanca','Santa%20Cruz%20De%20Tenerife','Segovia','Sevilla','Soria','Tarragona','Teruel','Toledo','Valencia','Valladolid','Zamora','Zaragoza']
 
+provesnode = ['A CORUÑA', 'ALBACETE', 'ALICANTE', 'ALMERIA', 'ARABA', 'ASTURIAS', 'AVILA', 'BADAJOZ', 'BARCELONA', 'BIZKAIA', 'BURGOS', 'CACERES', 'CADIZ', 'CANTABRIA', 'CASTELLON', 'CEUTA', 'CIUDAD REAL', 'CORDOBA', 'CUENCA', 'GIPUZKOA', 'GIRONA', 'GRANADA', 'GUADALAJARA', 'HUELVA', 'HUESCA', 'ILLES BALEARS', 'JAEN', 'LA RIOJA', 'LAS PALMAS', 'LEON', 'LLEIDA', 'LUGO', 'MADRID', 'MALAGA', 'MELILLA', 'MURCIA', 'NAVARRA', 'OURENSE', 'PALENCIA', 'PONTEVEDRA', 'SALAMANCA', 'SANTA CRUZ DE TENERIFE', 'SEGOVIA', 'SEVILLA', 'SORIA', 'TARRAGONA', 'TERUEL', 'TOLEDO', 'VALENCIA', 'VALLADOLID', 'ZAMORA', 'ZARAGOZA']
+
 cityuk=['Aberdeen','Armagh','Bangor++{+-+CAERNARFONSHIRE}','Bath','Belfast','Birmingham','BRADFORD++{+-+YORKSHIRE}','BRIGHTON++{+-+SUSSEX}','HOVE++{+-+SUSSEX}','Bristol','CAMBRIDGE++{+-+CAMBRIDGESHIRE}','Canterbury','Canterbury','CARDIFF&OriginalLocation=CARDIFF&Range=xloc','Carlisle','Chelmsford','CHESTER++{+-+CHESHIRE}','Chichester','Coventry','Derby','LONDONDERRY++{+-+COUNTY+LONDONDERRY}','Dundee','Durham','Edinburgh','ELY++{+-+CAMBRIDGESHIRE}','Exeter','Glasgow','Gloucester','Hereford','INVERNESS+SHIRE&OriginalLocation=INVERNESS+SHIRE&Range=xloc','Kingston+upon+Hull','LANCASTER++{+-+LANCASHIRE}','LEEDS++{+-+YORKSHIRE}','LEICESTER++{+-+LEICESTERSHIRE}','Lichfield','Lincoln','Lisburn','Liverpool','LIVERPOOL&OriginalLocation=Liverpool&Range=xloc','LONDON&OriginalLocation=london&Range=xloc','Manchester','Newcastle+upon+Tyne','NEWPORT++{+-+MONMOUTHSHIRE}','Newry','Norwich','Nottingham','OXFORD++{+-+OXFORDSHIRE}','Perth','Peterborough','Plymouth','Portsmouth','PRESTON++{+-+LANCASHIRE}','Ripon','ST+ALBANS++{+-+HERTFORDSHIRE}','St+Asaph','ST+DAVIDS++{+Haverfordwest+-+PEMBROKESHIRE}','SALFORD++{+-+LANCASHIRE}','Salisbury','SHEFFIELD++{+-+YORKSHIRE}','Southampton','Stirling','Stoke-on-Trent','SUNDERLAND++{+-+TYNE+AND+WEAR}','Swansea','Truro','Wakefield','WELLS++{+-+SOMERSET}','Westminster','Winchester','Wolverhampton','WORCESTER++{+-+WORCESTERSHIRE}','York']
 
 cityuknode=['aberdeen', 'armagh', 'bangor', 'bath', 'belfast', 'birmingham', 'bradford', 'brighton', 'hove', 'bristol', 'cambridge', 'canterbury', 'canterbury', 'cardiff', 'carlisle', 'chelmsford', 'chester', 'chichester', 'coventry', 'derby', 'londonderry', 'dundee', 'durham', 'edinburgh', 'ely', 'exeter', 'glasgow', 'gloucester', 'hereford', 'inverness', 'kingston upon hull', 'lancaster', 'leeds', 'leicester', 'lichfield', 'lincoln', 'lisburn', 'liverpool', 'liverpool', 'london', 'manchester', 'newcastle upon tyne', 'newport', 'newry', 'norwich', 'nottingham', 'oxford', 'perth', 'peterborough', 'plymouth', 'portsmouth', 'preston', 'ripon', 'st albans', 'st asaph', 'st davids', 'salford', 'salisbury', 'sheffield', 'southampton', 'stirling', 'stoke-on-trent', 'sunderland', 'swansea', 'truro', 'wakefield', 'wells', 'westminster', 'winchester', 'wolverhampton', 'worcester', 'york']
@@ -251,7 +253,7 @@ def pblancas(fname,city):
                                    else:
                                         print("Paginas Blancas results counter : ",len(pblancasres))
                                         stopwhile = 1
-                                   time.sleep(random.randint(5,15))
+                                   time.sleep(random.randint(42,123))
                     #print()
                     #for item in pblancasres:
                     #     print()
@@ -266,10 +268,10 @@ def pblancas(fname,city):
 
           print()
           print("Paginas Blancas Total results : ",len(pblancasres)) 
-          for item in pblancasres:
-               print()
-               print(item)
-               print()     
+#          for item in pblancasres:
+#               print()
+#               print(item)
+#               print()     
 
 
      if city != "none":
@@ -336,7 +338,7 @@ def pblancas(fname,city):
                                    else:
                                         print("Paginas Blancas results counter : ",len(pblancasres))
                                         stopwhile = 1
-                                   time.sleep(random.randint(5,15))
+                                   time.sleep(random.randint(42,123))
                     #print()
                     #for item in pblancasres:
                     #     print()
@@ -353,10 +355,10 @@ def pblancas(fname,city):
           print("Paginas Blancas Total results : ",len(pblancasres)) 
           print
 
-          for item in pblancasres:
-               print()
-               print(item)
-               print()
+#          for item in pblancasres:
+#               print()
+#               print(item)
+#               print()
 
 
 
@@ -2709,7 +2711,9 @@ for item in splitengine:
           if family != "none":
                pblancas(family,args.city)
           if family == "none":
-               quickfix= input("What's the familly name already?\nInput:")
+               quickfix=""
+               while len(quickfix) < 1:
+                    quickfix= input("What's the familly name already?\nInput:")
                pblancas(str(quickfix),args.city)
 
 
@@ -2719,7 +2723,9 @@ for item in splitengine:
           if family != "none":
                btelecom(family,args.city)
           if family == "none":
-               quickfix= input("What's the familly name already?\nInput:")
+               quickfix=""
+               while len(quickfix) < 1:
+                    quickfix= input("What's the familly name already?\nInput:")
                btelecom(str(quickfix),args.city)
 
 for item in splitengine:
@@ -2732,7 +2738,9 @@ for item in splitengine:
           if family != "none":
                pageblanche(family,args.city)
           if family == "none":
-               quickfix= input("What's the familly name already?\nInput:")
+               quickfix=""
+               while len(quickfix) < 1:
+                    quickfix= input("What's the familly name already?\nInput:")
                pageblanche(str(quickfix),args.city)
 for item in splitengine:
      if item.lower() == "google":
@@ -3019,9 +3027,16 @@ for item in splitengine:
 for item in splitengine:
      if item.lower() == "britishtelecom":
 
-          s6 = db.nodes.create(Enginename="britishtelecom")
+          s6 = db.nodes.create(Enginename="BritishTelecom")
           srcheng.add(s6)
           s0.relationships.create("Query", s6)
+
+for item in splitengine:
+     if item.lower() == "paginasblancas":
+
+          s7 = db.nodes.create(Enginename="PaginasBlancas")
+          srcheng.add(s7)
+          s0.relationships.create("Query", s7)
 
 
 labelwebsite = db.labels.create("Website")
@@ -3042,6 +3057,9 @@ labelPbinfo = db.labels.create("InfoPageBlanches")
 labelBtres = db.labels.create("National")
 labelBtcity = db.labels.create("Cities")
 labelBtinfo = db.labels.create("InfoBritishTelecom")
+labelPblancasres = db.labels.create("National")
+labelPblancastcity = db.labels.create("Cities")
+labelPblancastinfo = db.labels.create("InfoPaginasBlancas")
 labelLullarres = db.labels.create("EmailsRelated")
 labelLullarsite = db.labels.create("LullareSite")
 labelLullarinfo = db.labels.create("LullareInfo")
@@ -3136,6 +3154,12 @@ for item in splitengine:
                labelBtres.add(BritishTelecom)
                #labelPbacu.add(PbAccurate)
 
+for item in splitengine:
+     if item.lower() == "paginasblancas":
+               PaginasBlancas = db.nodes.create(PBlancasCity="Cities", PBlancasName="Cities", PBlancasAdresse="Cities", PBlancastelephone="Cities")
+               s7.relationships.create("LinkResults", PaginasBlancas)
+               labelPblancasres.add(PaginasBlancas)
+               #labelPbacu.add(PbAccurate)
 
 print()
 print()
@@ -3226,6 +3250,905 @@ for item in splitengine:
               #s1.relationships.create("Source item", item)
             except Exception as e:
                     print(e)
+
+
+
+for item in splitengine:
+     if item.lower() == "paginasblancas":
+
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Pagnias Blancas Results'))
+          print("")
+          for info in pblancasres:
+                    info = info.split("#***#")
+
+                    if "A CORUÑA" in info[1].upper():
+                         try:
+                              type(PblancasACORUA)
+                              item = db.nodes.create(PBlancasCity="A CORUÑA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasACORUA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasACORUA= db.nodes.create(PBlancasname="A CORUÑA",PBlancasCity="A CORUÑA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasACORUA)
+                              PaginasBlancas.relationships.create("Cities",PblancasACORUA)
+                              item = db.nodes.create(PBlancasCity="A CORUÑA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasACORUA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "ALBACETE" in info[1].upper():
+                         try:
+                              type(PblancasALBACETE)
+                              item = db.nodes.create(PBlancasCity="ALBACETE", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasALBACETE.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasALBACETE= db.nodes.create(PBlancasname="ALBACETE",PBlancasCity="ALBACETE", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasALBACETE)
+                              PaginasBlancas.relationships.create("Cities",PblancasALBACETE)
+                              item = db.nodes.create(PBlancasCity="ALBACETE", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasALBACETE.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "ALICANTE" in info[1].upper():
+                         try:
+                              type(PblancasALICANTE)
+                              item = db.nodes.create(PBlancasCity="ALICANTE", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasALICANTE.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasALICANTE= db.nodes.create(PBlancasname="ALICANTE",PBlancasCity="ALICANTE", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasALICANTE)
+                              PaginasBlancas.relationships.create("Cities",PblancasALICANTE)
+                              item = db.nodes.create(PBlancasCity="ALICANTE", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasALICANTE.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "ALMERIA" in info[1].upper():
+                         try:
+                              type(PblancasALMERIA)
+                              item = db.nodes.create(PBlancasCity="ALMERIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasALMERIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasALMERIA= db.nodes.create(PBlancasname="ALMERIA",PBlancasCity="ALMERIA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasALMERIA)
+                              PaginasBlancas.relationships.create("Cities",PblancasALMERIA)
+                              item = db.nodes.create(PBlancasCity="ALMERIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasALMERIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "ARABA" in info[1].upper():
+                         try:
+                              type(PblancasARABA)
+                              item = db.nodes.create(PBlancasCity="ARABA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasARABA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasARABA= db.nodes.create(PBlancasname="ARABA",PBlancasCity="ARABA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasARABA)
+                              PaginasBlancas.relationships.create("Cities",PblancasARABA)
+                              item = db.nodes.create(PBlancasCity="ARABA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasARABA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "ASTURIAS" in info[1].upper():
+                         try:
+                              type(PblancasASTURIAS)
+                              item = db.nodes.create(PBlancasCity="ASTURIAS", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasASTURIAS.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasASTURIAS= db.nodes.create(PBlancasname="ASTURIAS",PBlancasCity="ASTURIAS", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasASTURIAS)
+                              PaginasBlancas.relationships.create("Cities",PblancasASTURIAS)
+                              item = db.nodes.create(PBlancasCity="ASTURIAS", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasASTURIAS.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "AVILA" in info[1].upper():
+                         try:
+                              type(PblancasAVILA)
+                              item = db.nodes.create(PBlancasCity="AVILA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasAVILA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasAVILA= db.nodes.create(PBlancasname="AVILA",PBlancasCity="AVILA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasAVILA)
+                              PaginasBlancas.relationships.create("Cities",PblancasAVILA)
+                              item = db.nodes.create(PBlancasCity="AVILA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasAVILA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "BADAJOZ" in info[1].upper():
+                         try:
+                              type(PblancasBADAJOZ)
+                              item = db.nodes.create(PBlancasCity="BADAJOZ", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasBADAJOZ.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasBADAJOZ= db.nodes.create(PBlancasname="BADAJOZ",PBlancasCity="BADAJOZ", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasBADAJOZ)
+                              PaginasBlancas.relationships.create("Cities",PblancasBADAJOZ)
+                              item = db.nodes.create(PBlancasCity="BADAJOZ", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasBADAJOZ.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "BARCELONA" in info[1].upper():
+                         try:
+                              type(PblancasBARCELONA)
+                              item = db.nodes.create(PBlancasCity="BARCELONA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasBARCELONA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasBARCELONA= db.nodes.create(PBlancasname="BARCELONA",PBlancasCity="BARCELONA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasBARCELONA)
+                              PaginasBlancas.relationships.create("Cities",PblancasBARCELONA)
+                              item = db.nodes.create(PBlancasCity="BARCELONA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasBARCELONA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "BIZKAIA" in info[1].upper():
+                         try:
+                              type(PblancasBIZKAIA)
+                              item = db.nodes.create(PBlancasCity="BIZKAIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasBIZKAIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasBIZKAIA= db.nodes.create(PBlancasname="BIZKAIA",PBlancasCity="BIZKAIA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasBIZKAIA)
+                              PaginasBlancas.relationships.create("Cities",PblancasBIZKAIA)
+                              item = db.nodes.create(PBlancasCity="BIZKAIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasBIZKAIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "BURGOS" in info[1].upper():
+                         try:
+                              type(PblancasBURGOS)
+                              item = db.nodes.create(PBlancasCity="BURGOS", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasBURGOS.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasBURGOS= db.nodes.create(PBlancasname="BURGOS",PBlancasCity="BURGOS", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasBURGOS)
+                              PaginasBlancas.relationships.create("Cities",PblancasBURGOS)
+                              item = db.nodes.create(PBlancasCity="BURGOS", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasBURGOS.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "CACERES" in info[1].upper():
+                         try:
+                              type(PblancasCACERES)
+                              item = db.nodes.create(PBlancasCity="CACERES", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCACERES.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasCACERES= db.nodes.create(PBlancasname="CACERES",PBlancasCity="CACERES", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasCACERES)
+                              PaginasBlancas.relationships.create("Cities",PblancasCACERES)
+                              item = db.nodes.create(PBlancasCity="CACERES", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCACERES.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "CADIZ" in info[1].upper():
+                         try:
+                              type(PblancasCADIZ)
+                              item = db.nodes.create(PBlancasCity="CADIZ", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCADIZ.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasCADIZ= db.nodes.create(PBlancasname="CADIZ",PBlancasCity="CADIZ", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasCADIZ)
+                              PaginasBlancas.relationships.create("Cities",PblancasCADIZ)
+                              item = db.nodes.create(PBlancasCity="CADIZ", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCADIZ.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "CANTABRIA" in info[1].upper():
+                         try:
+                              type(PblancasCANTABRIA)
+                              item = db.nodes.create(PBlancasCity="CANTABRIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCANTABRIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasCANTABRIA= db.nodes.create(PBlancasname="CANTABRIA",PBlancasCity="CANTABRIA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasCANTABRIA)
+                              PaginasBlancas.relationships.create("Cities",PblancasCANTABRIA)
+                              item = db.nodes.create(PBlancasCity="CANTABRIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCANTABRIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "CASTELLON" in info[1].upper():
+                         try:
+                              type(PblancasCASTELLON)
+                              item = db.nodes.create(PBlancasCity="CASTELLON", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCASTELLON.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasCASTELLON= db.nodes.create(PBlancasname="CASTELLON",PBlancasCity="CASTELLON", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasCASTELLON)
+                              PaginasBlancas.relationships.create("Cities",PblancasCASTELLON)
+                              item = db.nodes.create(PBlancasCity="CASTELLON", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCASTELLON.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "CEUTA" in info[1].upper():
+                         try:
+                              type(PblancasCEUTA)
+                              item = db.nodes.create(PBlancasCity="CEUTA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCEUTA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasCEUTA= db.nodes.create(PBlancasname="CEUTA",PBlancasCity="CEUTA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasCEUTA)
+                              PaginasBlancas.relationships.create("Cities",PblancasCEUTA)
+                              item = db.nodes.create(PBlancasCity="CEUTA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCEUTA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "CIUDAD REAL" in info[1].upper():
+                         try:
+                              type(PblancasCIUDADREAL)
+                              item = db.nodes.create(PBlancasCity="CIUDAD REAL", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCIUDADREAL.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasCIUDADREAL= db.nodes.create(PBlancasname="CIUDAD REAL",PBlancasCity="CIUDAD REAL", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasCIUDADREAL)
+                              PaginasBlancas.relationships.create("Cities",PblancasCIUDADREAL)
+                              item = db.nodes.create(PBlancasCity="CIUDAD REAL", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCIUDADREAL.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "CORDOBA" in info[1].upper():
+                         try:
+                              type(PblancasCORDOBA)
+                              item = db.nodes.create(PBlancasCity="CORDOBA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCORDOBA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasCORDOBA= db.nodes.create(PBlancasname="CORDOBA",PBlancasCity="CORDOBA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasCORDOBA)
+                              PaginasBlancas.relationships.create("Cities",PblancasCORDOBA)
+                              item = db.nodes.create(PBlancasCity="CORDOBA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCORDOBA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "CUENCA" in info[1].upper():
+                         try:
+                              type(PblancasCUENCA)
+                              item = db.nodes.create(PBlancasCity="CUENCA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCUENCA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasCUENCA= db.nodes.create(PBlancasname="CUENCA",PBlancasCity="CUENCA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasCUENCA)
+                              PaginasBlancas.relationships.create("Cities",PblancasCUENCA)
+                              item = db.nodes.create(PBlancasCity="CUENCA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasCUENCA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "GIPUZKOA" in info[1].upper():
+                         try:
+                              type(PblancasGIPUZKOA)
+                              item = db.nodes.create(PBlancasCity="GIPUZKOA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasGIPUZKOA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasGIPUZKOA= db.nodes.create(PBlancasname="GIPUZKOA",PBlancasCity="GIPUZKOA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasGIPUZKOA)
+                              PaginasBlancas.relationships.create("Cities",PblancasGIPUZKOA)
+                              item = db.nodes.create(PBlancasCity="GIPUZKOA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasGIPUZKOA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "GIRONA" in info[1].upper():
+                         try:
+                              type(PblancasGIRONA)
+                              item = db.nodes.create(PBlancasCity="GIRONA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasGIRONA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasGIRONA= db.nodes.create(PBlancasname="GIRONA",PBlancasCity="GIRONA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasGIRONA)
+                              PaginasBlancas.relationships.create("Cities",PblancasGIRONA)
+                              item = db.nodes.create(PBlancasCity="GIRONA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasGIRONA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "GRANADA" in info[1].upper():
+                         try:
+                              type(PblancasGRANADA)
+                              item = db.nodes.create(PBlancasCity="GRANADA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasGRANADA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasGRANADA= db.nodes.create(PBlancasname="GRANADA",PBlancasCity="GRANADA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasGRANADA)
+                              PaginasBlancas.relationships.create("Cities",PblancasGRANADA)
+                              item = db.nodes.create(PBlancasCity="GRANADA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasGRANADA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "GUADALAJARA" in info[1].upper():
+                         try:
+                              type(PblancasGUADALAJARA)
+                              item = db.nodes.create(PBlancasCity="GUADALAJARA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasGUADALAJARA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasGUADALAJARA= db.nodes.create(PBlancasname="GUADALAJARA",PBlancasCity="GUADALAJARA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasGUADALAJARA)
+                              PaginasBlancas.relationships.create("Cities",PblancasGUADALAJARA)
+                              item = db.nodes.create(PBlancasCity="GUADALAJARA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasGUADALAJARA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "HUELVA" in info[1].upper():
+                         try:
+                              type(PblancasHUELVA)
+                              item = db.nodes.create(PBlancasCity="HUELVA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasHUELVA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasHUELVA= db.nodes.create(PBlancasname="HUELVA",PBlancasCity="HUELVA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasHUELVA)
+                              PaginasBlancas.relationships.create("Cities",PblancasHUELVA)
+                              item = db.nodes.create(PBlancasCity="HUELVA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasHUELVA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "HUESCA" in info[1].upper():
+                         try:
+                              type(PblancasHUESCA)
+                              item = db.nodes.create(PBlancasCity="HUESCA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasHUESCA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasHUESCA= db.nodes.create(PBlancasname="HUESCA",PBlancasCity="HUESCA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasHUESCA)
+                              PaginasBlancas.relationships.create("Cities",PblancasHUESCA)
+                              item = db.nodes.create(PBlancasCity="HUESCA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasHUESCA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "ILLES BALEARS" in info[1].upper():
+                         try:
+                              type(PblancasILLESBALEARS)
+                              item = db.nodes.create(PBlancasCity="ILLES BALEARS", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasILLESBALEARS.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasILLESBALEARS= db.nodes.create(PBlancasname="ILLES BALEARS",PBlancasCity="ILLES BALEARS", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasILLESBALEARS)
+                              PaginasBlancas.relationships.create("Cities",PblancasILLESBALEARS)
+                              item = db.nodes.create(PBlancasCity="ILLES BALEARS", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasILLESBALEARS.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "JAEN" in info[1].upper():
+                         try:
+                              type(PblancasJAEN)
+                              item = db.nodes.create(PBlancasCity="JAEN", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasJAEN.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasJAEN= db.nodes.create(PBlancasname="JAEN",PBlancasCity="JAEN", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasJAEN)
+                              PaginasBlancas.relationships.create("Cities",PblancasJAEN)
+                              item = db.nodes.create(PBlancasCity="JAEN", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasJAEN.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "LA RIOJA" in info[1].upper():
+                         try:
+                              type(PblancasLARIOJA)
+                              item = db.nodes.create(PBlancasCity="LA RIOJA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLARIOJA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasLARIOJA= db.nodes.create(PBlancasname="LA RIOJA",PBlancasCity="LA RIOJA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasLARIOJA)
+                              PaginasBlancas.relationships.create("Cities",PblancasLARIOJA)
+                              item = db.nodes.create(PBlancasCity="LA RIOJA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLARIOJA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "LAS PALMAS" in info[1].upper():
+                         try:
+                              type(PblancasLASPALMAS)
+                              item = db.nodes.create(PBlancasCity="LAS PALMAS", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLASPALMAS.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasLASPALMAS= db.nodes.create(PBlancasname="LAS PALMAS",PBlancasCity="LAS PALMAS", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasLASPALMAS)
+                              PaginasBlancas.relationships.create("Cities",PblancasLASPALMAS)
+                              item = db.nodes.create(PBlancasCity="LAS PALMAS", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLASPALMAS.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "LEON" in info[1].upper():
+                         try:
+                              type(PblancasLEON)
+                              item = db.nodes.create(PBlancasCity="LEON", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLEON.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasLEON= db.nodes.create(PBlancasname="LEON",PBlancasCity="LEON", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasLEON)
+                              PaginasBlancas.relationships.create("Cities",PblancasLEON)
+                              item = db.nodes.create(PBlancasCity="LEON", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLEON.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "LLEIDA" in info[1].upper():
+                         try:
+                              type(PblancasLLEIDA)
+                              item = db.nodes.create(PBlancasCity="LLEIDA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLLEIDA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasLLEIDA= db.nodes.create(PBlancasname="LLEIDA",PBlancasCity="LLEIDA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasLLEIDA)
+                              PaginasBlancas.relationships.create("Cities",PblancasLLEIDA)
+                              item = db.nodes.create(PBlancasCity="LLEIDA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLLEIDA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "LUGO" in info[1].upper():
+                         try:
+                              type(PblancasLUGO)
+                              item = db.nodes.create(PBlancasCity="LUGO", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLUGO.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasLUGO= db.nodes.create(PBlancasname="LUGO",PBlancasCity="LUGO", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasLUGO)
+                              PaginasBlancas.relationships.create("Cities",PblancasLUGO)
+                              item = db.nodes.create(PBlancasCity="LUGO", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasLUGO.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "MADRID" in info[1].upper():
+                         try:
+                              type(PblancasMADRID)
+                              item = db.nodes.create(PBlancasCity="MADRID", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasMADRID.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasMADRID= db.nodes.create(PBlancasname="MADRID",PBlancasCity="MADRID", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasMADRID)
+                              PaginasBlancas.relationships.create("Cities",PblancasMADRID)
+                              item = db.nodes.create(PBlancasCity="MADRID", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasMADRID.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "MALAGA" in info[1].upper():
+                         try:
+                              type(PblancasMALAGA)
+                              item = db.nodes.create(PBlancasCity="MALAGA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasMALAGA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasMALAGA= db.nodes.create(PBlancasname="MALAGA",PBlancasCity="MALAGA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasMALAGA)
+                              PaginasBlancas.relationships.create("Cities",PblancasMALAGA)
+                              item = db.nodes.create(PBlancasCity="MALAGA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasMALAGA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "MELILLA" in info[1].upper():
+                         try:
+                              type(PblancasMELILLA)
+                              item = db.nodes.create(PBlancasCity="MELILLA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasMELILLA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasMELILLA= db.nodes.create(PBlancasname="MELILLA",PBlancasCity="MELILLA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasMELILLA)
+                              PaginasBlancas.relationships.create("Cities",PblancasMELILLA)
+                              item = db.nodes.create(PBlancasCity="MELILLA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasMELILLA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "MURCIA" in info[1].upper():
+                         try:
+                              type(PblancasMURCIA)
+                              item = db.nodes.create(PBlancasCity="MURCIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasMURCIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasMURCIA= db.nodes.create(PBlancasname="MURCIA",PBlancasCity="MURCIA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasMURCIA)
+                              PaginasBlancas.relationships.create("Cities",PblancasMURCIA)
+                              item = db.nodes.create(PBlancasCity="MURCIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasMURCIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "NAVARRA" in info[1].upper():
+                         try:
+                              type(PblancasNAVARRA)
+                              item = db.nodes.create(PBlancasCity="NAVARRA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasNAVARRA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasNAVARRA= db.nodes.create(PBlancasname="NAVARRA",PBlancasCity="NAVARRA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasNAVARRA)
+                              PaginasBlancas.relationships.create("Cities",PblancasNAVARRA)
+                              item = db.nodes.create(PBlancasCity="NAVARRA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasNAVARRA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "OURENSE" in info[1].upper():
+                         try:
+                              type(PblancasOURENSE)
+                              item = db.nodes.create(PBlancasCity="OURENSE", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasOURENSE.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasOURENSE= db.nodes.create(PBlancasname="OURENSE",PBlancasCity="OURENSE", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasOURENSE)
+                              PaginasBlancas.relationships.create("Cities",PblancasOURENSE)
+                              item = db.nodes.create(PBlancasCity="OURENSE", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasOURENSE.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "PALENCIA" in info[1].upper():
+                         try:
+                              type(PblancasPALENCIA)
+                              item = db.nodes.create(PBlancasCity="PALENCIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasPALENCIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasPALENCIA= db.nodes.create(PBlancasname="PALENCIA",PBlancasCity="PALENCIA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasPALENCIA)
+                              PaginasBlancas.relationships.create("Cities",PblancasPALENCIA)
+                              item = db.nodes.create(PBlancasCity="PALENCIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasPALENCIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "PONTEVEDRA" in info[1].upper():
+                         try:
+                              type(PblancasPONTEVEDRA)
+                              item = db.nodes.create(PBlancasCity="PONTEVEDRA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasPONTEVEDRA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasPONTEVEDRA= db.nodes.create(PBlancasname="PONTEVEDRA",PBlancasCity="PONTEVEDRA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasPONTEVEDRA)
+                              PaginasBlancas.relationships.create("Cities",PblancasPONTEVEDRA)
+                              item = db.nodes.create(PBlancasCity="PONTEVEDRA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasPONTEVEDRA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "SALAMANCA" in info[1].upper():
+                         try:
+                              type(PblancasSALAMANCA)
+                              item = db.nodes.create(PBlancasCity="SALAMANCA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSALAMANCA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasSALAMANCA= db.nodes.create(PBlancasname="SALAMANCA",PBlancasCity="SALAMANCA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasSALAMANCA)
+                              PaginasBlancas.relationships.create("Cities",PblancasSALAMANCA)
+                              item = db.nodes.create(PBlancasCity="SALAMANCA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSALAMANCA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "SANTA CRUZ DE TENERIFE" in info[1].upper():
+                         try:
+                              type(PblancasSANTACRUZDETENERIFE)
+                              item = db.nodes.create(PBlancasCity="SANTA CRUZ DE TENERIFE", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSANTACRUZDETENERIFE.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasSANTACRUZDETENERIFE= db.nodes.create(PBlancasname="SANTA CRUZ DE TENERIFE",PBlancasCity="SANTA CRUZ DE TENERIFE", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasSANTACRUZDETENERIFE)
+                              PaginasBlancas.relationships.create("Cities",PblancasSANTACRUZDETENERIFE)
+                              item = db.nodes.create(PBlancasCity="SANTA CRUZ DE TENERIFE", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSANTACRUZDETENERIFE.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "SEGOVIA" in info[1].upper():
+                         try:
+                              type(PblancasSEGOVIA)
+                              item = db.nodes.create(PBlancasCity="SEGOVIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSEGOVIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasSEGOVIA= db.nodes.create(PBlancasname="SEGOVIA",PBlancasCity="SEGOVIA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasSEGOVIA)
+                              PaginasBlancas.relationships.create("Cities",PblancasSEGOVIA)
+                              item = db.nodes.create(PBlancasCity="SEGOVIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSEGOVIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "SEVILLA" in info[1].upper():
+                         try:
+                              type(PblancasSEVILLA)
+                              item = db.nodes.create(PBlancasCity="SEVILLA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSEVILLA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasSEVILLA= db.nodes.create(PBlancasname="SEVILLA",PBlancasCity="SEVILLA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasSEVILLA)
+                              PaginasBlancas.relationships.create("Cities",PblancasSEVILLA)
+                              item = db.nodes.create(PBlancasCity="SEVILLA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSEVILLA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "SORIA" in info[1].upper():
+                         try:
+                              type(PblancasSORIA)
+                              item = db.nodes.create(PBlancasCity="SORIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSORIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasSORIA= db.nodes.create(PBlancasname="SORIA",PBlancasCity="SORIA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasSORIA)
+                              PaginasBlancas.relationships.create("Cities",PblancasSORIA)
+                              item = db.nodes.create(PBlancasCity="SORIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasSORIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "TARRAGONA" in info[1].upper():
+                         try:
+                              type(PblancasTARRAGONA)
+                              item = db.nodes.create(PBlancasCity="TARRAGONA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasTARRAGONA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasTARRAGONA= db.nodes.create(PBlancasname="TARRAGONA",PBlancasCity="TARRAGONA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasTARRAGONA)
+                              PaginasBlancas.relationships.create("Cities",PblancasTARRAGONA)
+                              item = db.nodes.create(PBlancasCity="TARRAGONA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasTARRAGONA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "TERUEL" in info[1].upper():
+                         try:
+                              type(PblancasTERUEL)
+                              item = db.nodes.create(PBlancasCity="TERUEL", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasTERUEL.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasTERUEL= db.nodes.create(PBlancasname="TERUEL",PBlancasCity="TERUEL", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasTERUEL)
+                              PaginasBlancas.relationships.create("Cities",PblancasTERUEL)
+                              item = db.nodes.create(PBlancasCity="TERUEL", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasTERUEL.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "TOLEDO" in info[1].upper():
+                         try:
+                              type(PblancasTOLEDO)
+                              item = db.nodes.create(PBlancasCity="TOLEDO", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasTOLEDO.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasTOLEDO= db.nodes.create(PBlancasname="TOLEDO",PBlancasCity="TOLEDO", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasTOLEDO)
+                              PaginasBlancas.relationships.create("Cities",PblancasTOLEDO)
+                              item = db.nodes.create(PBlancasCity="TOLEDO", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasTOLEDO.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "VALENCIA" in info[1].upper():
+                         try:
+                              type(PblancasVALENCIA)
+                              item = db.nodes.create(PBlancasCity="VALENCIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasVALENCIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasVALENCIA= db.nodes.create(PBlancasname="VALENCIA",PBlancasCity="VALENCIA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasVALENCIA)
+                              PaginasBlancas.relationships.create("Cities",PblancasVALENCIA)
+                              item = db.nodes.create(PBlancasCity="VALENCIA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasVALENCIA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "VALLADOLID" in info[1].upper():
+                         try:
+                              type(PblancasVALLADOLID)
+                              item = db.nodes.create(PBlancasCity="VALLADOLID", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasVALLADOLID.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasVALLADOLID= db.nodes.create(PBlancasname="VALLADOLID",PBlancasCity="VALLADOLID", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasVALLADOLID)
+                              PaginasBlancas.relationships.create("Cities",PblancasVALLADOLID)
+                              item = db.nodes.create(PBlancasCity="VALLADOLID", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasVALLADOLID.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "ZAMORA" in info[1].upper():
+                         try:
+                              type(PblancasZAMORA)
+                              item = db.nodes.create(PBlancasCity="ZAMORA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasZAMORA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasZAMORA= db.nodes.create(PBlancasname="ZAMORA",PBlancasCity="ZAMORA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasZAMORA)
+                              PaginasBlancas.relationships.create("Cities",PblancasZAMORA)
+                              item = db.nodes.create(PBlancasCity="ZAMORA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasZAMORA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+                    if "ZARAGOZA" in info[1].upper():
+                         try:
+                              type(PblancasZARAGOZA)
+                              item = db.nodes.create(PBlancasCity="ZARAGOZA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasZARAGOZA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+                         except NameError:
+                              PblancasZARAGOZA= db.nodes.create(PBlancasname="ZARAGOZA",PBlancasCity="ZARAGOZA", PBlancasNom="", PBlancasAdresse="", Pblancastelephone="")
+                              labelPblancastcity.add(PblancasZARAGOZA)
+                              PaginasBlancas.relationships.create("Cities",PblancasZARAGOZA)
+                              item = db.nodes.create(PBlancasCity="ZARAGOZA", PBlancasName=info[0], PBlancasAdresse=info[1], PBlancastelephone=info[2])
+                              PblancasZARAGOZA.relationships.create("Infos",item)
+                              labelPblancastinfo.add(item)
+                              print(item)
+
+
+
+
+
 
 
 

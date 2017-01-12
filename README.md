@@ -44,7 +44,7 @@ Search in all regions in France for family name ,adresses,phone numbers.
 - Add Install setup 
 -   ~~Add whitepage engine for fr.~~
 -   ~~Add whitepage engine for uk.~~
--   ~~Add whitepage engine for es.~~(only printing results in term atm)
+-   ~~Add whitepage engine for es.~~
 -   Add whitepage engine for ru.
 -   Add whitepage engine for usa.
 -  Add ability to save current session and continue where it stopped in  case of uncaught error.
