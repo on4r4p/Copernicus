@@ -23,9 +23,12 @@ Search in all regions in France for family name ,adresses,phone numbers.
 8. Search in spanish city specified by user for family name ,adresses,phone numbers.
  Search in all cities in Spain for family name ,adresses,phone numbers.
  
-9. Search social relations with Lullar if email is provided
+9. Search in russian city specified by user for family name ,adresses,phone numbers.
+ Search in all cities in Russia for family name ,adresses,phone numbers.
  
-10. Then make a graph in neo4j .
+10. Search social relations with Lullar if email is provided
+ 
+11. Then make a graph in neo4j .
 
 ^(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to work directly in neo4j .)^
 
@@ -45,7 +48,7 @@ Search in all regions in France for family name ,adresses,phone numbers.
 -   ~~Add whitepage engine for fr.~~
 -   ~~Add whitepage engine for uk.~~
 -   ~~Add whitepage engine for es.~~
--   Add whitepage engine for ru.
+-   ~~Add whitepage engine for ru.~~
 -   Add whitepage engine for usa.
 -  Add ability to save current session and continue where it stopped in  case of uncaught error.
 -  Add graphml , gephi , cytoscape ,export format .

@@ -7,6 +7,7 @@ from functools import wraps
 from neo4jrestclient.client import GraphDatabase
 from neo4jrestclient import client
 from pyfiglet import Figlet
+from transliterate import translit, get_available_language_codes, detect_language
 import re
 import errno
 import imageGwall
@@ -117,6 +118,8 @@ btres = []
 
 pblancasres= []
 
+spravres=[]
+
 searcharglist = []
 
 
@@ -125,8 +128,11 @@ allcombparsedfinal = []
 allcombparsed = []
 tmpchance = []
 
-enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom','paginasblancas']
+enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom','paginasblancas','spravkaru']
 
+spravcity = ['http://english.spravkaru.net/w/***/velcom', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BA%D1%81%D1%83_7_71837', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BA%D1%82%D0%B0%D1%83_%D1%88%D0%B5%D0%B2%D1%87%D0%B5%D0%BD%D0%BA%D0%BE_7_7292', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BA%D1%82%D0%BE%D0%B1%D0%B5_%D0%B0%D0%BA%D1%82%D1%8E%D0%B1%D0%B8%D0%BD%D1%81%D0%BA_7_7132', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D0%B3%D0%B0_7_71337', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%B8%D1%8F_38_05235', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_38_05242', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D0%BC%D0%B0%D1%82%D1%8B_%D0%B0%D0%BB%D0%BC%D0%B0_%D0%B0%D1%82%D0%B0_7_727', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D1%83%D1%88%D1%82%D0%B0_38_06560', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BD%D0%B3%D0%B0%D1%80%D1%81%D0%BA_7_3955', 'http://english.spravkaru.net/w/***/%D0%B0%D1%80%D0%BC%D1%8F%D0%BD%D1%81%D0%BA_38_06567', 'http://english.spravkaru.net/w/***/%D0%B0%D1%81%D1%82%D0%B0%D0%BD%D0%B0_%D0%B0%D0%BA%D0%BC%D0%BE%D0%BB%D0%B0_7_7172', 'http://english.spravkaru.net/w/***/%D0%B0%D1%82%D1%8B%D1%80%D0%B0%D1%83_%D0%B3%D1%83%D1%80%D1%8C%D0%B5%D0%B2_7_7122', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D0%B4%D0%B0%D0%BC%D1%88%D0%B0_7_71342', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D0%B9%D0%BA%D0%B0%D0%BB%D1%8C%D1%81%D0%BA_7_39542', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D0%BB%D0%B0%D0%B3%D0%B0%D0%BD%D1%81%D0%BA_7_39548', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%80%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87%D0%B8_375_163', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%80%D1%8B%D1%88%D0%B5%D0%B2%D0%BA%D0%B0_38_04476', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%85%D0%BC%D0%B0%D1%87_38_04635', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%85%D1%87%D0%B8%D1%81%D0%B0%D1%80%D0%B0%D0%B9_38_06554', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%8F%D0%BD%D0%B4%D0%B0%D0%B9_7_39537', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B5%D0%BB%D0%B0%D1%8F_%D1%86%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C_38_04463', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B5%D0%BB%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA_38_06559', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B5%D0%BB%D1%8B%D0%BD%D0%B8%D1%87%D0%B8_375_2232', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B5%D0%BD%D0%B4%D0%B5%D1%80%D1%8B_373_552', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D0%B1%D1%80%D0%BE%D0%B2%D0%B8%D1%86%D0%B0_38_04632', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D0%B1%D1%80%D1%83%D0%B9%D1%81%D0%BA_375_225_', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D0%B3%D1%83%D1%81%D0%BB%D0%B0%D0%B2_38_04461', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%80%D0%B7%D0%BD%D0%B0_38_04653', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2_375_177', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%80%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C_38_04495', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%80%D0%BE%D0%B4%D1%8F%D0%BD%D0%BA%D0%B0_38_04477', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%85%D0%B0%D0%BD_7_39538', 'http://english.spravkaru.net/w/***/%D0%B1%D1%80%D0%B0%D1%82%D1%81%D0%BA_7_3953', 'http://english.spravkaru.net/w/***/%D0%B1%D1%80%D0%B5%D1%81%D1%82_375_162', 'http://english.spravkaru.net/w/***/%D0%B1%D1%80%D0%BE%D0%B2%D0%B0%D1%80%D1%8B_38_04494', 'http://english.spravkaru.net/w/***/%D0%B1%D1%83%D0%B3%D1%83%D0%BB%D1%8C%D0%BC%D0%B0_7_85514', 'http://english.spravkaru.net/w/***/%D0%B1%D1%8B%D1%85%D0%BE%D0%B2_375_2231', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2_38_04471', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B5%D0%BB%D0%B8%D0%B6_7_48132', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B5%D0%BB%D0%B8%D0%BA%D0%B8%D0%B5_%D0%BB%D1%83%D0%BA%D0%B8_7_81153', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B5%D1%80%D1%85%D0%BD%D0%B5%D0%B4%D0%B2%D0%B8%D0%BD%D1%81%D0%BA_375_2151', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B8%D0%BB%D0%B5%D0%B9%D0%BA%D0%B0_375_1771', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B8%D0%BD%D0%BD%D0%B8%D1%86%D0%B0_38_0432', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B8%D1%82%D0%B5%D0%B1%D1%81%D0%BA_375_212', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BB%D0%B0%D0%B4%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D0%BE%D0%BA_7_4232', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_7_4922', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%B3%D0%BE%D0%B3%D1%80%D0%B0%D0%B4_7_8442', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%B6%D1%81%D0%BA%D0%B8%D0%B9_7_8443', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%BA%D0%BE%D0%B2%D1%8B%D1%81%D0%BA_375_1512', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%BE%D0%B4%D0%B0%D1%80%D0%BA%D0%B0_38_04469', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%BE%D0%B6%D0%B8%D0%BD_375_1772', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%B5%D0%B6_7_4732', 'http://english.spravkaru.net/w/***/%D0%B2%D1%8B%D1%88%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_38_04496', 'http://english.spravkaru.net/w/***/%D0%B2%D1%8F%D0%B7%D1%8C%D0%BC%D0%B0_7_48131', 'http://english.spravkaru.net/w/***/%D0%B3%D0%B0%D0%B3%D0%B0%D1%80%D0%B8%D0%BD_7_48135', 'http://english.spravkaru.net/w/***/%D0%B3%D0%B0%D0%B9%D0%B2%D0%BE%D1%80%D0%BE%D0%BD_38_05254', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BB%D0%B8%D0%BD%D0%BA%D0%B0_7_48165', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BB%D1%83%D0%B1%D0%BE%D0%BA%D0%BE%D0%B5_375_2156', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0%D0%BD%D0%B5%D0%B2%D1%81%D0%BA_38_05252', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BE%D0%BC%D0%B5%D0%BB%D1%8C_375_232', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BE%D1%80%D0%BA%D0%B8_375_2233', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D1%8F_38_04645', 'http://english.spravkaru.net/w/***/%D0%B3%D1%80%D0%B8%D0%B3%D0%BE%D1%80%D0%B8%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_373_210', 'http://english.spravkaru.net/w/***/%D0%B3%D1%80%D0%BE%D0%B4%D0%BD%D0%BE_375_152', 'http://english.spravkaru.net/w/***/%D0%B4%D0%B5%D0%BC%D0%B8%D0%B4%D0%BE%D0%B2_7_48147', 'http://english.spravkaru.net/w/***/%D0%B4%D0%B5%D1%81%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA_7_48153', 'http://english.spravkaru.net/w/***/%D0%B4%D0%B6%D0%B0%D0%BD%D0%BA%D0%BE%D0%B9_38_06564', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BD%D0%B5%D0%BF%D1%80%D0%BE%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%B2%D1%81%D0%BA_38_056', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D0%B1%D1%80%D0%BE%D0%B2%D0%B5%D0%BB%D0%B8%D1%87%D0%BA%D0%BE%D0%B2%D0%BA%D0%B0_38_05253', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D0%BA%D1%88%D0%B8%D1%86%D1%8B_375_2157', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D0%BB%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_38_05234', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D0%BD%D0%B5%D1%86%D0%BA_38_062', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D1%80%D0%BE%D0%B3%D0%BE%D0%B1%D1%83%D0%B6_7_48144', 'http://english.spravkaru.net/w/***/%D0%B4%D1%80%D0%B8%D0%B1%D0%B8%D0%BD_375_2248', 'http://english.spravkaru.net/w/***/%D0%B4%D1%80%D0%BE%D0%B3%D0%B8%D1%87%D0%B8%D0%BD_375_1644', 'http://english.spravkaru.net/w/***/%D0%B4%D1%83%D0%B1%D0%BE%D1%81%D1%81%D0%B0%D1%80%D1%8B_373_215', 'http://english.spravkaru.net/w/***/%D0%B4%D1%83%D1%85%D0%BE%D0%B2%D1%89%D0%B8%D0%BD%D0%B0_7_48166', 'http://english.spravkaru.net/w/***/%D0%B5%D0%B2%D0%BF%D0%B0%D1%82%D0%BE%D1%80%D0%B8%D1%8F_38_06569', 'http://english.spravkaru.net/w/***/%D0%B5%D0%BA%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%BD%D0%B1%D1%83%D1%80%D0%B3_7_343', 'http://english.spravkaru.net/w/***/%D0%B5%D0%BB%D0%B0%D0%BD%D1%86%D1%8B_7_39519', 'http://english.spravkaru.net/w/***/%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0_7_48146', 'http://english.spravkaru.net/w/***/%D0%B5%D1%80%D0%B1%D0%BE%D0%B3%D0%B0%D1%87%D0%B5%D0%BD_7_39560', 'http://english.spravkaru.net/w/***/%D0%B5%D1%80%D1%88%D0%B8%D1%87%D0%B8_7_48155', 'http://english.spravkaru.net/w/***/%D0%B6%D0%B8%D0%B3%D0%B0%D0%BB%D0%BE%D0%B2%D0%BE_7_39551', 'http://english.spravkaru.net/w/***/%D0%B6%D0%B8%D1%82%D0%BE%D0%BC%D0%B8%D1%80_38_0412', 'http://english.spravkaru.net/w/***/%D0%B6%D0%BB%D0%BE%D0%B1%D0%B8%D0%BD_375_2334', 'http://english.spravkaru.net/w/***/%D0%B6%D0%BE%D0%B4%D0%B8%D0%BD%D0%BE_375_1775', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B0%D0%BB%D0%B0%D1%80%D0%B8_7_39552', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B0%D0%BF%D0%BE%D1%80%D0%BE%D0%B6%D1%8C%D0%B5_38_0612', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B0%D1%81%D0%BB%D0%B0%D0%B2%D0%BB%D1%8C_375_17', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B3%D1%83%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_38_04470', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B8%D0%BC%D0%B0_7_39554', 'http://english.spravkaru.net/w/***/%D0%B7%D0%BB%D0%B0%D1%82%D0%BE%D1%83%D1%81%D1%82_7_3513', 'http://english.spravkaru.net/w/***/%D0%B7%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D0%BA%D0%B0_38_05233', 'http://english.spravkaru.net/w/***/%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%BE%D0%B2_38_04491', 'http://english.spravkaru.net/w/***/***%D0%BE_7_4932', 'http://english.spravkaru.net/w/***/%D0%B8%D1%80%D0%BA%D1%83%D1%82%D1%81%D0%BA_7_3952', 'http://english.spravkaru.net/w/***/%D0%B8%D1%80%D0%BF%D0%B5%D0%BD%D1%8C_38_04497', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D1%8C_7_843', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D0%BB%D1%83%D0%B3%D0%B0_7_4842', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D0%BD%D0%B4%D1%8B%D0%B0%D0%B3%D0%B0%D1%88_7_71333', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D1%80%D0%B0%D0%B3%D0%B0%D0%BD%D0%B4%D0%B0_7_7212', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D1%80%D0%B4%D1%8B%D0%BC%D0%BE%D0%B2%D0%BE_7_48167', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D1%87%D1%83%D0%B3_7_39540', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B5%D0%BC%D0%B5%D1%80%D0%BE%D0%B2%D0%BE_7_3842', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B5%D1%80%D1%87%D1%8C_38_06561', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D0%B5%D0%B2_38_044', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D0%B5%D0%B2%D0%BE_%D1%81%D0%B2%D1%8F%D1%82%D0%BE%D1%88%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D1%80%D0%B0%D0%B9%D0%BE%D0%BD_38_04498', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BE%D0%B3%D1%80%D0%B0%D0%B4_38_0522', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D1%81%D0%BA_375_2237', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_38_06555', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BB%D0%B8%D0%BC%D0%BE%D0%B2%D0%B8%D1%87%D0%B8_375_2244', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BB%D0%B8%D1%87%D0%B5%D0%B2_375_2236', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D0%BA%D1%88%D0%B5%D1%82%D0%B0%D1%83_%D0%BA%D0%BE%D0%BA%D1%87%D0%B5%D1%82%D0%B0%D0%B2_7_7162', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B5%D0%B5%D0%B2%D0%BA%D0%B0_38_05240', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%80%D0%BE%D0%BF_38_04656', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%80%D1%8E%D0%BA%D0%BE%D0%B2%D0%BA%D0%B0_38_04657', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%B0%D0%B9_7_7142', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%BC%D0%B0_7_4942', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%81%D1%82%D1%8E%D0%BA%D0%BE%D0%B2%D0%B8%D1%87%D0%B8_375_2245', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B3%D0%B2%D0%B0%D1%80%D0%B4%D0%B5%D0%B9%D1%81%D0%BA%D0%BE%D0%B5_38_06556', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80_7_861', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%BF%D0%B5%D1%80%D0%B5%D0%BA%D0%BE%D0%BF%D1%81%D0%BA_38_06565', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C%D0%B5_375_2238', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D1%8F%D1%80%D1%81%D0%BA_7_391', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D1%8B%D0%B9_7_48145', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D1%8F%D1%82%D0%B8%D1%87%D0%B8_38_04492', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B8%D0%B2%D0%BE%D0%B9_%D1%80%D0%BE%D0%B3_38_0564', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B8%D1%87%D0%B5%D0%B2_375_2241', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D1%83%D0%B3%D0%BB%D0%BE%D0%B5_375_2234', 'http://english.spravkaru.net/w/***/%D0%BA%D1%83%D1%80%D0%B3%D0%B0%D0%BD_7_3522', 'http://english.spravkaru.net/w/***/%D0%BA%D1%8B%D0%B7%D1%8B%D0%BB%D0%BE%D1%80%D0%B4%D0%B0_7_7242', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B0%D0%BD%D0%B3%D0%B5%D0%BF%D0%B0%D1%81_7_34669', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B5%D0%BD%D0%B8%D0%BD%D0%BE_38_06557', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B5%D0%BD%D0%B8%D0%BD%D1%81%D0%BA_%D0%BA%D1%83%D0%B7%D0%BD%D0%B5%D1%86%D0%BA%D0%B8%D0%B9_7_38456', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B8%D0%B2%D0%BD%D1%8B_7_48677', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B8%D0%B4%D0%B0_375_1561', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B8%D0%BF%D0%B5%D1%86%D0%BA_7_4742', 'http://english.spravkaru.net/w/***/%D0%BB%D1%83%D0%B3%D0%B0%D0%BD%D1%81%D0%BA_38_0642', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D0%B3%D0%B0%D0%B4%D0%B0%D0%BD_7_4132', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D0%B3%D0%BD%D0%B8%D1%82%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA_7_3519', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D0%BA%D0%B0%D1%80%D0%BE%D0%B2_38_04478', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D0%BB%D0%B0%D1%8F_%D0%B2%D0%B8%D1%81%D0%BA%D0%B0_38_05258', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D1%80%D0%B8%D1%83%D0%BF%D0%BE%D0%BB%D1%8C_38_0629', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D1%80%D1%82%D1%83%D0%BA_7_71331', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D1%87%D1%83%D0%BB%D0%B8%D1%89%D0%B8_375_177', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B8%D0%BD%D1%81%D0%BA_375_17', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B8%D1%80%D0%BE%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_38_04474', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D0%B3%D0%B8%D0%BB%D1%91%D0%B2_375_222', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D0%B7%D1%8B%D1%80%D1%8C_375_2351', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D0%BB%D0%BE%D0%B4%D0%B5%D1%87%D0%BD%D0%BE_375_1773', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%89%D0%B8%D0%BD%D0%B0_7_48148', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0_7_495', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0_7_499', 'http://english.spravkaru.net/w/***/%D0%BC%D1%81%D1%82%D0%B8%D1%81%D0%BB%D0%B0%D0%B2%D0%BB%D1%8C_375_2240', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B0%D0%B1%D0%B5%D1%80%D0%B5%D0%B6%D0%BD%D1%8B%D0%B5_%D1%87%D0%B5%D0%BB%D0%BD%D1%8B_7_8552', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B0%D0%BB%D1%8C%D1%87%D0%B8%D0%BA_7_8662', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B0%D1%85%D0%BE%D0%B4%D0%BA%D0%B0_7_4236', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B5%D0%B6%D0%B8%D0%BD_38_04631', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%B6%D0%BD%D0%B5%D0%B2%D0%B0%D1%80%D1%82%D0%BE%D0%B2%D1%81%D0%BA_7_3466', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%B6%D0%BD%D0%B5%D0%B3%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9_38_06550', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%B6%D0%BD%D0%B8%D0%B9_%D0%BD%D0%BE%D0%B2%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_7_831', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%B6%D0%BD%D0%B8%D0%B9_%D1%82%D0%B0%D0%B3%D0%B8%D0%BB_7_3435', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2_38_0512', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2%D1%81%D0%BA_%D0%BD%D0%B0_%D0%B0%D0%BC%D1%83%D1%80%D0%B5_7_42135', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%BA%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_38_0566', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_%D1%81%D0%B5%D0%B2%D0%B5%D1%80%D1%81%D0%BA%D0%B8%D0%B9_38_04658', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%BA%D0%B0_38_05241', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%B0%D1%80%D1%85%D0%B0%D0%BD%D0%B3%D0%B5%D0%BB%D1%8C%D1%81%D0%BA_38_05255', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%B4%D1%83%D0%B3%D0%B8%D0%BD%D0%BE_7_48138', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%BC%D0%B8%D1%80%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_38_05256', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%BD%D1%83%D0%BA%D1%83%D1%82%D1%81%D0%BA%D0%B8%D0%B9_7_39549', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%BF%D0%BE%D0%BB%D0%BE%D1%86%D0%BA_375_214', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA_7_383', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D1%83%D0%BA%D1%80%D0%B0%D0%B8%D0%BD%D0%BA%D0%B0_38_05251', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D1%87%D0%B5%D1%80%D0%BA%D0%B0%D1%81%D1%81%D0%BA_7_8635', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9_%D1%83%D1%80%D0%B5%D0%BD%D0%B3%D0%BE%D0%B9_7_3494', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D1%81%D0%BE%D0%B2%D0%BA%D0%B0_38_04642', 'http://english.spravkaru.net/w/***/%D0%BE%D0%B4%D0%B5%D1%81%D1%81%D0%B0_38_048', 'http://english.spravkaru.net/w/***/%D0%BE%D0%B7%D1%91%D1%80%D1%81%D0%BA_7_35130', 'http://english.spravkaru.net/w/***/%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D0%BD%D0%BA%D0%B0_38_05250', 'http://english.spravkaru.net/w/***/%D0%BE%D0%BC%D1%81%D0%BA_7_3812', 'http://english.spravkaru.net/w/***/%D0%BE%D0%BD%D1%83%D1%84%D1%80%D0%B8%D0%B5%D0%B2%D0%BA%D0%B0_38_05238', 'http://english.spravkaru.net/w/***/%D0%BE%D1%80%D1%91%D0%BB_7_4862', 'http://english.spravkaru.net/w/***/%D0%BE%D1%80%D0%B5%D1%85%D0%BE%D0%B2%D0%BE_%D0%B7%D1%83%D0%B5%D0%B2%D0%BE_7_496', 'http://english.spravkaru.net/w/***/%D0%BE%D1%81%D0%B8%D0%BF%D0%BE%D0%B2%D0%B8%D1%87%D0%B8_375_2235', 'http://english.spravkaru.net/w/***/%D0%BE%D1%81%D1%82%D1%91%D1%80_38_04646', 'http://english.spravkaru.net/w/***/%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B2_7_81152', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B0%D0%B2%D0%BB%D0%BE%D0%B4%D0%B0%D1%80_7_7182', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%80%D0%B2%D0%BE%D0%BC%D0%B0%D0%B9%D1%81%D0%BA%D0%BE%D0%B5_38_06552', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%80%D0%B5%D1%8F%D1%81%D0%BB%D0%B0%D0%B2_%D1%85%D0%BC%D0%B5%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D0%BA%D0%B8%D0%B9_38_04467', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%B2%D0%BE_38_05237', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%B7%D0%B0%D0%B2%D0%BE%D0%B4%D1%81%D0%BA_7_8142', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%BF%D0%B0%D0%B2%D0%BB%D0%BE%D0%B2%D1%81%D0%BA_7_7152', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%87%D0%BE%D1%80%D0%B0_7_82142', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B8%D0%BD%D1%81%D0%BA_375_165', 'http://english.spravkaru.net/w/***/%D0%BF%D0%BE%D0%BB%D0%BE%D1%86%D0%BA_375_214', 'http://english.spravkaru.net/w/***/%D0%BF%D0%BE%D0%BB%D1%82%D0%B0%D0%B2%D0%B0_38_0532', 'http://english.spravkaru.net/w/***/%D0%BF%D0%BE%D1%80%D1%85%D0%BE%D0%B2_7_81134', 'http://english.spravkaru.net/w/***/%D0%BF%D0%BE%D1%87%D0%B8%D0%BD%D0%BE%D0%BA_7_48149', 'http://english.spravkaru.net/w/***/%D0%BF%D1%80%D0%B8%D0%BB%D1%83%D0%BA%D0%B8_38_04637', 'http://english.spravkaru.net/w/***/%D0%BF%D1%80%D0%BE%D0%BA%D0%BE%D0%BF%D1%8C%D0%B5%D0%B2%D1%81%D0%BA_7_3846', 'http://english.spravkaru.net/w/***/%D0%BF%D1%81%D0%BA%D0%BE%D0%B2_7_8112', 'http://english.spravkaru.net/w/***/%D1%80%D0%B0%D0%B7%D0%B4%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5_38_06553', 'http://english.spravkaru.net/w/***/%D1%80%D0%B0%D0%BA%D0%B8%D1%82%D0%BD%D0%BE%D0%B5_38_04462', 'http://english.spravkaru.net/w/***/%D1%80%D0%B5%D0%BF%D0%BA%D0%B8_38_04641', 'http://english.spravkaru.net/w/***/%D1%80%D0%B5%D1%87%D0%B8%D1%86%D0%B0_375_2340', 'http://english.spravkaru.net/w/***/%D1%80%D0%BE%D0%B2%D0%BD%D0%BE_38_0362', 'http://english.spravkaru.net/w/***/%D1%80%D0%BE%D1%81%D0%BB%D0%B0%D0%B2%D0%BB%D1%8C_7_48134', 'http://english.spravkaru.net/w/***/%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B2_%D0%BD%D0%B0_%D0%B4%D0%BE%D0%BD%D1%83_7_863', 'http://english.spravkaru.net/w/***/%D1%80%D1%83%D0%B4%D0%BD%D1%8F_7_48141', 'http://english.spravkaru.net/w/***/%D1%80%D1%8B%D0%B1%D0%BD%D0%B8%D1%86%D0%B0_373_555', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D0%BA%D0%B8_38_06563', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D0%BC%D0%B0%D1%80%D0%B0_7_846', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D0%BD%D0%BA%D1%82_%D0%BF%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3_7_812', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D1%80%D0%B0%D1%82%D0%BE%D0%B2_7_8452', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D1%84%D0%BE%D0%BD%D0%BE%D0%B2%D0%BE_7_48142', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D1%8F%D0%BD%D1%81%D0%BA_7_39553', 'http://english.spravkaru.net/w/***/%D1%81%D0%B2%D0%B5%D1%82%D0%BB%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D0%BA_38_05236', 'http://english.spravkaru.net/w/***/%D1%81%D0%B2%D0%B5%D1%82%D0%BB%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA_375_2342', 'http://english.spravkaru.net/w/***/%D1%81%D0%B5%D0%B2%D0%B0%D1%81%D1%82%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_38_0692', 'http://english.spravkaru.net/w/***/%D1%81%D0%B5%D0%BC%D1%91%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_38_04659', 'http://english.spravkaru.net/w/***/%D1%81%D0%B5%D0%BC%D0%B8%D0%BF%D0%B0%D0%BB%D0%B0%D1%82%D0%B8%D0%BD%D1%81%D0%BA_7_7222', 'http://english.spravkaru.net/w/***/%D1%81%D0%B8%D0%BC%D1%84%D0%B5%D1%80%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_38_0652', 'http://english.spravkaru.net/w/***/%D1%81%D0%BA%D0%B2%D0%B8%D1%80%D0%B0_38_04468', 'http://english.spravkaru.net/w/***/%D1%81%D0%BB%D0%B0%D0%B2%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_375_2246', 'http://english.spravkaru.net/w/***/%D1%81%D0%BB%D0%B0%D0%B2%D1%83%D1%82%D0%B8%D1%87_38_04479', 'http://english.spravkaru.net/w/***/%D1%81%D0%BB%D0%BE%D0%B1%D0%BE%D0%B4%D0%B7%D0%B8%D1%8F_373_557', 'http://english.spravkaru.net/w/***/%D1%81%D0%BB%D1%83%D1%86%D0%BA_375_1795', 'http://english.spravkaru.net/w/***/%D1%81%D0%BC%D0%BE%D0%BB%D0%B5%D0%BD%D1%81%D0%BA_7_4812', 'http://english.spravkaru.net/w/***/%D1%81%D0%BC%D0%BE%D1%80%D0%B3%D0%BE%D0%BD%D1%8C_375_1592', 'http://english.spravkaru.net/w/***/%D1%81%D0%BD%D0%B5%D0%B6%D0%B8%D0%BD%D1%81%D0%BA_7_35146', 'http://english.spravkaru.net/w/***/%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9_38_06551', 'http://english.spravkaru.net/w/***/%D1%81%D0%BE%D0%BB%D0%B8%D0%B3%D0%BE%D1%80%D1%81%D0%BA_375_174', 'http://english.spravkaru.net/w/***/%D1%81%D0%BE%D1%81%D0%BD%D0%B8%D1%86%D0%B0_38_04655', 'http://english.spravkaru.net/w/***/%D1%81%D1%80%D0%B5%D0%B1%D0%BD%D0%BE%D0%B5_38_04639', 'http://english.spravkaru.net/w/***/%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%89%D0%B5_38_04465', 'http://english.spravkaru.net/w/***/%D1%81%D1%82%D0%B0%D0%B2%D1%80%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_7_8652', 'http://english.spravkaru.net/w/***/%D1%81%D1%82%D0%BE%D0%BB%D0%B1%D1%86%D1%8B_375_1717', 'http://english.spravkaru.net/w/***/%D1%81%D1%82%D0%BE%D0%BB%D0%B8%D0%BD_375_1655', 'http://english.spravkaru.net/w/***/%D1%81%D1%83%D0%B4%D0%B0%D0%BA_38_06566', 'http://english.spravkaru.net/w/***/%D1%81%D1%83%D1%80%D0%B3%D1%83%D1%82_7_3462', 'http://english.spravkaru.net/w/***/%D1%81%D1%8B%D1%87%D1%91%D0%B2%D0%BA%D0%B0_7_48130', 'http://english.spravkaru.net/w/***/%D1%82%D0%B0%D0%BB%D0%B0%D0%BB%D0%B0%D0%B5%D0%B2%D0%BA%D0%B0_38_04634', 'http://english.spravkaru.net/w/***/%D1%82%D0%B0%D0%BB%D0%B4%D1%8B%D0%BA%D0%BE%D1%80%D0%B3%D0%B0%D0%BD_7_72822', 'http://english.spravkaru.net/w/***/%D1%82%D0%B0%D1%80%D0%B0%D0%B7_7_7262', 'http://english.spravkaru.net/w/***/%D1%82%D1%91%D0%BC%D0%BA%D0%B8%D0%BD%D0%BE_7_48136', 'http://english.spravkaru.net/w/***/%D1%82%D0%B5%D1%82%D0%B8%D0%B5%D0%B2_38_04460', 'http://english.spravkaru.net/w/***/%D1%82%D0%B8%D1%80%D0%B0%D1%81%D0%BF%D0%BE%D0%BB%D1%8C_373_533', 'http://english.spravkaru.net/w/***/%D1%82%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C_7_3452', 'http://english.spravkaru.net/w/***/%D1%83%D0%B3%D1%80%D0%B0_7_48137', 'http://english.spravkaru.net/w/***/%D1%83%D0%BB%D1%8C%D1%8F%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_38_05259', 'http://english.spravkaru.net/w/***/%D1%83%D1%80%D0%B0%D0%BB%D1%8C%D1%81%D0%BA_7_7112', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D0%BE%D0%BB%D1%8C%D0%B5_%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA%D0%BE%D0%B5_7_39543', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D1%82%D0%B8%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_38_05239', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D1%82%D1%8C_%D0%B8%D0%BB%D0%B8%D0%BC%D1%81%D0%BA_7_39535', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D1%82%D1%8C_%D0%BE%D1%80%D0%B4%D1%8B%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_7_39541', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D1%82%D1%8C_%D1%83%D0%B4%D0%B0_7_39545', 'http://english.spravkaru.net/w/***/%D1%83%D1%84%D0%B0_7_347', 'http://english.spravkaru.net/w/***/%D1%84%D0%B0%D1%81%D1%82%D0%BE%D0%B2_38_04465', 'http://english.spravkaru.net/w/***/%D1%84%D0%B5%D0%BE%D0%B4%D0%BE%D1%81%D0%B8%D1%8F_38_06562', 'http://english.spravkaru.net/w/***/%D1%85%D0%B0%D0%B1%D0%B0%D1%80%D0%BE%D0%B2%D1%81%D0%BA_7_4212', 'http://english.spravkaru.net/w/***/%D1%85%D0%B0%D1%80%D1%8C%D0%BA%D0%BE%D0%B2_38_057', 'http://english.spravkaru.net/w/***/%D1%85%D0%B5%D1%80%D1%81%D0%BE%D0%BD_38_0552', 'http://english.spravkaru.net/w/***/%D1%85%D0%B8%D1%81%D0%BB%D0%B0%D0%B2%D0%B8%D1%87%D0%B8_7_48140', 'http://english.spravkaru.net/w/***/%D1%85%D0%BE%D0%BB%D0%BC_%D0%B6%D0%B8%D1%80%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9_7_48139', 'http://english.spravkaru.net/w/***/%D1%85%D0%BE%D1%82%D0%B8%D0%BC%D1%81%D0%BA_375_2247', 'http://english.spravkaru.net/w/***/%D1%87%D0%B0%D1%83%D1%81%D1%8B_375_2242', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D0%B1%D0%BE%D0%BA%D1%81%D0%B0%D1%80%D1%8B_7_8352', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D0%BB%D1%8F%D0%B1%D0%B8%D0%BD%D1%81%D0%BA_7_351', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%B5%D0%BC%D1%85%D0%BE%D0%B2%D0%BE_7_39546', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%B5%D0%BF%D0%BE%D0%B2%D0%B5%D1%86_7_8202', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%B8%D0%BA%D0%BE%D0%B2_375_2243', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%BD%D0%B8%D0%B3%D0%BE%D0%B2_38_04622', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%BD%D0%BE%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B5_38_06558', 'http://english.spravkaru.net/w/***/%D1%87%D1%83%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_7_39567', 'http://english.spravkaru.net/w/***/%D1%88%D0%B5%D0%BB%D0%B5%D1%85%D0%BE%D0%B2_7_39550', 'http://english.spravkaru.net/w/***/%D1%88%D0%BA%D0%BB%D0%BE%D0%B2_375_2239', 'http://english.spravkaru.net/w/***/%D1%88%D1%83%D0%B1%D0%B0%D1%80_%D0%BA%D1%83%D0%B4%D1%83%D0%BA_7_71346', 'http://english.spravkaru.net/w/***/%D1%88%D1%83%D0%BC%D1%8F%D1%87%D0%B8_7_48133', 'http://english.spravkaru.net/w/***/%D1%88%D1%8B%D0%BC%D0%BA%D0%B5%D0%BD%D1%82_7_7252', 'http://english.spravkaru.net/w/***/%D1%89%D0%BE%D1%80%D1%81_38_04654', 'http://english.spravkaru.net/w/***/%D1%89%D1%83%D1%87%D0%B8%D0%BD_375_1514', 'http://english.spravkaru.net/w/***/%D1%8D%D0%BA%D0%B8%D0%B1%D0%B0%D1%81%D1%82%D1%83%D0%B7_7_7187', 'http://english.spravkaru.net/w/***/%D1%8D%D0%BC%D0%B1%D0%B0_7_71334', 'http://english.spravkaru.net/w/***/%D1%8F%D0%B3%D0%BE%D1%82%D0%B8%D0%BD_38_04475_', 'http://english.spravkaru.net/w/***/%D1%8F%D0%BB%D1%82%D0%B0_38_0654', 'http://english.spravkaru.net/w/***/%D1%8F%D1%80%D0%BE%D1%81%D0%BB%D0%B0%D0%B2%D0%BB%D1%8C_7_4852', 'http://english.spravkaru.net/w/***/%D1%8F%D1%80%D1%86%D0%B5%D0%B2%D0%BE_7_48143']
+
+spravcitynode = ['Velcom', 'Aksu', 'Aktau/shevchenko', 'Aktobe/aktyubinsk', 'Alga', 'Aleksandriya', 'Aleksandrovka', 'Almaty/alma-Ata', 'Alushta', 'Angarsk', 'Armyansk', 'Astana/akmola', 'Atyrau/gurev', 'Badamsha', 'Baykalsk', 'Balagansk', 'Baranovichi', 'Baryshevka', 'Bakhmach', 'Bakhchisaray', 'Bayanday', 'BelayaTserkov', 'Belogorsk', 'Belynichi', 'Bendery', 'Bobrovitsa', 'Bobruysk', 'Boguslav', 'Borzna', 'Borisov', 'Borispol', 'Borodyanka', 'Bokhan', 'Bratsk', 'Brest', 'Brovary', 'Bugulma', 'Bykhov', 'Vasilkov', 'Velizh', 'VelikieLuki', 'Verkhnedvinsk', 'Vileyka', 'Vinnitsa', 'Vitebsk', 'Vladivostok', 'Vladimir', 'Volgograd', 'Volzhskiy', 'Volkovysk', 'Volodarka', 'Volozhin', 'Voronezh', 'Vyshgorod', 'Vyazma', 'Gagarin', 'Gayvoron', 'Glinka', 'Glubokoe', 'Golovanevsk', 'Gomel', 'Gorki', 'Gorodnya', 'Grigoriopol', 'Grodno', 'Demidov', 'Desnogorsk', 'Dzhankoy', 'Dnepropetrovsk', 'Dobrovelichkovka', 'Dokshitsy', 'Dolinskaya', 'Donetsk', 'Dorogobuzh', 'Dribin', 'Drogichin', 'Dubossary', 'Dukhovshchina', 'Evpatoriya', 'Ekaterinburg', 'Elantsy', 'Elna', 'Erbogachen', 'Ershichi', 'Zhigalovo', 'Zhitomir', 'Zhlobin', 'Zhodino', 'Zalari', 'Zaporozhe', 'Zaslavl', 'Zgurovka', 'Zima', 'Zlatoust', 'Znamenka', 'Ivankov', 'Ivanovo', 'Irkutsk', 'Irpen', 'Kazan', 'Kaluga', 'Kandyagash', 'Karaganda', 'Kardymovo', 'Kachug', 'Kemerovo', 'Kerch', 'Kiev', 'Kievo-SvyatoshinskiyRayon', 'Kirovograd', 'Kirovsk', 'Kirovskoe', 'Klimovichi', 'Klichev', 'Kokshetau/kokchetav', 'Kompaneevka', 'Korop', 'Koryukovka', 'Kostanay', 'Kostroma', 'Kostyukovichi', 'Krasnogvardeyskoe', 'Krasnodar', 'Krasnoperekopsk', 'Krasnopole', 'Krasnoyarsk', 'Krasnyy', 'Krasyatichi', 'KrivoyRog', 'Krichev', 'Krugloe', 'Kurgan', 'Kyzylorda', 'Langepas', 'Lenino', 'Leninsk-Kuznetskiy', 'Livny', 'Lida', 'Lipetsk', 'Lugansk', 'Magadan', 'Magnitogorsk', 'Makarov', 'MalayaViska', 'Mariupol', 'Martuk', 'Machulishchi', 'Minsk', 'Mironovka', 'Mogilev', 'Mozyr', 'Molodechno', 'Monastyrshchina', 'Moskva', 'Moskva', 'Mstislavl', 'NaberezhnyeChelny', 'Nalchik', 'Nakhodka', 'Nezhin', 'Nizhnevartovsk', 'Nizhnegorskiy', 'NizhniyNovgorod', 'NizhniyTagil', 'Nikolaev', 'Nikolaevsk-Na-Amure', 'Nikopol', 'Novgorod-Severskiy', 'Novgorodka', 'Novoarkhangelsk', 'Novodugino', 'Novomirgorod', 'Novonukutskiy', 'Novopolotsk', 'Novosibirsk', 'Novoukrainka', 'Novocherkassk', 'NovyyUrengoy', 'Nosovka', 'Odessa', 'Ozersk', 'Olshanka', 'Omsk', 'Onufrievka', 'Orel', 'Orekhovo-Zuevo', 'Osipovichi', 'Oster', 'Ostrov', 'Pavlodar', 'Pervomayskoe', 'Pereyaslav-Khmelnitskiy', 'Petrovo', 'Petrozavodsk', 'Petropavlovsk', 'Pechora', 'Pinsk', 'Polotsk', 'Poltava', 'Porkhov', 'Pochinok', 'Priluki', 'Prokopevsk', 'Pskov', 'Razdolnoe', 'Rakitnoe', 'Repki', 'Rechitsa', 'Rovno', 'Roslavl', 'Rostov-Na-Donu', 'Rudnya', 'Rybnitsa', 'Saki', 'Samara', 'Sankt-Peterburg', 'Saratov', 'Safonovo', 'Sayansk', 'Svetlovodsk', 'Svetlogorsk', 'Sevastopol', 'Semenovka', 'Semipalatinsk', 'Simferopol', 'Skvira', 'Slavgorod', 'Slavutich', 'Slobodziya', 'Slutsk', 'Smolensk', 'Smorgon', 'Snezhinsk', 'Sovetskiy', 'Soligorsk', 'Sosnitsa', 'Srebnoe', 'Stavishche', 'Stavropol', 'Stolbtsy', 'Stolin', 'Sudak', 'Surgut', 'Sychevka', 'Talalaevka', 'Taldykorgan', 'Taraz', 'Temkino', 'Tetiev', 'Tiraspol', 'Tyumen', 'Ugra', 'Ulyanovka', 'Uralsk', 'Usole-Sibirskoe', 'Ustinovka', 'Ust-Ilimsk', 'Ust-Ordynskiy', 'Ust-Uda', 'Ufa', 'Fastov', 'Feodosiya', 'Khabarovsk', 'Kharkov', 'Kherson', 'Khislavichi', 'Kholm-Zhirkovskiy', 'Khotimsk', 'Chausy', 'Cheboksary', 'Chelyabinsk', 'Cheremkhovo', 'Cherepovets', 'Cherikov', 'Chernigov', 'Chernomorskoe', 'Chunskiy', 'Shelekhov', 'Shklov', 'Shubar-Kuduk', 'Shumyachi', 'Shymkent', 'Shchors', 'Shchuchin', 'Ekibastuz', 'Emba', 'Yagotin', 'Yalta', 'Yaroslavl', 'Yartsevo']
 
 proves=['A%20Coru%F1a','Albacete','Alicante','Almer%EDa','Araba%2F%C1lava','Asturias','%C1vila','Badajoz','Barcelona','Bizkaia','Burgos','C%E1ceres','C%E1diz','Cantabria','Castell%F3n','Ceuta','Ciudad%20Real','C%F3rdoba','Cuenca','Gipuzkoa','Girona','Granada','Guadalajara','Huelva','Huesca','Illes%20Balears','Ja%E9n','La%20Rioja','Las%20Palmas','Le%F3n','Lleida','Lugo','Madrid','M%E1laga','Melilla','Murcia','Navarra','Ourense','Palencia','Pontevedra','Salamanca','Santa%20Cruz%20De%20Tenerife','Segovia','Sevilla','Soria','Tarragona','Teruel','Toledo','Valencia','Valladolid','Zamora','Zaragoza']
 
@@ -175,6 +181,292 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
 
     return decorator
 
+
+def spravkaru(fname,city):
+  global spravres
+
+  print()
+  Fig = Figlet(font='cybermedium')
+  print(Fig.renderText('Searching Family Name in Spravkaru'))
+  print()
+
+  if detect_language(fname) != "ru":
+          print("converting familly name to cyrilic")
+          print(translit(fname, 'ru'))
+          fname = translit(fname, 'ru')
+          
+  #   spravcity
+
+  spuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+  UserAgent = random.choice(spuser_agent_list)
+
+
+  if city == "none":                  
+     for query in spravcity:
+                              pagenbr = 1
+                              stopwhile = 0
+                              name=""
+                              loc=""
+                              tel=""
+                              query2 = ""   
+                              query = query.replace("***",urllib.parse.quote(fname))                      
+                              while stopwhile != 1 and len(spravres) < 123:
+                                        
+                                   if pagenbr >1:
+                                        query2 = query + "/" + str(pagenbr)
+                                   else:
+                                        query2 = query 
+                                   #print() 
+                                   #print("query:",query2)
+                                   #print()
+                                   
+                                   opener = urllib.request.build_opener()
+                                   opener.addheaders = [('User-Agent', str(UserAgent))]
+     
+                                   send = opener.open(query2)
+     
+
+          
+                                   soup = BeautifulSoup(send,'lxml')
+                                   #Do a Barrel Roll
+                                   #print(soup)
+                                   
+                                   #sys.exit()
+                                   print()                                        
+                                   tmpres = []
+                                   spravlist = re.findall('<li style="padding-bottom:7px;">(.*?)</li>', str(soup),re.DOTALL)
+                                   for item in spravlist:
+  #                                      print()
+ #                                       print(item)
+   #                                     print()
+                                        item = item.split("</a>")
+                                        for subtem in item:
+                                                  
+                                                  subtem = subtem.split('">')
+                                                  try:
+                                                       tmpres.append(subtem[1])
+                                                  except:
+                                                            
+                                                            pass
+                                   final=[]
+#                                   print("len tempres")
+#                                   print(len(tmpres))
+                                   if len(tmpres) != 0:
+                                   
+                                        for item in tmpres:
+                                             next = 1
+                                             if next == 1:
+                                                  
+#                                                  print()
+                                                  if len(item) >0:
+                                                       final.append(item)
+                                                  if "+" in item:
+                                                       next = 0
+                                                       final.append("***")
+                                        final = "#".join(final)
+#                                        print("FINAL ",final.split("***"))
+                                        for item in final.split("***"):
+                                             item = item.split("#")
+                                             name = ""
+                                             loc = ""
+                                             tel = ""                              
+                                             try:
+    
+    #                                              print("len ",len(item))
+
+
+                                             
+
+                                                  if len(item[0]) == 0:
+                                                       name = item[1]
+                                                       
+                                                       for subtem in item:
+                                                            if len(subtem) != 0 and name not in subtem:
+                                                                 if not "+" in subtem:
+                                                                      loc += " "+subtem
+                                                                 if "+" in subtem:
+                                                                      tel= subtem
+                                                       print(name+"#***#"+loc+"#***#"+tel)
+                                                       spravres.append(name+"#***#"+loc+"#***#"+tel)
+                                                  
+                                             
+     
+                                                  if len(item[0]) > 1:
+                                                       name = item[0]
+                                                  
+                                                       for subtem in item:
+                                                            if len(subtem) != 0 and name not in subtem:
+                                                                 if not "+" in subtem:
+                                                                      loc += " "+subtem
+                                                                 if "+" in subtem:
+                                                                      tel= subtem
+                                                       print(name+"#***#"+loc+"#***#"+tel)
+                                                       spravres.append(name+"#***#"+loc+"#***#"+tel)
+
+                                             except Exception as e :
+                                                  #print(e)
+                                                  
+                                                  pass
+                                        
+                                        endofresults = re.findall('<a class="pagelink" href="(.*?)</a></div>', str(soup),re.DOTALL)
+                                        #print(endofresults)
+                                        enough = 0
+                                        for item in endofresults:
+                                                  if "next" in item and enough != 1:
+#                                                       print("found next page")
+#                                                       print("Stravkaru results counter : ",len(spravres))
+                                                       pagenbr = int(pagenbr) + 1
+                                                       enough = 1
+                                                       time.sleep(random.randint(15,23))
+                                                  else:
+#                                                       print('next page not found')
+#                                                       print("Stravkaru results counter : ",len(spravres))
+                                                       stopwhile = 1
+                                                       time.sleep(random.randint(15,23))
+                                   if len(tmpres) < 80:
+                                                       stopwhile = 1
+                                                       time.sleep(random.randint(15,23))
+  
+                              print("Stravkaru results counter : ",len(spravres))               
+
+
+
+
+
+  if city != "none":
+     for query in spravcity:
+          for url,ville in zip(spravcity,spravcitynode):
+               if city in ville:
+                              pagenbr = 1
+                              stopwhile = 0
+                              name=""
+                              loc=""
+                              tel=""
+                              query2 = ""   
+                              query = url.replace("***",urllib.parse.quote(fname))                      
+                              while stopwhile != 1 and len(spravres) < 123:
+                                        
+                                   if pagenbr >1:
+                                        query2 = query + "/" + str(pagenbr)
+                                   else:
+                                        query2 = query 
+                                   #print() 
+                                   #print("query:",query2)
+                                   #print()
+                                   
+                                   opener = urllib.request.build_opener()
+                                   opener.addheaders = [('User-Agent', str(UserAgent))]
+     
+                                   send = opener.open(query2)
+     
+
+          
+                                   soup = BeautifulSoup(send,'lxml')
+                                   #Do a Barrel Roll
+                                   #print(soup)
+                                   
+                                   #sys.exit()
+                                   print()                                        
+                                   tmpres = []
+                                   spravlist = re.findall('<li style="padding-bottom:7px;">(.*?)</li>', str(soup),re.DOTALL)
+                                   for item in spravlist:
+  #                                      print()
+ #                                       print(item)
+   #                                     print()
+                                        item = item.split("</a>")
+                                        for subtem in item:
+                                                  
+                                                  subtem = subtem.split('">')
+                                                  try:
+                                                       tmpres.append(subtem[1])
+                                                  except:
+                                                            
+                                                            pass
+                                   final=[]
+#                                   print("len tempres")
+#                                   print(len(tmpres))
+                                   if len(tmpres) != 0:
+                                   
+                                        for item in tmpres:
+                                             next = 1
+                                             if next == 1:
+                                                  
+#                                                  print()
+                                                  if len(item) >0:
+                                                       final.append(item)
+                                                  if "+" in item:
+                                                       next = 0
+                                                       final.append("***")
+                                        final = "#".join(final)
+#                                        print("FINAL ",final.split("***"))
+                                        for item in final.split("***"):
+                                             item = item.split("#")
+                                             name = ""
+                                             loc = ""
+                                             tel = ""                              
+                                             try:
+    
+    #                                              print("len ",len(item))
+
+
+                                             
+
+                                                  if len(item[0]) == 0:
+                                                       name = item[1]
+                                                       
+                                                       for subtem in item:
+                                                            if len(subtem) != 0 and name not in subtem:
+                                                                 if not "+" in subtem:
+                                                                      loc += " "+subtem
+                                                                 if "+" in subtem:
+                                                                      tel= subtem
+                                                       print(name+"#***#"+loc+"#***#"+tel)
+                                                       spravres.append(name+"#***#"+loc+"#***#"+tel)
+                                                  
+                                             
+     
+                                                  if len(item[0]) > 1:
+                                                       name = item[0]
+                                                  
+                                                       for subtem in item:
+                                                            if len(subtem) != 0 and name not in subtem:
+                                                                 if not "+" in subtem:
+                                                                      loc += " "+subtem
+                                                                 if "+" in subtem:
+                                                                      tel= subtem
+                                                       print(name+"#***#"+loc+"#***#"+tel)
+                                                       spravres.append(name+"#***#"+loc+"#***#"+tel)
+
+                                             except Exception as e :
+                                                  #print(e)
+                                                  
+                                                  pass
+                                        
+                                        endofresults = re.findall('<a class="pagelink" href="(.*?)</a></div>', str(soup),re.DOTALL)
+                                        #print(endofresults)
+                                        enough = 0
+                                        for item in endofresults:
+                                                  if "next" in item and enough != 1:
+#                                                       print("found next page")
+#                                                       print("Stravkaru results counter : ",len(spravres))
+                                                       pagenbr = int(pagenbr) + 1
+                                                       enough = 1
+                                                       time.sleep(random.randint(15,23))
+                                                  else:
+#                                                       print('next page not found')
+#                                                       print("Stravkaru results counter : ",len(spravres))
+                                                       stopwhile = 1
+                                                       time.sleep(random.randint(15,23))
+                                   if len(tmpres) < 80:
+                                                       stopwhile = 1
+                                                       time.sleep(random.randint(15,23))
+  
+                              print("Stravkaru results counter : ",len(spravres)) 
+                                   
+                                   
+                             
 
 
 def pblancas(fname,city):
@@ -239,7 +531,7 @@ def pblancas(fname,city):
                                                   for lastem in subtem:
                                                        lastem = lastem.replace("!"," : ").replace("\\","")
                                                        pblancastel += " " + lastem.replace("listatel=","")
-                              
+                                   print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
                                    pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
 
                               endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
@@ -324,7 +616,7 @@ def pblancas(fname,city):
                                                   for lastem in subtem:
                                                        lastem = lastem.replace("!"," : ").replace("\\","")
                                                        pblancastel += " " + lastem.replace("listatel=","")
-                              
+                                   print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
                                    pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
 
                               endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
@@ -404,6 +696,7 @@ def btelecom(fname,city):
                                    l = l.replace("\n"," ").replace('\r', ' ')
                                    t = t.replace("\n"," ").replace('\r', ' ')
                                    #if len(btname) and len(btloc) and len(bttel) > 0
+                                   print(n+"#***#"+l+"#***#"+t)
                                    btres.append(n+"#***#"+l+"#***#"+t)
                               nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
                               for item in nextpage:
@@ -460,6 +753,7 @@ def btelecom(fname,city):
                                    l = l.replace("\n"," ").replace('\r', ' ')
                                    t = t.replace("\n"," ").replace('\r', ' ')
                                    #if len(btname) and len(btloc) and len(bttel) > 0
+                                   print(n+"#***#"+l+"#***#"+t)
                                    btres.append(n+"#***#"+l+"#***#"+t)
                               nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
                               for item in nextpage:
@@ -2475,7 +2769,7 @@ def getPDFContent(path):
 
 parser = ArgumentParser()
 
-parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches,britishtelecom,paginasblancas',
+parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches,britishtelecom,paginasblancas,spravkaru',
                     help="Use specific search engine: -e yahoo,bing ", metavar="Engine")
 
 parser.add_argument("-l","--language", dest="lang",default='fr',
@@ -2552,7 +2846,7 @@ if argsengine.lower() != "none" :
                print()
                print("some options are missing")
                print()
-               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom,paginasblancas")
+               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom,paginasblancas,spravkaru")
                print()
                print("Example: -e google,pagesblanches  -s Albert Einstein -f Einstein -c Berne")
                print()
@@ -2704,7 +2998,15 @@ if fullauto == "true":
 
 permutation(argsname)
 
-
+for item in splitengine:
+     if item.lower() == "spravkaru":
+          if family != "none":
+               spravkaru(family,args.city)
+          if family == "none":
+               quickfix=""
+               while len(quickfix) < 1:
+                    quickfix= input("What's the familly name already?\nInput:")
+               spravkaru(str(quickfix),args.city)
 
 for item in splitengine:
      if item.lower() == "paginasblancas":
@@ -3037,7 +3339,14 @@ for item in splitengine:
           s7 = db.nodes.create(Enginename="PaginasBlancas")
           srcheng.add(s7)
           s0.relationships.create("Query", s7)
+spravres
 
+for item in splitengine:
+     if item.lower() == "spravkaru":
+           
+          s8 = db.nodes.create(Enginename="Spravkaru")
+          srcheng.add(s8)
+          s0.relationships.create("Query", s8)
 
 labelwebsite = db.labels.create("Website")
 labelFile = db.labels.create("File")
@@ -3063,6 +3372,9 @@ labelPblancastinfo = db.labels.create("InfoPaginasBlancas")
 labelLullarres = db.labels.create("EmailsRelated")
 labelLullarsite = db.labels.create("LullareSite")
 labelLullarinfo = db.labels.create("LullareInfo")
+labelSpravres = db.labels.create("National")
+labelSpravcity = db.labels.create("Cities")
+labelSpravinfo = db.labels.create("InfoSprav")
 
 for item in splitengine:
      if item.lower() == "google":
@@ -3161,6 +3473,12 @@ for item in splitengine:
                labelPblancasres.add(PaginasBlancas)
                #labelPbacu.add(PbAccurate)
 
+for item in splitengine:
+     if item.lower() == "spravkaru":
+               SpravKaru = db.nodes.create(City="Cities", Names="Cities", Adresse="Cities", telephone="Cities")
+               s8.relationships.create("LinkResults", SpravKaru)
+               labelSpravres.add(SpravKaru)
+
 print()
 print()
 print()
@@ -3250,6 +3568,4953 @@ for item in splitengine:
               #s1.relationships.create("Source item", item)
             except Exception as e:
                     print(e)
+
+
+#City="Cities", Names="Cities", Adresse="Cities", telephone="Cities"
+
+
+for item in splitengine:
+     if item.lower() == "spravkaru":
+
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('SpravKaru Results'))
+          print("")
+          for info in spravres:
+                    info = info.split("#***#")
+
+
+                    if "velcom" in info[1].lower():
+                         try:
+                              type(spvelcom)
+                              item = db.nodes.create(SpCity="Velcom", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvelcom.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvelcom= db.nodes.create(Spname="Velcom",SpCity="Velcom", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvelcom)
+                              SpravKaru.relationships.create("Cities",spvelcom)
+                              item = db.nodes.create(SpCity="Velcom", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvelcom.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "aksu" in info[1].lower():
+                         try:
+                              type(spaksu)
+                              item = db.nodes.create(SpCity="Aksu", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaksu.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spaksu= db.nodes.create(Spname="Aksu",SpCity="Aksu", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spaksu)
+                              SpravKaru.relationships.create("Cities",spaksu)
+                              item = db.nodes.create(SpCity="Aksu", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaksu.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "aktau/shevchenko" in info[1].lower():
+                         try:
+                              type(spaktaushevchenko)
+                              item = db.nodes.create(SpCity="Aktau/shevchenko", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaktaushevchenko.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spaktaushevchenko= db.nodes.create(Spname="Aktau/shevchenko",SpCity="Aktau/shevchenko", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spaktaushevchenko)
+                              SpravKaru.relationships.create("Cities",spaktaushevchenko)
+                              item = db.nodes.create(SpCity="Aktau/shevchenko", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaktaushevchenko.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "aktobe/aktyubinsk" in info[1].lower():
+                         try:
+                              type(spaktobeaktyubinsk)
+                              item = db.nodes.create(SpCity="Aktobe/aktyubinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaktobeaktyubinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spaktobeaktyubinsk= db.nodes.create(Spname="Aktobe/aktyubinsk",SpCity="Aktobe/aktyubinsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spaktobeaktyubinsk)
+                              SpravKaru.relationships.create("Cities",spaktobeaktyubinsk)
+                              item = db.nodes.create(SpCity="Aktobe/aktyubinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaktobeaktyubinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "alga" in info[1].lower():
+                         try:
+                              type(spalga)
+                              item = db.nodes.create(SpCity="Alga", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spalga.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spalga= db.nodes.create(Spname="Alga",SpCity="Alga", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spalga)
+                              SpravKaru.relationships.create("Cities",spalga)
+                              item = db.nodes.create(SpCity="Alga", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spalga.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "aleksandriya" in info[1].lower():
+                         try:
+                              type(spaleksandriya)
+                              item = db.nodes.create(SpCity="Aleksandriya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaleksandriya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spaleksandriya= db.nodes.create(Spname="Aleksandriya",SpCity="Aleksandriya", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spaleksandriya)
+                              SpravKaru.relationships.create("Cities",spaleksandriya)
+                              item = db.nodes.create(SpCity="Aleksandriya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaleksandriya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "aleksandrovka" in info[1].lower():
+                         try:
+                              type(spaleksandrovka)
+                              item = db.nodes.create(SpCity="Aleksandrovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaleksandrovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spaleksandrovka= db.nodes.create(Spname="Aleksandrovka",SpCity="Aleksandrovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spaleksandrovka)
+                              SpravKaru.relationships.create("Cities",spaleksandrovka)
+                              item = db.nodes.create(SpCity="Aleksandrovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spaleksandrovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "almaty/alma-ata" in info[1].lower():
+                         try:
+                              type(spalmatyalmaata)
+                              item = db.nodes.create(SpCity="Almaty/alma-Ata", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spalmatyalmaata.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spalmatyalmaata= db.nodes.create(Spname="Almaty/alma-Ata",SpCity="Almaty/alma-Ata", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spalmatyalmaata)
+                              SpravKaru.relationships.create("Cities",spalmatyalmaata)
+                              item = db.nodes.create(SpCity="Almaty/alma-Ata", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spalmatyalmaata.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "alushta" in info[1].lower():
+                         try:
+                              type(spalushta)
+                              item = db.nodes.create(SpCity="Alushta", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spalushta.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spalushta= db.nodes.create(Spname="Alushta",SpCity="Alushta", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spalushta)
+                              SpravKaru.relationships.create("Cities",spalushta)
+                              item = db.nodes.create(SpCity="Alushta", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spalushta.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "angarsk" in info[1].lower():
+                         try:
+                              type(spangarsk)
+                              item = db.nodes.create(SpCity="Angarsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spangarsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spangarsk= db.nodes.create(Spname="Angarsk",SpCity="Angarsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spangarsk)
+                              SpravKaru.relationships.create("Cities",spangarsk)
+                              item = db.nodes.create(SpCity="Angarsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spangarsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "armyansk" in info[1].lower():
+                         try:
+                              type(sparmyansk)
+                              item = db.nodes.create(SpCity="Armyansk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sparmyansk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sparmyansk= db.nodes.create(Spname="Armyansk",SpCity="Armyansk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sparmyansk)
+                              SpravKaru.relationships.create("Cities",sparmyansk)
+                              item = db.nodes.create(SpCity="Armyansk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sparmyansk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "astana/akmola" in info[1].lower():
+                         try:
+                              type(spastanaakmola)
+                              item = db.nodes.create(SpCity="Astana/akmola", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spastanaakmola.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spastanaakmola= db.nodes.create(Spname="Astana/akmola",SpCity="Astana/akmola", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spastanaakmola)
+                              SpravKaru.relationships.create("Cities",spastanaakmola)
+                              item = db.nodes.create(SpCity="Astana/akmola", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spastanaakmola.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "atyrau/gurev" in info[1].lower():
+                         try:
+                              type(spatyraugurev)
+                              item = db.nodes.create(SpCity="Atyrau/gurev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spatyraugurev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spatyraugurev= db.nodes.create(Spname="Atyrau/gurev",SpCity="Atyrau/gurev", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spatyraugurev)
+                              SpravKaru.relationships.create("Cities",spatyraugurev)
+                              item = db.nodes.create(SpCity="Atyrau/gurev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spatyraugurev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "badamsha" in info[1].lower():
+                         try:
+                              type(spbadamsha)
+                              item = db.nodes.create(SpCity="Badamsha", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbadamsha.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbadamsha= db.nodes.create(Spname="Badamsha",SpCity="Badamsha", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbadamsha)
+                              SpravKaru.relationships.create("Cities",spbadamsha)
+                              item = db.nodes.create(SpCity="Badamsha", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbadamsha.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "baykalsk" in info[1].lower():
+                         try:
+                              type(spbaykalsk)
+                              item = db.nodes.create(SpCity="Baykalsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbaykalsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbaykalsk= db.nodes.create(Spname="Baykalsk",SpCity="Baykalsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbaykalsk)
+                              SpravKaru.relationships.create("Cities",spbaykalsk)
+                              item = db.nodes.create(SpCity="Baykalsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbaykalsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "balagansk" in info[1].lower():
+                         try:
+                              type(spbalagansk)
+                              item = db.nodes.create(SpCity="Balagansk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbalagansk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbalagansk= db.nodes.create(Spname="Balagansk",SpCity="Balagansk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbalagansk)
+                              SpravKaru.relationships.create("Cities",spbalagansk)
+                              item = db.nodes.create(SpCity="Balagansk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbalagansk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "baranovichi" in info[1].lower():
+                         try:
+                              type(spbaranovichi)
+                              item = db.nodes.create(SpCity="Baranovichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbaranovichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbaranovichi= db.nodes.create(Spname="Baranovichi",SpCity="Baranovichi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbaranovichi)
+                              SpravKaru.relationships.create("Cities",spbaranovichi)
+                              item = db.nodes.create(SpCity="Baranovichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbaranovichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "baryshevka" in info[1].lower():
+                         try:
+                              type(spbaryshevka)
+                              item = db.nodes.create(SpCity="Baryshevka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbaryshevka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbaryshevka= db.nodes.create(Spname="Baryshevka",SpCity="Baryshevka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbaryshevka)
+                              SpravKaru.relationships.create("Cities",spbaryshevka)
+                              item = db.nodes.create(SpCity="Baryshevka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbaryshevka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bakhmach" in info[1].lower():
+                         try:
+                              type(spbakhmach)
+                              item = db.nodes.create(SpCity="Bakhmach", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbakhmach.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbakhmach= db.nodes.create(Spname="Bakhmach",SpCity="Bakhmach", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbakhmach)
+                              SpravKaru.relationships.create("Cities",spbakhmach)
+                              item = db.nodes.create(SpCity="Bakhmach", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbakhmach.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bakhchisaray" in info[1].lower():
+                         try:
+                              type(spbakhchisaray)
+                              item = db.nodes.create(SpCity="Bakhchisaray", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbakhchisaray.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbakhchisaray= db.nodes.create(Spname="Bakhchisaray",SpCity="Bakhchisaray", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbakhchisaray)
+                              SpravKaru.relationships.create("Cities",spbakhchisaray)
+                              item = db.nodes.create(SpCity="Bakhchisaray", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbakhchisaray.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bayanday" in info[1].lower():
+                         try:
+                              type(spbayanday)
+                              item = db.nodes.create(SpCity="Bayanday", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbayanday.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbayanday= db.nodes.create(Spname="Bayanday",SpCity="Bayanday", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbayanday)
+                              SpravKaru.relationships.create("Cities",spbayanday)
+                              item = db.nodes.create(SpCity="Bayanday", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbayanday.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "belayatserkov" in info[1].lower():
+                         try:
+                              type(spbelayatserkov)
+                              item = db.nodes.create(SpCity="BelayaTserkov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbelayatserkov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbelayatserkov= db.nodes.create(Spname="BelayaTserkov",SpCity="BelayaTserkov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbelayatserkov)
+                              SpravKaru.relationships.create("Cities",spbelayatserkov)
+                              item = db.nodes.create(SpCity="BelayaTserkov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbelayatserkov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "belogorsk" in info[1].lower():
+                         try:
+                              type(spbelogorsk)
+                              item = db.nodes.create(SpCity="Belogorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbelogorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbelogorsk= db.nodes.create(Spname="Belogorsk",SpCity="Belogorsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbelogorsk)
+                              SpravKaru.relationships.create("Cities",spbelogorsk)
+                              item = db.nodes.create(SpCity="Belogorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbelogorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "belynichi" in info[1].lower():
+                         try:
+                              type(spbelynichi)
+                              item = db.nodes.create(SpCity="Belynichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbelynichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbelynichi= db.nodes.create(Spname="Belynichi",SpCity="Belynichi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbelynichi)
+                              SpravKaru.relationships.create("Cities",spbelynichi)
+                              item = db.nodes.create(SpCity="Belynichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbelynichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bendery" in info[1].lower():
+                         try:
+                              type(spbendery)
+                              item = db.nodes.create(SpCity="Bendery", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbendery.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbendery= db.nodes.create(Spname="Bendery",SpCity="Bendery", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbendery)
+                              SpravKaru.relationships.create("Cities",spbendery)
+                              item = db.nodes.create(SpCity="Bendery", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbendery.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bobrovitsa" in info[1].lower():
+                         try:
+                              type(spbobrovitsa)
+                              item = db.nodes.create(SpCity="Bobrovitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbobrovitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbobrovitsa= db.nodes.create(Spname="Bobrovitsa",SpCity="Bobrovitsa", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbobrovitsa)
+                              SpravKaru.relationships.create("Cities",spbobrovitsa)
+                              item = db.nodes.create(SpCity="Bobrovitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbobrovitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bobruysk" in info[1].lower():
+                         try:
+                              type(spbobruysk)
+                              item = db.nodes.create(SpCity="Bobruysk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbobruysk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbobruysk= db.nodes.create(Spname="Bobruysk",SpCity="Bobruysk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbobruysk)
+                              SpravKaru.relationships.create("Cities",spbobruysk)
+                              item = db.nodes.create(SpCity="Bobruysk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbobruysk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "boguslav" in info[1].lower():
+                         try:
+                              type(spboguslav)
+                              item = db.nodes.create(SpCity="Boguslav", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spboguslav.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spboguslav= db.nodes.create(Spname="Boguslav",SpCity="Boguslav", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spboguslav)
+                              SpravKaru.relationships.create("Cities",spboguslav)
+                              item = db.nodes.create(SpCity="Boguslav", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spboguslav.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "borzna" in info[1].lower():
+                         try:
+                              type(spborzna)
+                              item = db.nodes.create(SpCity="Borzna", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spborzna.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spborzna= db.nodes.create(Spname="Borzna",SpCity="Borzna", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spborzna)
+                              SpravKaru.relationships.create("Cities",spborzna)
+                              item = db.nodes.create(SpCity="Borzna", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spborzna.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "borisov" in info[1].lower():
+                         try:
+                              type(spborisov)
+                              item = db.nodes.create(SpCity="Borisov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spborisov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spborisov= db.nodes.create(Spname="Borisov",SpCity="Borisov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spborisov)
+                              SpravKaru.relationships.create("Cities",spborisov)
+                              item = db.nodes.create(SpCity="Borisov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spborisov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "borispol" in info[1].lower():
+                         try:
+                              type(spborispol)
+                              item = db.nodes.create(SpCity="Borispol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spborispol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spborispol= db.nodes.create(Spname="Borispol",SpCity="Borispol", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spborispol)
+                              SpravKaru.relationships.create("Cities",spborispol)
+                              item = db.nodes.create(SpCity="Borispol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spborispol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "borodyanka" in info[1].lower():
+                         try:
+                              type(spborodyanka)
+                              item = db.nodes.create(SpCity="Borodyanka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spborodyanka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spborodyanka= db.nodes.create(Spname="Borodyanka",SpCity="Borodyanka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spborodyanka)
+                              SpravKaru.relationships.create("Cities",spborodyanka)
+                              item = db.nodes.create(SpCity="Borodyanka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spborodyanka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bokhan" in info[1].lower():
+                         try:
+                              type(spbokhan)
+                              item = db.nodes.create(SpCity="Bokhan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbokhan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbokhan= db.nodes.create(Spname="Bokhan",SpCity="Bokhan", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbokhan)
+                              SpravKaru.relationships.create("Cities",spbokhan)
+                              item = db.nodes.create(SpCity="Bokhan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbokhan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bratsk" in info[1].lower():
+                         try:
+                              type(spbratsk)
+                              item = db.nodes.create(SpCity="Bratsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbratsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbratsk= db.nodes.create(Spname="Bratsk",SpCity="Bratsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbratsk)
+                              SpravKaru.relationships.create("Cities",spbratsk)
+                              item = db.nodes.create(SpCity="Bratsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbratsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "brest" in info[1].lower():
+                         try:
+                              type(spbrest)
+                              item = db.nodes.create(SpCity="Brest", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbrest.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbrest= db.nodes.create(Spname="Brest",SpCity="Brest", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbrest)
+                              SpravKaru.relationships.create("Cities",spbrest)
+                              item = db.nodes.create(SpCity="Brest", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbrest.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "brovary" in info[1].lower():
+                         try:
+                              type(spbrovary)
+                              item = db.nodes.create(SpCity="Brovary", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbrovary.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbrovary= db.nodes.create(Spname="Brovary",SpCity="Brovary", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbrovary)
+                              SpravKaru.relationships.create("Cities",spbrovary)
+                              item = db.nodes.create(SpCity="Brovary", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbrovary.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bugulma" in info[1].lower():
+                         try:
+                              type(spbugulma)
+                              item = db.nodes.create(SpCity="Bugulma", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbugulma.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbugulma= db.nodes.create(Spname="Bugulma",SpCity="Bugulma", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbugulma)
+                              SpravKaru.relationships.create("Cities",spbugulma)
+                              item = db.nodes.create(SpCity="Bugulma", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbugulma.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "bykhov" in info[1].lower():
+                         try:
+                              type(spbykhov)
+                              item = db.nodes.create(SpCity="Bykhov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbykhov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spbykhov= db.nodes.create(Spname="Bykhov",SpCity="Bykhov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spbykhov)
+                              SpravKaru.relationships.create("Cities",spbykhov)
+                              item = db.nodes.create(SpCity="Bykhov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spbykhov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "vasilkov" in info[1].lower():
+                         try:
+                              type(spvasilkov)
+                              item = db.nodes.create(SpCity="Vasilkov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvasilkov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvasilkov= db.nodes.create(Spname="Vasilkov",SpCity="Vasilkov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvasilkov)
+                              SpravKaru.relationships.create("Cities",spvasilkov)
+                              item = db.nodes.create(SpCity="Vasilkov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvasilkov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "velizh" in info[1].lower():
+                         try:
+                              type(spvelizh)
+                              item = db.nodes.create(SpCity="Velizh", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvelizh.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvelizh= db.nodes.create(Spname="Velizh",SpCity="Velizh", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvelizh)
+                              SpravKaru.relationships.create("Cities",spvelizh)
+                              item = db.nodes.create(SpCity="Velizh", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvelizh.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "velikieluki" in info[1].lower():
+                         try:
+                              type(spvelikieluki)
+                              item = db.nodes.create(SpCity="VelikieLuki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvelikieluki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvelikieluki= db.nodes.create(Spname="VelikieLuki",SpCity="VelikieLuki", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvelikieluki)
+                              SpravKaru.relationships.create("Cities",spvelikieluki)
+                              item = db.nodes.create(SpCity="VelikieLuki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvelikieluki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "verkhnedvinsk" in info[1].lower():
+                         try:
+                              type(spverkhnedvinsk)
+                              item = db.nodes.create(SpCity="Verkhnedvinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spverkhnedvinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spverkhnedvinsk= db.nodes.create(Spname="Verkhnedvinsk",SpCity="Verkhnedvinsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spverkhnedvinsk)
+                              SpravKaru.relationships.create("Cities",spverkhnedvinsk)
+                              item = db.nodes.create(SpCity="Verkhnedvinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spverkhnedvinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "vileyka" in info[1].lower():
+                         try:
+                              type(spvileyka)
+                              item = db.nodes.create(SpCity="Vileyka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvileyka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvileyka= db.nodes.create(Spname="Vileyka",SpCity="Vileyka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvileyka)
+                              SpravKaru.relationships.create("Cities",spvileyka)
+                              item = db.nodes.create(SpCity="Vileyka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvileyka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "vinnitsa" in info[1].lower():
+                         try:
+                              type(spvinnitsa)
+                              item = db.nodes.create(SpCity="Vinnitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvinnitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvinnitsa= db.nodes.create(Spname="Vinnitsa",SpCity="Vinnitsa", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvinnitsa)
+                              SpravKaru.relationships.create("Cities",spvinnitsa)
+                              item = db.nodes.create(SpCity="Vinnitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvinnitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "vitebsk" in info[1].lower():
+                         try:
+                              type(spvitebsk)
+                              item = db.nodes.create(SpCity="Vitebsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvitebsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvitebsk= db.nodes.create(Spname="Vitebsk",SpCity="Vitebsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvitebsk)
+                              SpravKaru.relationships.create("Cities",spvitebsk)
+                              item = db.nodes.create(SpCity="Vitebsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvitebsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "vladivostok" in info[1].lower():
+                         try:
+                              type(spvladivostok)
+                              item = db.nodes.create(SpCity="Vladivostok", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvladivostok.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvladivostok= db.nodes.create(Spname="Vladivostok",SpCity="Vladivostok", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvladivostok)
+                              SpravKaru.relationships.create("Cities",spvladivostok)
+                              item = db.nodes.create(SpCity="Vladivostok", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvladivostok.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "vladimir" in info[1].lower():
+                         try:
+                              type(spvladimir)
+                              item = db.nodes.create(SpCity="Vladimir", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvladimir.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvladimir= db.nodes.create(Spname="Vladimir",SpCity="Vladimir", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvladimir)
+                              SpravKaru.relationships.create("Cities",spvladimir)
+                              item = db.nodes.create(SpCity="Vladimir", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvladimir.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "volgograd" in info[1].lower():
+                         try:
+                              type(spvolgograd)
+                              item = db.nodes.create(SpCity="Volgograd", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolgograd.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvolgograd= db.nodes.create(Spname="Volgograd",SpCity="Volgograd", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvolgograd)
+                              SpravKaru.relationships.create("Cities",spvolgograd)
+                              item = db.nodes.create(SpCity="Volgograd", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolgograd.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "volzhskiy" in info[1].lower():
+                         try:
+                              type(spvolzhskiy)
+                              item = db.nodes.create(SpCity="Volzhskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolzhskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvolzhskiy= db.nodes.create(Spname="Volzhskiy",SpCity="Volzhskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvolzhskiy)
+                              SpravKaru.relationships.create("Cities",spvolzhskiy)
+                              item = db.nodes.create(SpCity="Volzhskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolzhskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "volkovysk" in info[1].lower():
+                         try:
+                              type(spvolkovysk)
+                              item = db.nodes.create(SpCity="Volkovysk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolkovysk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvolkovysk= db.nodes.create(Spname="Volkovysk",SpCity="Volkovysk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvolkovysk)
+                              SpravKaru.relationships.create("Cities",spvolkovysk)
+                              item = db.nodes.create(SpCity="Volkovysk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolkovysk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "volodarka" in info[1].lower():
+                         try:
+                              type(spvolodarka)
+                              item = db.nodes.create(SpCity="Volodarka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolodarka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvolodarka= db.nodes.create(Spname="Volodarka",SpCity="Volodarka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvolodarka)
+                              SpravKaru.relationships.create("Cities",spvolodarka)
+                              item = db.nodes.create(SpCity="Volodarka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolodarka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "volozhin" in info[1].lower():
+                         try:
+                              type(spvolozhin)
+                              item = db.nodes.create(SpCity="Volozhin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolozhin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvolozhin= db.nodes.create(Spname="Volozhin",SpCity="Volozhin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvolozhin)
+                              SpravKaru.relationships.create("Cities",spvolozhin)
+                              item = db.nodes.create(SpCity="Volozhin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvolozhin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "voronezh" in info[1].lower():
+                         try:
+                              type(spvoronezh)
+                              item = db.nodes.create(SpCity="Voronezh", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvoronezh.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvoronezh= db.nodes.create(Spname="Voronezh",SpCity="Voronezh", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvoronezh)
+                              SpravKaru.relationships.create("Cities",spvoronezh)
+                              item = db.nodes.create(SpCity="Voronezh", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvoronezh.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "vyshgorod" in info[1].lower():
+                         try:
+                              type(spvyshgorod)
+                              item = db.nodes.create(SpCity="Vyshgorod", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvyshgorod.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvyshgorod= db.nodes.create(Spname="Vyshgorod",SpCity="Vyshgorod", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvyshgorod)
+                              SpravKaru.relationships.create("Cities",spvyshgorod)
+                              item = db.nodes.create(SpCity="Vyshgorod", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvyshgorod.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "vyazma" in info[1].lower():
+                         try:
+                              type(spvyazma)
+                              item = db.nodes.create(SpCity="Vyazma", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvyazma.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spvyazma= db.nodes.create(Spname="Vyazma",SpCity="Vyazma", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spvyazma)
+                              SpravKaru.relationships.create("Cities",spvyazma)
+                              item = db.nodes.create(SpCity="Vyazma", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spvyazma.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "gagarin" in info[1].lower():
+                         try:
+                              type(spgagarin)
+                              item = db.nodes.create(SpCity="Gagarin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgagarin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spgagarin= db.nodes.create(Spname="Gagarin",SpCity="Gagarin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spgagarin)
+                              SpravKaru.relationships.create("Cities",spgagarin)
+                              item = db.nodes.create(SpCity="Gagarin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgagarin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "gayvoron" in info[1].lower():
+                         try:
+                              type(spgayvoron)
+                              item = db.nodes.create(SpCity="Gayvoron", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgayvoron.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spgayvoron= db.nodes.create(Spname="Gayvoron",SpCity="Gayvoron", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spgayvoron)
+                              SpravKaru.relationships.create("Cities",spgayvoron)
+                              item = db.nodes.create(SpCity="Gayvoron", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgayvoron.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "glinka" in info[1].lower():
+                         try:
+                              type(spglinka)
+                              item = db.nodes.create(SpCity="Glinka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spglinka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spglinka= db.nodes.create(Spname="Glinka",SpCity="Glinka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spglinka)
+                              SpravKaru.relationships.create("Cities",spglinka)
+                              item = db.nodes.create(SpCity="Glinka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spglinka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "glubokoe" in info[1].lower():
+                         try:
+                              type(spglubokoe)
+                              item = db.nodes.create(SpCity="Glubokoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spglubokoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spglubokoe= db.nodes.create(Spname="Glubokoe",SpCity="Glubokoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spglubokoe)
+                              SpravKaru.relationships.create("Cities",spglubokoe)
+                              item = db.nodes.create(SpCity="Glubokoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spglubokoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "golovanevsk" in info[1].lower():
+                         try:
+                              type(spgolovanevsk)
+                              item = db.nodes.create(SpCity="Golovanevsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgolovanevsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spgolovanevsk= db.nodes.create(Spname="Golovanevsk",SpCity="Golovanevsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spgolovanevsk)
+                              SpravKaru.relationships.create("Cities",spgolovanevsk)
+                              item = db.nodes.create(SpCity="Golovanevsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgolovanevsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "gomel" in info[1].lower():
+                         try:
+                              type(spgomel)
+                              item = db.nodes.create(SpCity="Gomel", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgomel.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spgomel= db.nodes.create(Spname="Gomel",SpCity="Gomel", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spgomel)
+                              SpravKaru.relationships.create("Cities",spgomel)
+                              item = db.nodes.create(SpCity="Gomel", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgomel.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "gorki" in info[1].lower():
+                         try:
+                              type(spgorki)
+                              item = db.nodes.create(SpCity="Gorki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgorki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spgorki= db.nodes.create(Spname="Gorki",SpCity="Gorki", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spgorki)
+                              SpravKaru.relationships.create("Cities",spgorki)
+                              item = db.nodes.create(SpCity="Gorki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgorki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "gorodnya" in info[1].lower():
+                         try:
+                              type(spgorodnya)
+                              item = db.nodes.create(SpCity="Gorodnya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgorodnya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spgorodnya= db.nodes.create(Spname="Gorodnya",SpCity="Gorodnya", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spgorodnya)
+                              SpravKaru.relationships.create("Cities",spgorodnya)
+                              item = db.nodes.create(SpCity="Gorodnya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgorodnya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "grigoriopol" in info[1].lower():
+                         try:
+                              type(spgrigoriopol)
+                              item = db.nodes.create(SpCity="Grigoriopol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgrigoriopol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spgrigoriopol= db.nodes.create(Spname="Grigoriopol",SpCity="Grigoriopol", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spgrigoriopol)
+                              SpravKaru.relationships.create("Cities",spgrigoriopol)
+                              item = db.nodes.create(SpCity="Grigoriopol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgrigoriopol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "grodno" in info[1].lower():
+                         try:
+                              type(spgrodno)
+                              item = db.nodes.create(SpCity="Grodno", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgrodno.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spgrodno= db.nodes.create(Spname="Grodno",SpCity="Grodno", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spgrodno)
+                              SpravKaru.relationships.create("Cities",spgrodno)
+                              item = db.nodes.create(SpCity="Grodno", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spgrodno.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "demidov" in info[1].lower():
+                         try:
+                              type(spdemidov)
+                              item = db.nodes.create(SpCity="Demidov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdemidov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdemidov= db.nodes.create(Spname="Demidov",SpCity="Demidov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdemidov)
+                              SpravKaru.relationships.create("Cities",spdemidov)
+                              item = db.nodes.create(SpCity="Demidov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdemidov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "desnogorsk" in info[1].lower():
+                         try:
+                              type(spdesnogorsk)
+                              item = db.nodes.create(SpCity="Desnogorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdesnogorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdesnogorsk= db.nodes.create(Spname="Desnogorsk",SpCity="Desnogorsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdesnogorsk)
+                              SpravKaru.relationships.create("Cities",spdesnogorsk)
+                              item = db.nodes.create(SpCity="Desnogorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdesnogorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dzhankoy" in info[1].lower():
+                         try:
+                              type(spdzhankoy)
+                              item = db.nodes.create(SpCity="Dzhankoy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdzhankoy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdzhankoy= db.nodes.create(Spname="Dzhankoy",SpCity="Dzhankoy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdzhankoy)
+                              SpravKaru.relationships.create("Cities",spdzhankoy)
+                              item = db.nodes.create(SpCity="Dzhankoy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdzhankoy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dnepropetrovsk" in info[1].lower():
+                         try:
+                              type(spdnepropetrovsk)
+                              item = db.nodes.create(SpCity="Dnepropetrovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdnepropetrovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdnepropetrovsk= db.nodes.create(Spname="Dnepropetrovsk",SpCity="Dnepropetrovsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdnepropetrovsk)
+                              SpravKaru.relationships.create("Cities",spdnepropetrovsk)
+                              item = db.nodes.create(SpCity="Dnepropetrovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdnepropetrovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dobrovelichkovka" in info[1].lower():
+                         try:
+                              type(spdobrovelichkovka)
+                              item = db.nodes.create(SpCity="Dobrovelichkovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdobrovelichkovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdobrovelichkovka= db.nodes.create(Spname="Dobrovelichkovka",SpCity="Dobrovelichkovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdobrovelichkovka)
+                              SpravKaru.relationships.create("Cities",spdobrovelichkovka)
+                              item = db.nodes.create(SpCity="Dobrovelichkovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdobrovelichkovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dokshitsy" in info[1].lower():
+                         try:
+                              type(spdokshitsy)
+                              item = db.nodes.create(SpCity="Dokshitsy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdokshitsy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdokshitsy= db.nodes.create(Spname="Dokshitsy",SpCity="Dokshitsy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdokshitsy)
+                              SpravKaru.relationships.create("Cities",spdokshitsy)
+                              item = db.nodes.create(SpCity="Dokshitsy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdokshitsy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dolinskaya" in info[1].lower():
+                         try:
+                              type(spdolinskaya)
+                              item = db.nodes.create(SpCity="Dolinskaya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdolinskaya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdolinskaya= db.nodes.create(Spname="Dolinskaya",SpCity="Dolinskaya", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdolinskaya)
+                              SpravKaru.relationships.create("Cities",spdolinskaya)
+                              item = db.nodes.create(SpCity="Dolinskaya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdolinskaya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "donetsk" in info[1].lower():
+                         try:
+                              type(spdonetsk)
+                              item = db.nodes.create(SpCity="Donetsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdonetsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdonetsk= db.nodes.create(Spname="Donetsk",SpCity="Donetsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdonetsk)
+                              SpravKaru.relationships.create("Cities",spdonetsk)
+                              item = db.nodes.create(SpCity="Donetsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdonetsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dorogobuzh" in info[1].lower():
+                         try:
+                              type(spdorogobuzh)
+                              item = db.nodes.create(SpCity="Dorogobuzh", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdorogobuzh.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdorogobuzh= db.nodes.create(Spname="Dorogobuzh",SpCity="Dorogobuzh", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdorogobuzh)
+                              SpravKaru.relationships.create("Cities",spdorogobuzh)
+                              item = db.nodes.create(SpCity="Dorogobuzh", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdorogobuzh.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dribin" in info[1].lower():
+                         try:
+                              type(spdribin)
+                              item = db.nodes.create(SpCity="Dribin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdribin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdribin= db.nodes.create(Spname="Dribin",SpCity="Dribin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdribin)
+                              SpravKaru.relationships.create("Cities",spdribin)
+                              item = db.nodes.create(SpCity="Dribin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdribin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "drogichin" in info[1].lower():
+                         try:
+                              type(spdrogichin)
+                              item = db.nodes.create(SpCity="Drogichin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdrogichin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdrogichin= db.nodes.create(Spname="Drogichin",SpCity="Drogichin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdrogichin)
+                              SpravKaru.relationships.create("Cities",spdrogichin)
+                              item = db.nodes.create(SpCity="Drogichin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdrogichin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dubossary" in info[1].lower():
+                         try:
+                              type(spdubossary)
+                              item = db.nodes.create(SpCity="Dubossary", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdubossary.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdubossary= db.nodes.create(Spname="Dubossary",SpCity="Dubossary", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdubossary)
+                              SpravKaru.relationships.create("Cities",spdubossary)
+                              item = db.nodes.create(SpCity="Dubossary", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdubossary.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "dukhovshchina" in info[1].lower():
+                         try:
+                              type(spdukhovshchina)
+                              item = db.nodes.create(SpCity="Dukhovshchina", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdukhovshchina.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spdukhovshchina= db.nodes.create(Spname="Dukhovshchina",SpCity="Dukhovshchina", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spdukhovshchina)
+                              SpravKaru.relationships.create("Cities",spdukhovshchina)
+                              item = db.nodes.create(SpCity="Dukhovshchina", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spdukhovshchina.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "evpatoriya" in info[1].lower():
+                         try:
+                              type(spevpatoriya)
+                              item = db.nodes.create(SpCity="Evpatoriya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spevpatoriya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spevpatoriya= db.nodes.create(Spname="Evpatoriya",SpCity="Evpatoriya", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spevpatoriya)
+                              SpravKaru.relationships.create("Cities",spevpatoriya)
+                              item = db.nodes.create(SpCity="Evpatoriya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spevpatoriya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ekaterinburg" in info[1].lower():
+                         try:
+                              type(spekaterinburg)
+                              item = db.nodes.create(SpCity="Ekaterinburg", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spekaterinburg.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spekaterinburg= db.nodes.create(Spname="Ekaterinburg",SpCity="Ekaterinburg", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spekaterinburg)
+                              SpravKaru.relationships.create("Cities",spekaterinburg)
+                              item = db.nodes.create(SpCity="Ekaterinburg", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spekaterinburg.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "elantsy" in info[1].lower():
+                         try:
+                              type(spelantsy)
+                              item = db.nodes.create(SpCity="Elantsy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spelantsy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spelantsy= db.nodes.create(Spname="Elantsy",SpCity="Elantsy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spelantsy)
+                              SpravKaru.relationships.create("Cities",spelantsy)
+                              item = db.nodes.create(SpCity="Elantsy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spelantsy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "elna" in info[1].lower():
+                         try:
+                              type(spelna)
+                              item = db.nodes.create(SpCity="Elna", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spelna.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spelna= db.nodes.create(Spname="Elna",SpCity="Elna", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spelna)
+                              SpravKaru.relationships.create("Cities",spelna)
+                              item = db.nodes.create(SpCity="Elna", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spelna.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "erbogachen" in info[1].lower():
+                         try:
+                              type(sperbogachen)
+                              item = db.nodes.create(SpCity="Erbogachen", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sperbogachen.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sperbogachen= db.nodes.create(Spname="Erbogachen",SpCity="Erbogachen", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sperbogachen)
+                              SpravKaru.relationships.create("Cities",sperbogachen)
+                              item = db.nodes.create(SpCity="Erbogachen", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sperbogachen.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ershichi" in info[1].lower():
+                         try:
+                              type(spershichi)
+                              item = db.nodes.create(SpCity="Ershichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spershichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spershichi= db.nodes.create(Spname="Ershichi",SpCity="Ershichi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spershichi)
+                              SpravKaru.relationships.create("Cities",spershichi)
+                              item = db.nodes.create(SpCity="Ershichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spershichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zhigalovo" in info[1].lower():
+                         try:
+                              type(spzhigalovo)
+                              item = db.nodes.create(SpCity="Zhigalovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzhigalovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzhigalovo= db.nodes.create(Spname="Zhigalovo",SpCity="Zhigalovo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzhigalovo)
+                              SpravKaru.relationships.create("Cities",spzhigalovo)
+                              item = db.nodes.create(SpCity="Zhigalovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzhigalovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zhitomir" in info[1].lower():
+                         try:
+                              type(spzhitomir)
+                              item = db.nodes.create(SpCity="Zhitomir", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzhitomir.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzhitomir= db.nodes.create(Spname="Zhitomir",SpCity="Zhitomir", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzhitomir)
+                              SpravKaru.relationships.create("Cities",spzhitomir)
+                              item = db.nodes.create(SpCity="Zhitomir", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzhitomir.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zhlobin" in info[1].lower():
+                         try:
+                              type(spzhlobin)
+                              item = db.nodes.create(SpCity="Zhlobin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzhlobin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzhlobin= db.nodes.create(Spname="Zhlobin",SpCity="Zhlobin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzhlobin)
+                              SpravKaru.relationships.create("Cities",spzhlobin)
+                              item = db.nodes.create(SpCity="Zhlobin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzhlobin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zhodino" in info[1].lower():
+                         try:
+                              type(spzhodino)
+                              item = db.nodes.create(SpCity="Zhodino", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzhodino.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzhodino= db.nodes.create(Spname="Zhodino",SpCity="Zhodino", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzhodino)
+                              SpravKaru.relationships.create("Cities",spzhodino)
+                              item = db.nodes.create(SpCity="Zhodino", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzhodino.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zalari" in info[1].lower():
+                         try:
+                              type(spzalari)
+                              item = db.nodes.create(SpCity="Zalari", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzalari.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzalari= db.nodes.create(Spname="Zalari",SpCity="Zalari", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzalari)
+                              SpravKaru.relationships.create("Cities",spzalari)
+                              item = db.nodes.create(SpCity="Zalari", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzalari.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zaporozhe" in info[1].lower():
+                         try:
+                              type(spzaporozhe)
+                              item = db.nodes.create(SpCity="Zaporozhe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzaporozhe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzaporozhe= db.nodes.create(Spname="Zaporozhe",SpCity="Zaporozhe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzaporozhe)
+                              SpravKaru.relationships.create("Cities",spzaporozhe)
+                              item = db.nodes.create(SpCity="Zaporozhe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzaporozhe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zaslavl" in info[1].lower():
+                         try:
+                              type(spzaslavl)
+                              item = db.nodes.create(SpCity="Zaslavl", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzaslavl.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzaslavl= db.nodes.create(Spname="Zaslavl",SpCity="Zaslavl", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzaslavl)
+                              SpravKaru.relationships.create("Cities",spzaslavl)
+                              item = db.nodes.create(SpCity="Zaslavl", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzaslavl.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zgurovka" in info[1].lower():
+                         try:
+                              type(spzgurovka)
+                              item = db.nodes.create(SpCity="Zgurovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzgurovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzgurovka= db.nodes.create(Spname="Zgurovka",SpCity="Zgurovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzgurovka)
+                              SpravKaru.relationships.create("Cities",spzgurovka)
+                              item = db.nodes.create(SpCity="Zgurovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzgurovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zima" in info[1].lower():
+                         try:
+                              type(spzima)
+                              item = db.nodes.create(SpCity="Zima", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzima.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzima= db.nodes.create(Spname="Zima",SpCity="Zima", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzima)
+                              SpravKaru.relationships.create("Cities",spzima)
+                              item = db.nodes.create(SpCity="Zima", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzima.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "zlatoust" in info[1].lower():
+                         try:
+                              type(spzlatoust)
+                              item = db.nodes.create(SpCity="Zlatoust", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzlatoust.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spzlatoust= db.nodes.create(Spname="Zlatoust",SpCity="Zlatoust", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spzlatoust)
+                              SpravKaru.relationships.create("Cities",spzlatoust)
+                              item = db.nodes.create(SpCity="Zlatoust", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spzlatoust.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "znamenka" in info[1].lower():
+                         try:
+                              type(spznamenka)
+                              item = db.nodes.create(SpCity="Znamenka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spznamenka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spznamenka= db.nodes.create(Spname="Znamenka",SpCity="Znamenka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spznamenka)
+                              SpravKaru.relationships.create("Cities",spznamenka)
+                              item = db.nodes.create(SpCity="Znamenka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spznamenka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ivankov" in info[1].lower():
+                         try:
+                              type(spivankov)
+                              item = db.nodes.create(SpCity="Ivankov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spivankov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spivankov= db.nodes.create(Spname="Ivankov",SpCity="Ivankov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spivankov)
+                              SpravKaru.relationships.create("Cities",spivankov)
+                              item = db.nodes.create(SpCity="Ivankov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spivankov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ivanovo" in info[1].lower():
+                         try:
+                              type(spivanovo)
+                              item = db.nodes.create(SpCity="Ivanovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spivanovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spivanovo= db.nodes.create(Spname="Ivanovo",SpCity="Ivanovo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spivanovo)
+                              SpravKaru.relationships.create("Cities",spivanovo)
+                              item = db.nodes.create(SpCity="Ivanovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spivanovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "irkutsk" in info[1].lower():
+                         try:
+                              type(spirkutsk)
+                              item = db.nodes.create(SpCity="Irkutsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spirkutsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spirkutsk= db.nodes.create(Spname="Irkutsk",SpCity="Irkutsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spirkutsk)
+                              SpravKaru.relationships.create("Cities",spirkutsk)
+                              item = db.nodes.create(SpCity="Irkutsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spirkutsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "irpen" in info[1].lower():
+                         try:
+                              type(spirpen)
+                              item = db.nodes.create(SpCity="Irpen", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spirpen.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spirpen= db.nodes.create(Spname="Irpen",SpCity="Irpen", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spirpen)
+                              SpravKaru.relationships.create("Cities",spirpen)
+                              item = db.nodes.create(SpCity="Irpen", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spirpen.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kazan" in info[1].lower():
+                         try:
+                              type(spkazan)
+                              item = db.nodes.create(SpCity="Kazan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkazan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkazan= db.nodes.create(Spname="Kazan",SpCity="Kazan", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkazan)
+                              SpravKaru.relationships.create("Cities",spkazan)
+                              item = db.nodes.create(SpCity="Kazan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkazan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kaluga" in info[1].lower():
+                         try:
+                              type(spkaluga)
+                              item = db.nodes.create(SpCity="Kaluga", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkaluga.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkaluga= db.nodes.create(Spname="Kaluga",SpCity="Kaluga", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkaluga)
+                              SpravKaru.relationships.create("Cities",spkaluga)
+                              item = db.nodes.create(SpCity="Kaluga", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkaluga.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kandyagash" in info[1].lower():
+                         try:
+                              type(spkandyagash)
+                              item = db.nodes.create(SpCity="Kandyagash", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkandyagash.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkandyagash= db.nodes.create(Spname="Kandyagash",SpCity="Kandyagash", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkandyagash)
+                              SpravKaru.relationships.create("Cities",spkandyagash)
+                              item = db.nodes.create(SpCity="Kandyagash", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkandyagash.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "karaganda" in info[1].lower():
+                         try:
+                              type(spkaraganda)
+                              item = db.nodes.create(SpCity="Karaganda", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkaraganda.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkaraganda= db.nodes.create(Spname="Karaganda",SpCity="Karaganda", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkaraganda)
+                              SpravKaru.relationships.create("Cities",spkaraganda)
+                              item = db.nodes.create(SpCity="Karaganda", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkaraganda.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kardymovo" in info[1].lower():
+                         try:
+                              type(spkardymovo)
+                              item = db.nodes.create(SpCity="Kardymovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkardymovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkardymovo= db.nodes.create(Spname="Kardymovo",SpCity="Kardymovo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkardymovo)
+                              SpravKaru.relationships.create("Cities",spkardymovo)
+                              item = db.nodes.create(SpCity="Kardymovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkardymovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kachug" in info[1].lower():
+                         try:
+                              type(spkachug)
+                              item = db.nodes.create(SpCity="Kachug", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkachug.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkachug= db.nodes.create(Spname="Kachug",SpCity="Kachug", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkachug)
+                              SpravKaru.relationships.create("Cities",spkachug)
+                              item = db.nodes.create(SpCity="Kachug", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkachug.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kemerovo" in info[1].lower():
+                         try:
+                              type(spkemerovo)
+                              item = db.nodes.create(SpCity="Kemerovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkemerovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkemerovo= db.nodes.create(Spname="Kemerovo",SpCity="Kemerovo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkemerovo)
+                              SpravKaru.relationships.create("Cities",spkemerovo)
+                              item = db.nodes.create(SpCity="Kemerovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkemerovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kerch" in info[1].lower():
+                         try:
+                              type(spkerch)
+                              item = db.nodes.create(SpCity="Kerch", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkerch.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkerch= db.nodes.create(Spname="Kerch",SpCity="Kerch", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkerch)
+                              SpravKaru.relationships.create("Cities",spkerch)
+                              item = db.nodes.create(SpCity="Kerch", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkerch.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kiev" in info[1].lower():
+                         try:
+                              type(spkiev)
+                              item = db.nodes.create(SpCity="Kiev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkiev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkiev= db.nodes.create(Spname="Kiev",SpCity="Kiev", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkiev)
+                              SpravKaru.relationships.create("Cities",spkiev)
+                              item = db.nodes.create(SpCity="Kiev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkiev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kievo-svyatoshinskiyrayon" in info[1].lower():
+                         try:
+                              type(spkievosvyatoshinskiyrayon)
+                              item = db.nodes.create(SpCity="Kievo-SvyatoshinskiyRayon", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkievosvyatoshinskiyrayon.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkievosvyatoshinskiyrayon= db.nodes.create(Spname="Kievo-SvyatoshinskiyRayon",SpCity="Kievo-SvyatoshinskiyRayon", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkievosvyatoshinskiyrayon)
+                              SpravKaru.relationships.create("Cities",spkievosvyatoshinskiyrayon)
+                              item = db.nodes.create(SpCity="Kievo-SvyatoshinskiyRayon", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkievosvyatoshinskiyrayon.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kirovograd" in info[1].lower():
+                         try:
+                              type(spkirovograd)
+                              item = db.nodes.create(SpCity="Kirovograd", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkirovograd.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkirovograd= db.nodes.create(Spname="Kirovograd",SpCity="Kirovograd", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkirovograd)
+                              SpravKaru.relationships.create("Cities",spkirovograd)
+                              item = db.nodes.create(SpCity="Kirovograd", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkirovograd.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kirovsk" in info[1].lower():
+                         try:
+                              type(spkirovsk)
+                              item = db.nodes.create(SpCity="Kirovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkirovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkirovsk= db.nodes.create(Spname="Kirovsk",SpCity="Kirovsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkirovsk)
+                              SpravKaru.relationships.create("Cities",spkirovsk)
+                              item = db.nodes.create(SpCity="Kirovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkirovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kirovskoe" in info[1].lower():
+                         try:
+                              type(spkirovskoe)
+                              item = db.nodes.create(SpCity="Kirovskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkirovskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkirovskoe= db.nodes.create(Spname="Kirovskoe",SpCity="Kirovskoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkirovskoe)
+                              SpravKaru.relationships.create("Cities",spkirovskoe)
+                              item = db.nodes.create(SpCity="Kirovskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkirovskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "klimovichi" in info[1].lower():
+                         try:
+                              type(spklimovichi)
+                              item = db.nodes.create(SpCity="Klimovichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spklimovichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spklimovichi= db.nodes.create(Spname="Klimovichi",SpCity="Klimovichi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spklimovichi)
+                              SpravKaru.relationships.create("Cities",spklimovichi)
+                              item = db.nodes.create(SpCity="Klimovichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spklimovichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "klichev" in info[1].lower():
+                         try:
+                              type(spklichev)
+                              item = db.nodes.create(SpCity="Klichev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spklichev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spklichev= db.nodes.create(Spname="Klichev",SpCity="Klichev", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spklichev)
+                              SpravKaru.relationships.create("Cities",spklichev)
+                              item = db.nodes.create(SpCity="Klichev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spklichev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kokshetau/kokchetav" in info[1].lower():
+                         try:
+                              type(spkokshetaukokchetav)
+                              item = db.nodes.create(SpCity="Kokshetau/kokchetav", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkokshetaukokchetav.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkokshetaukokchetav= db.nodes.create(Spname="Kokshetau/kokchetav",SpCity="Kokshetau/kokchetav", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkokshetaukokchetav)
+                              SpravKaru.relationships.create("Cities",spkokshetaukokchetav)
+                              item = db.nodes.create(SpCity="Kokshetau/kokchetav", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkokshetaukokchetav.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kompaneevka" in info[1].lower():
+                         try:
+                              type(spkompaneevka)
+                              item = db.nodes.create(SpCity="Kompaneevka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkompaneevka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkompaneevka= db.nodes.create(Spname="Kompaneevka",SpCity="Kompaneevka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkompaneevka)
+                              SpravKaru.relationships.create("Cities",spkompaneevka)
+                              item = db.nodes.create(SpCity="Kompaneevka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkompaneevka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "korop" in info[1].lower():
+                         try:
+                              type(spkorop)
+                              item = db.nodes.create(SpCity="Korop", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkorop.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkorop= db.nodes.create(Spname="Korop",SpCity="Korop", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkorop)
+                              SpravKaru.relationships.create("Cities",spkorop)
+                              item = db.nodes.create(SpCity="Korop", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkorop.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "koryukovka" in info[1].lower():
+                         try:
+                              type(spkoryukovka)
+                              item = db.nodes.create(SpCity="Koryukovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkoryukovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkoryukovka= db.nodes.create(Spname="Koryukovka",SpCity="Koryukovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkoryukovka)
+                              SpravKaru.relationships.create("Cities",spkoryukovka)
+                              item = db.nodes.create(SpCity="Koryukovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkoryukovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kostanay" in info[1].lower():
+                         try:
+                              type(spkostanay)
+                              item = db.nodes.create(SpCity="Kostanay", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkostanay.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkostanay= db.nodes.create(Spname="Kostanay",SpCity="Kostanay", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkostanay)
+                              SpravKaru.relationships.create("Cities",spkostanay)
+                              item = db.nodes.create(SpCity="Kostanay", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkostanay.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kostroma" in info[1].lower():
+                         try:
+                              type(spkostroma)
+                              item = db.nodes.create(SpCity="Kostroma", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkostroma.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkostroma= db.nodes.create(Spname="Kostroma",SpCity="Kostroma", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkostroma)
+                              SpravKaru.relationships.create("Cities",spkostroma)
+                              item = db.nodes.create(SpCity="Kostroma", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkostroma.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kostyukovichi" in info[1].lower():
+                         try:
+                              type(spkostyukovichi)
+                              item = db.nodes.create(SpCity="Kostyukovichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkostyukovichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkostyukovichi= db.nodes.create(Spname="Kostyukovichi",SpCity="Kostyukovichi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkostyukovichi)
+                              SpravKaru.relationships.create("Cities",spkostyukovichi)
+                              item = db.nodes.create(SpCity="Kostyukovichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkostyukovichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krasnogvardeyskoe" in info[1].lower():
+                         try:
+                              type(spkrasnogvardeyskoe)
+                              item = db.nodes.create(SpCity="Krasnogvardeyskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnogvardeyskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrasnogvardeyskoe= db.nodes.create(Spname="Krasnogvardeyskoe",SpCity="Krasnogvardeyskoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrasnogvardeyskoe)
+                              SpravKaru.relationships.create("Cities",spkrasnogvardeyskoe)
+                              item = db.nodes.create(SpCity="Krasnogvardeyskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnogvardeyskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krasnodar" in info[1].lower():
+                         try:
+                              type(spkrasnodar)
+                              item = db.nodes.create(SpCity="Krasnodar", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnodar.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrasnodar= db.nodes.create(Spname="Krasnodar",SpCity="Krasnodar", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrasnodar)
+                              SpravKaru.relationships.create("Cities",spkrasnodar)
+                              item = db.nodes.create(SpCity="Krasnodar", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnodar.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krasnoperekopsk" in info[1].lower():
+                         try:
+                              type(spkrasnoperekopsk)
+                              item = db.nodes.create(SpCity="Krasnoperekopsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnoperekopsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrasnoperekopsk= db.nodes.create(Spname="Krasnoperekopsk",SpCity="Krasnoperekopsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrasnoperekopsk)
+                              SpravKaru.relationships.create("Cities",spkrasnoperekopsk)
+                              item = db.nodes.create(SpCity="Krasnoperekopsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnoperekopsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krasnopole" in info[1].lower():
+                         try:
+                              type(spkrasnopole)
+                              item = db.nodes.create(SpCity="Krasnopole", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnopole.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrasnopole= db.nodes.create(Spname="Krasnopole",SpCity="Krasnopole", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrasnopole)
+                              SpravKaru.relationships.create("Cities",spkrasnopole)
+                              item = db.nodes.create(SpCity="Krasnopole", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnopole.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krasnoyarsk" in info[1].lower():
+                         try:
+                              type(spkrasnoyarsk)
+                              item = db.nodes.create(SpCity="Krasnoyarsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnoyarsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrasnoyarsk= db.nodes.create(Spname="Krasnoyarsk",SpCity="Krasnoyarsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrasnoyarsk)
+                              SpravKaru.relationships.create("Cities",spkrasnoyarsk)
+                              item = db.nodes.create(SpCity="Krasnoyarsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnoyarsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krasnyy" in info[1].lower():
+                         try:
+                              type(spkrasnyy)
+                              item = db.nodes.create(SpCity="Krasnyy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnyy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrasnyy= db.nodes.create(Spname="Krasnyy",SpCity="Krasnyy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrasnyy)
+                              SpravKaru.relationships.create("Cities",spkrasnyy)
+                              item = db.nodes.create(SpCity="Krasnyy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasnyy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krasyatichi" in info[1].lower():
+                         try:
+                              type(spkrasyatichi)
+                              item = db.nodes.create(SpCity="Krasyatichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasyatichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrasyatichi= db.nodes.create(Spname="Krasyatichi",SpCity="Krasyatichi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrasyatichi)
+                              SpravKaru.relationships.create("Cities",spkrasyatichi)
+                              item = db.nodes.create(SpCity="Krasyatichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrasyatichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krivoyrog" in info[1].lower():
+                         try:
+                              type(spkrivoyrog)
+                              item = db.nodes.create(SpCity="KrivoyRog", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrivoyrog.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrivoyrog= db.nodes.create(Spname="KrivoyRog",SpCity="KrivoyRog", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrivoyrog)
+                              SpravKaru.relationships.create("Cities",spkrivoyrog)
+                              item = db.nodes.create(SpCity="KrivoyRog", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrivoyrog.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krichev" in info[1].lower():
+                         try:
+                              type(spkrichev)
+                              item = db.nodes.create(SpCity="Krichev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrichev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrichev= db.nodes.create(Spname="Krichev",SpCity="Krichev", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrichev)
+                              SpravKaru.relationships.create("Cities",spkrichev)
+                              item = db.nodes.create(SpCity="Krichev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrichev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "krugloe" in info[1].lower():
+                         try:
+                              type(spkrugloe)
+                              item = db.nodes.create(SpCity="Krugloe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrugloe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkrugloe= db.nodes.create(Spname="Krugloe",SpCity="Krugloe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkrugloe)
+                              SpravKaru.relationships.create("Cities",spkrugloe)
+                              item = db.nodes.create(SpCity="Krugloe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkrugloe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kurgan" in info[1].lower():
+                         try:
+                              type(spkurgan)
+                              item = db.nodes.create(SpCity="Kurgan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkurgan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkurgan= db.nodes.create(Spname="Kurgan",SpCity="Kurgan", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkurgan)
+                              SpravKaru.relationships.create("Cities",spkurgan)
+                              item = db.nodes.create(SpCity="Kurgan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkurgan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kyzylorda" in info[1].lower():
+                         try:
+                              type(spkyzylorda)
+                              item = db.nodes.create(SpCity="Kyzylorda", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkyzylorda.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkyzylorda= db.nodes.create(Spname="Kyzylorda",SpCity="Kyzylorda", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkyzylorda)
+                              SpravKaru.relationships.create("Cities",spkyzylorda)
+                              item = db.nodes.create(SpCity="Kyzylorda", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkyzylorda.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "langepas" in info[1].lower():
+                         try:
+                              type(splangepas)
+                              item = db.nodes.create(SpCity="Langepas", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splangepas.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              splangepas= db.nodes.create(Spname="Langepas",SpCity="Langepas", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(splangepas)
+                              SpravKaru.relationships.create("Cities",splangepas)
+                              item = db.nodes.create(SpCity="Langepas", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splangepas.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "lenino" in info[1].lower():
+                         try:
+                              type(splenino)
+                              item = db.nodes.create(SpCity="Lenino", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splenino.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              splenino= db.nodes.create(Spname="Lenino",SpCity="Lenino", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(splenino)
+                              SpravKaru.relationships.create("Cities",splenino)
+                              item = db.nodes.create(SpCity="Lenino", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splenino.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "leninsk-kuznetskiy" in info[1].lower():
+                         try:
+                              type(spleninskkuznetskiy)
+                              item = db.nodes.create(SpCity="Leninsk-Kuznetskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spleninskkuznetskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spleninskkuznetskiy= db.nodes.create(Spname="Leninsk-Kuznetskiy",SpCity="Leninsk-Kuznetskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spleninskkuznetskiy)
+                              SpravKaru.relationships.create("Cities",spleninskkuznetskiy)
+                              item = db.nodes.create(SpCity="Leninsk-Kuznetskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spleninskkuznetskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "livny" in info[1].lower():
+                         try:
+                              type(splivny)
+                              item = db.nodes.create(SpCity="Livny", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splivny.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              splivny= db.nodes.create(Spname="Livny",SpCity="Livny", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(splivny)
+                              SpravKaru.relationships.create("Cities",splivny)
+                              item = db.nodes.create(SpCity="Livny", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splivny.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "lida" in info[1].lower():
+                         try:
+                              type(splida)
+                              item = db.nodes.create(SpCity="Lida", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splida.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              splida= db.nodes.create(Spname="Lida",SpCity="Lida", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(splida)
+                              SpravKaru.relationships.create("Cities",splida)
+                              item = db.nodes.create(SpCity="Lida", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splida.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "lipetsk" in info[1].lower():
+                         try:
+                              type(splipetsk)
+                              item = db.nodes.create(SpCity="Lipetsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splipetsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              splipetsk= db.nodes.create(Spname="Lipetsk",SpCity="Lipetsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(splipetsk)
+                              SpravKaru.relationships.create("Cities",splipetsk)
+                              item = db.nodes.create(SpCity="Lipetsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splipetsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "lugansk" in info[1].lower():
+                         try:
+                              type(splugansk)
+                              item = db.nodes.create(SpCity="Lugansk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splugansk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              splugansk= db.nodes.create(Spname="Lugansk",SpCity="Lugansk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(splugansk)
+                              SpravKaru.relationships.create("Cities",splugansk)
+                              item = db.nodes.create(SpCity="Lugansk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              splugansk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "magadan" in info[1].lower():
+                         try:
+                              type(spmagadan)
+                              item = db.nodes.create(SpCity="Magadan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmagadan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmagadan= db.nodes.create(Spname="Magadan",SpCity="Magadan", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmagadan)
+                              SpravKaru.relationships.create("Cities",spmagadan)
+                              item = db.nodes.create(SpCity="Magadan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmagadan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "magnitogorsk" in info[1].lower():
+                         try:
+                              type(spmagnitogorsk)
+                              item = db.nodes.create(SpCity="Magnitogorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmagnitogorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmagnitogorsk= db.nodes.create(Spname="Magnitogorsk",SpCity="Magnitogorsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmagnitogorsk)
+                              SpravKaru.relationships.create("Cities",spmagnitogorsk)
+                              item = db.nodes.create(SpCity="Magnitogorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmagnitogorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "makarov" in info[1].lower():
+                         try:
+                              type(spmakarov)
+                              item = db.nodes.create(SpCity="Makarov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmakarov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmakarov= db.nodes.create(Spname="Makarov",SpCity="Makarov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmakarov)
+                              SpravKaru.relationships.create("Cities",spmakarov)
+                              item = db.nodes.create(SpCity="Makarov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmakarov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "malayaviska" in info[1].lower():
+                         try:
+                              type(spmalayaviska)
+                              item = db.nodes.create(SpCity="MalayaViska", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmalayaviska.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmalayaviska= db.nodes.create(Spname="MalayaViska",SpCity="MalayaViska", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmalayaviska)
+                              SpravKaru.relationships.create("Cities",spmalayaviska)
+                              item = db.nodes.create(SpCity="MalayaViska", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmalayaviska.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "mariupol" in info[1].lower():
+                         try:
+                              type(spmariupol)
+                              item = db.nodes.create(SpCity="Mariupol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmariupol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmariupol= db.nodes.create(Spname="Mariupol",SpCity="Mariupol", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmariupol)
+                              SpravKaru.relationships.create("Cities",spmariupol)
+                              item = db.nodes.create(SpCity="Mariupol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmariupol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "martuk" in info[1].lower():
+                         try:
+                              type(spmartuk)
+                              item = db.nodes.create(SpCity="Martuk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmartuk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmartuk= db.nodes.create(Spname="Martuk",SpCity="Martuk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmartuk)
+                              SpravKaru.relationships.create("Cities",spmartuk)
+                              item = db.nodes.create(SpCity="Martuk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmartuk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "machulishchi" in info[1].lower():
+                         try:
+                              type(spmachulishchi)
+                              item = db.nodes.create(SpCity="Machulishchi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmachulishchi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmachulishchi= db.nodes.create(Spname="Machulishchi",SpCity="Machulishchi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmachulishchi)
+                              SpravKaru.relationships.create("Cities",spmachulishchi)
+                              item = db.nodes.create(SpCity="Machulishchi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmachulishchi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "minsk" in info[1].lower():
+                         try:
+                              type(spminsk)
+                              item = db.nodes.create(SpCity="Minsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spminsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spminsk= db.nodes.create(Spname="Minsk",SpCity="Minsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spminsk)
+                              SpravKaru.relationships.create("Cities",spminsk)
+                              item = db.nodes.create(SpCity="Minsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spminsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "mironovka" in info[1].lower():
+                         try:
+                              type(spmironovka)
+                              item = db.nodes.create(SpCity="Mironovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmironovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmironovka= db.nodes.create(Spname="Mironovka",SpCity="Mironovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmironovka)
+                              SpravKaru.relationships.create("Cities",spmironovka)
+                              item = db.nodes.create(SpCity="Mironovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmironovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "mogilev" in info[1].lower():
+                         try:
+                              type(spmogilev)
+                              item = db.nodes.create(SpCity="Mogilev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmogilev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmogilev= db.nodes.create(Spname="Mogilev",SpCity="Mogilev", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmogilev)
+                              SpravKaru.relationships.create("Cities",spmogilev)
+                              item = db.nodes.create(SpCity="Mogilev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmogilev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "mozyr" in info[1].lower():
+                         try:
+                              type(spmozyr)
+                              item = db.nodes.create(SpCity="Mozyr", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmozyr.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmozyr= db.nodes.create(Spname="Mozyr",SpCity="Mozyr", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmozyr)
+                              SpravKaru.relationships.create("Cities",spmozyr)
+                              item = db.nodes.create(SpCity="Mozyr", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmozyr.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "molodechno" in info[1].lower():
+                         try:
+                              type(spmolodechno)
+                              item = db.nodes.create(SpCity="Molodechno", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmolodechno.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmolodechno= db.nodes.create(Spname="Molodechno",SpCity="Molodechno", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmolodechno)
+                              SpravKaru.relationships.create("Cities",spmolodechno)
+                              item = db.nodes.create(SpCity="Molodechno", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmolodechno.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "monastyrshchina" in info[1].lower():
+                         try:
+                              type(spmonastyrshchina)
+                              item = db.nodes.create(SpCity="Monastyrshchina", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmonastyrshchina.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmonastyrshchina= db.nodes.create(Spname="Monastyrshchina",SpCity="Monastyrshchina", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmonastyrshchina)
+                              SpravKaru.relationships.create("Cities",spmonastyrshchina)
+                              item = db.nodes.create(SpCity="Monastyrshchina", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmonastyrshchina.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "moskva" in info[1].lower():
+                         try:
+                              type(spmoskva)
+                              item = db.nodes.create(SpCity="Moskva", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmoskva.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmoskva= db.nodes.create(Spname="Moskva",SpCity="Moskva", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmoskva)
+                              SpravKaru.relationships.create("Cities",spmoskva)
+                              item = db.nodes.create(SpCity="Moskva", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmoskva.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "moskva" in info[1].lower():
+                         try:
+                              type(spmoskva)
+                              item = db.nodes.create(SpCity="Moskva", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmoskva.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmoskva= db.nodes.create(Spname="Moskva",SpCity="Moskva", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmoskva)
+                              SpravKaru.relationships.create("Cities",spmoskva)
+                              item = db.nodes.create(SpCity="Moskva", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmoskva.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "mstislavl" in info[1].lower():
+                         try:
+                              type(spmstislavl)
+                              item = db.nodes.create(SpCity="Mstislavl", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmstislavl.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spmstislavl= db.nodes.create(Spname="Mstislavl",SpCity="Mstislavl", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spmstislavl)
+                              SpravKaru.relationships.create("Cities",spmstislavl)
+                              item = db.nodes.create(SpCity="Mstislavl", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spmstislavl.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "naberezhnyechelny" in info[1].lower():
+                         try:
+                              type(spnaberezhnyechelny)
+                              item = db.nodes.create(SpCity="NaberezhnyeChelny", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnaberezhnyechelny.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnaberezhnyechelny= db.nodes.create(Spname="NaberezhnyeChelny",SpCity="NaberezhnyeChelny", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnaberezhnyechelny)
+                              SpravKaru.relationships.create("Cities",spnaberezhnyechelny)
+                              item = db.nodes.create(SpCity="NaberezhnyeChelny", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnaberezhnyechelny.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nalchik" in info[1].lower():
+                         try:
+                              type(spnalchik)
+                              item = db.nodes.create(SpCity="Nalchik", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnalchik.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnalchik= db.nodes.create(Spname="Nalchik",SpCity="Nalchik", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnalchik)
+                              SpravKaru.relationships.create("Cities",spnalchik)
+                              item = db.nodes.create(SpCity="Nalchik", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnalchik.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nakhodka" in info[1].lower():
+                         try:
+                              type(spnakhodka)
+                              item = db.nodes.create(SpCity="Nakhodka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnakhodka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnakhodka= db.nodes.create(Spname="Nakhodka",SpCity="Nakhodka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnakhodka)
+                              SpravKaru.relationships.create("Cities",spnakhodka)
+                              item = db.nodes.create(SpCity="Nakhodka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnakhodka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nezhin" in info[1].lower():
+                         try:
+                              type(spnezhin)
+                              item = db.nodes.create(SpCity="Nezhin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnezhin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnezhin= db.nodes.create(Spname="Nezhin",SpCity="Nezhin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnezhin)
+                              SpravKaru.relationships.create("Cities",spnezhin)
+                              item = db.nodes.create(SpCity="Nezhin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnezhin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nizhnevartovsk" in info[1].lower():
+                         try:
+                              type(spnizhnevartovsk)
+                              item = db.nodes.create(SpCity="Nizhnevartovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnizhnevartovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnizhnevartovsk= db.nodes.create(Spname="Nizhnevartovsk",SpCity="Nizhnevartovsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnizhnevartovsk)
+                              SpravKaru.relationships.create("Cities",spnizhnevartovsk)
+                              item = db.nodes.create(SpCity="Nizhnevartovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnizhnevartovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nizhnegorskiy" in info[1].lower():
+                         try:
+                              type(spnizhnegorskiy)
+                              item = db.nodes.create(SpCity="Nizhnegorskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnizhnegorskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnizhnegorskiy= db.nodes.create(Spname="Nizhnegorskiy",SpCity="Nizhnegorskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnizhnegorskiy)
+                              SpravKaru.relationships.create("Cities",spnizhnegorskiy)
+                              item = db.nodes.create(SpCity="Nizhnegorskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnizhnegorskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nizhniynovgorod" in info[1].lower():
+                         try:
+                              type(spnizhniynovgorod)
+                              item = db.nodes.create(SpCity="NizhniyNovgorod", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnizhniynovgorod.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnizhniynovgorod= db.nodes.create(Spname="NizhniyNovgorod",SpCity="NizhniyNovgorod", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnizhniynovgorod)
+                              SpravKaru.relationships.create("Cities",spnizhniynovgorod)
+                              item = db.nodes.create(SpCity="NizhniyNovgorod", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnizhniynovgorod.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nizhniytagil" in info[1].lower():
+                         try:
+                              type(spnizhniytagil)
+                              item = db.nodes.create(SpCity="NizhniyTagil", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnizhniytagil.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnizhniytagil= db.nodes.create(Spname="NizhniyTagil",SpCity="NizhniyTagil", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnizhniytagil)
+                              SpravKaru.relationships.create("Cities",spnizhniytagil)
+                              item = db.nodes.create(SpCity="NizhniyTagil", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnizhniytagil.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nikolaev" in info[1].lower():
+                         try:
+                              type(spnikolaev)
+                              item = db.nodes.create(SpCity="Nikolaev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnikolaev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnikolaev= db.nodes.create(Spname="Nikolaev",SpCity="Nikolaev", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnikolaev)
+                              SpravKaru.relationships.create("Cities",spnikolaev)
+                              item = db.nodes.create(SpCity="Nikolaev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnikolaev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nikolaevsk-na-amure" in info[1].lower():
+                         try:
+                              type(spnikolaevsknaamure)
+                              item = db.nodes.create(SpCity="Nikolaevsk-Na-Amure", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnikolaevsknaamure.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnikolaevsknaamure= db.nodes.create(Spname="Nikolaevsk-Na-Amure",SpCity="Nikolaevsk-Na-Amure", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnikolaevsknaamure)
+                              SpravKaru.relationships.create("Cities",spnikolaevsknaamure)
+                              item = db.nodes.create(SpCity="Nikolaevsk-Na-Amure", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnikolaevsknaamure.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nikopol" in info[1].lower():
+                         try:
+                              type(spnikopol)
+                              item = db.nodes.create(SpCity="Nikopol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnikopol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnikopol= db.nodes.create(Spname="Nikopol",SpCity="Nikopol", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnikopol)
+                              SpravKaru.relationships.create("Cities",spnikopol)
+                              item = db.nodes.create(SpCity="Nikopol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnikopol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novgorod-severskiy" in info[1].lower():
+                         try:
+                              type(spnovgorodseverskiy)
+                              item = db.nodes.create(SpCity="Novgorod-Severskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovgorodseverskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovgorodseverskiy= db.nodes.create(Spname="Novgorod-Severskiy",SpCity="Novgorod-Severskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovgorodseverskiy)
+                              SpravKaru.relationships.create("Cities",spnovgorodseverskiy)
+                              item = db.nodes.create(SpCity="Novgorod-Severskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovgorodseverskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novgorodka" in info[1].lower():
+                         try:
+                              type(spnovgorodka)
+                              item = db.nodes.create(SpCity="Novgorodka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovgorodka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovgorodka= db.nodes.create(Spname="Novgorodka",SpCity="Novgorodka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovgorodka)
+                              SpravKaru.relationships.create("Cities",spnovgorodka)
+                              item = db.nodes.create(SpCity="Novgorodka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovgorodka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novoarkhangelsk" in info[1].lower():
+                         try:
+                              type(spnovoarkhangelsk)
+                              item = db.nodes.create(SpCity="Novoarkhangelsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovoarkhangelsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovoarkhangelsk= db.nodes.create(Spname="Novoarkhangelsk",SpCity="Novoarkhangelsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovoarkhangelsk)
+                              SpravKaru.relationships.create("Cities",spnovoarkhangelsk)
+                              item = db.nodes.create(SpCity="Novoarkhangelsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovoarkhangelsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novodugino" in info[1].lower():
+                         try:
+                              type(spnovodugino)
+                              item = db.nodes.create(SpCity="Novodugino", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovodugino.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovodugino= db.nodes.create(Spname="Novodugino",SpCity="Novodugino", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovodugino)
+                              SpravKaru.relationships.create("Cities",spnovodugino)
+                              item = db.nodes.create(SpCity="Novodugino", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovodugino.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novomirgorod" in info[1].lower():
+                         try:
+                              type(spnovomirgorod)
+                              item = db.nodes.create(SpCity="Novomirgorod", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovomirgorod.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovomirgorod= db.nodes.create(Spname="Novomirgorod",SpCity="Novomirgorod", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovomirgorod)
+                              SpravKaru.relationships.create("Cities",spnovomirgorod)
+                              item = db.nodes.create(SpCity="Novomirgorod", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovomirgorod.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novonukutskiy" in info[1].lower():
+                         try:
+                              type(spnovonukutskiy)
+                              item = db.nodes.create(SpCity="Novonukutskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovonukutskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovonukutskiy= db.nodes.create(Spname="Novonukutskiy",SpCity="Novonukutskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovonukutskiy)
+                              SpravKaru.relationships.create("Cities",spnovonukutskiy)
+                              item = db.nodes.create(SpCity="Novonukutskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovonukutskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novopolotsk" in info[1].lower():
+                         try:
+                              type(spnovopolotsk)
+                              item = db.nodes.create(SpCity="Novopolotsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovopolotsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovopolotsk= db.nodes.create(Spname="Novopolotsk",SpCity="Novopolotsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovopolotsk)
+                              SpravKaru.relationships.create("Cities",spnovopolotsk)
+                              item = db.nodes.create(SpCity="Novopolotsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovopolotsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novosibirsk" in info[1].lower():
+                         try:
+                              type(spnovosibirsk)
+                              item = db.nodes.create(SpCity="Novosibirsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovosibirsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovosibirsk= db.nodes.create(Spname="Novosibirsk",SpCity="Novosibirsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovosibirsk)
+                              SpravKaru.relationships.create("Cities",spnovosibirsk)
+                              item = db.nodes.create(SpCity="Novosibirsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovosibirsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novoukrainka" in info[1].lower():
+                         try:
+                              type(spnovoukrainka)
+                              item = db.nodes.create(SpCity="Novoukrainka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovoukrainka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovoukrainka= db.nodes.create(Spname="Novoukrainka",SpCity="Novoukrainka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovoukrainka)
+                              SpravKaru.relationships.create("Cities",spnovoukrainka)
+                              item = db.nodes.create(SpCity="Novoukrainka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovoukrainka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novocherkassk" in info[1].lower():
+                         try:
+                              type(spnovocherkassk)
+                              item = db.nodes.create(SpCity="Novocherkassk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovocherkassk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovocherkassk= db.nodes.create(Spname="Novocherkassk",SpCity="Novocherkassk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovocherkassk)
+                              SpravKaru.relationships.create("Cities",spnovocherkassk)
+                              item = db.nodes.create(SpCity="Novocherkassk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovocherkassk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "novyyurengoy" in info[1].lower():
+                         try:
+                              type(spnovyyurengoy)
+                              item = db.nodes.create(SpCity="NovyyUrengoy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovyyurengoy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnovyyurengoy= db.nodes.create(Spname="NovyyUrengoy",SpCity="NovyyUrengoy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnovyyurengoy)
+                              SpravKaru.relationships.create("Cities",spnovyyurengoy)
+                              item = db.nodes.create(SpCity="NovyyUrengoy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnovyyurengoy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "nosovka" in info[1].lower():
+                         try:
+                              type(spnosovka)
+                              item = db.nodes.create(SpCity="Nosovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnosovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spnosovka= db.nodes.create(Spname="Nosovka",SpCity="Nosovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spnosovka)
+                              SpravKaru.relationships.create("Cities",spnosovka)
+                              item = db.nodes.create(SpCity="Nosovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spnosovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "odessa" in info[1].lower():
+                         try:
+                              type(spodessa)
+                              item = db.nodes.create(SpCity="Odessa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spodessa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spodessa= db.nodes.create(Spname="Odessa",SpCity="Odessa", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spodessa)
+                              SpravKaru.relationships.create("Cities",spodessa)
+                              item = db.nodes.create(SpCity="Odessa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spodessa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ozersk" in info[1].lower():
+                         try:
+                              type(spozersk)
+                              item = db.nodes.create(SpCity="Ozersk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spozersk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spozersk= db.nodes.create(Spname="Ozersk",SpCity="Ozersk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spozersk)
+                              SpravKaru.relationships.create("Cities",spozersk)
+                              item = db.nodes.create(SpCity="Ozersk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spozersk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "olshanka" in info[1].lower():
+                         try:
+                              type(spolshanka)
+                              item = db.nodes.create(SpCity="Olshanka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spolshanka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spolshanka= db.nodes.create(Spname="Olshanka",SpCity="Olshanka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spolshanka)
+                              SpravKaru.relationships.create("Cities",spolshanka)
+                              item = db.nodes.create(SpCity="Olshanka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spolshanka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "omsk" in info[1].lower():
+                         try:
+                              type(spomsk)
+                              item = db.nodes.create(SpCity="Omsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spomsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spomsk= db.nodes.create(Spname="Omsk",SpCity="Omsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spomsk)
+                              SpravKaru.relationships.create("Cities",spomsk)
+                              item = db.nodes.create(SpCity="Omsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spomsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "onufrievka" in info[1].lower():
+                         try:
+                              type(sponufrievka)
+                              item = db.nodes.create(SpCity="Onufrievka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sponufrievka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sponufrievka= db.nodes.create(Spname="Onufrievka",SpCity="Onufrievka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sponufrievka)
+                              SpravKaru.relationships.create("Cities",sponufrievka)
+                              item = db.nodes.create(SpCity="Onufrievka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sponufrievka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "orel" in info[1].lower():
+                         try:
+                              type(sporel)
+                              item = db.nodes.create(SpCity="Orel", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sporel.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sporel= db.nodes.create(Spname="Orel",SpCity="Orel", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sporel)
+                              SpravKaru.relationships.create("Cities",sporel)
+                              item = db.nodes.create(SpCity="Orel", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sporel.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "orekhovo-zuevo" in info[1].lower():
+                         try:
+                              type(sporekhovozuevo)
+                              item = db.nodes.create(SpCity="Orekhovo-Zuevo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sporekhovozuevo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sporekhovozuevo= db.nodes.create(Spname="Orekhovo-Zuevo",SpCity="Orekhovo-Zuevo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sporekhovozuevo)
+                              SpravKaru.relationships.create("Cities",sporekhovozuevo)
+                              item = db.nodes.create(SpCity="Orekhovo-Zuevo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sporekhovozuevo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "osipovichi" in info[1].lower():
+                         try:
+                              type(sposipovichi)
+                              item = db.nodes.create(SpCity="Osipovichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sposipovichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sposipovichi= db.nodes.create(Spname="Osipovichi",SpCity="Osipovichi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sposipovichi)
+                              SpravKaru.relationships.create("Cities",sposipovichi)
+                              item = db.nodes.create(SpCity="Osipovichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sposipovichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "oster" in info[1].lower():
+                         try:
+                              type(sposter)
+                              item = db.nodes.create(SpCity="Oster", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sposter.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sposter= db.nodes.create(Spname="Oster",SpCity="Oster", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sposter)
+                              SpravKaru.relationships.create("Cities",sposter)
+                              item = db.nodes.create(SpCity="Oster", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sposter.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ostrov" in info[1].lower():
+                         try:
+                              type(spostrov)
+                              item = db.nodes.create(SpCity="Ostrov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spostrov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spostrov= db.nodes.create(Spname="Ostrov",SpCity="Ostrov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spostrov)
+                              SpravKaru.relationships.create("Cities",spostrov)
+                              item = db.nodes.create(SpCity="Ostrov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spostrov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "pavlodar" in info[1].lower():
+                         try:
+                              type(sppavlodar)
+                              item = db.nodes.create(SpCity="Pavlodar", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppavlodar.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppavlodar= db.nodes.create(Spname="Pavlodar",SpCity="Pavlodar", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppavlodar)
+                              SpravKaru.relationships.create("Cities",sppavlodar)
+                              item = db.nodes.create(SpCity="Pavlodar", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppavlodar.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "pervomayskoe" in info[1].lower():
+                         try:
+                              type(sppervomayskoe)
+                              item = db.nodes.create(SpCity="Pervomayskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppervomayskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppervomayskoe= db.nodes.create(Spname="Pervomayskoe",SpCity="Pervomayskoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppervomayskoe)
+                              SpravKaru.relationships.create("Cities",sppervomayskoe)
+                              item = db.nodes.create(SpCity="Pervomayskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppervomayskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "pereyaslav-khmelnitskiy" in info[1].lower():
+                         try:
+                              type(sppereyaslavkhmelnitskiy)
+                              item = db.nodes.create(SpCity="Pereyaslav-Khmelnitskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppereyaslavkhmelnitskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppereyaslavkhmelnitskiy= db.nodes.create(Spname="Pereyaslav-Khmelnitskiy",SpCity="Pereyaslav-Khmelnitskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppereyaslavkhmelnitskiy)
+                              SpravKaru.relationships.create("Cities",sppereyaslavkhmelnitskiy)
+                              item = db.nodes.create(SpCity="Pereyaslav-Khmelnitskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppereyaslavkhmelnitskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "petrovo" in info[1].lower():
+                         try:
+                              type(sppetrovo)
+                              item = db.nodes.create(SpCity="Petrovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppetrovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppetrovo= db.nodes.create(Spname="Petrovo",SpCity="Petrovo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppetrovo)
+                              SpravKaru.relationships.create("Cities",sppetrovo)
+                              item = db.nodes.create(SpCity="Petrovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppetrovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "petrozavodsk" in info[1].lower():
+                         try:
+                              type(sppetrozavodsk)
+                              item = db.nodes.create(SpCity="Petrozavodsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppetrozavodsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppetrozavodsk= db.nodes.create(Spname="Petrozavodsk",SpCity="Petrozavodsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppetrozavodsk)
+                              SpravKaru.relationships.create("Cities",sppetrozavodsk)
+                              item = db.nodes.create(SpCity="Petrozavodsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppetrozavodsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "petropavlovsk" in info[1].lower():
+                         try:
+                              type(sppetropavlovsk)
+                              item = db.nodes.create(SpCity="Petropavlovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppetropavlovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppetropavlovsk= db.nodes.create(Spname="Petropavlovsk",SpCity="Petropavlovsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppetropavlovsk)
+                              SpravKaru.relationships.create("Cities",sppetropavlovsk)
+                              item = db.nodes.create(SpCity="Petropavlovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppetropavlovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "pechora" in info[1].lower():
+                         try:
+                              type(sppechora)
+                              item = db.nodes.create(SpCity="Pechora", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppechora.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppechora= db.nodes.create(Spname="Pechora",SpCity="Pechora", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppechora)
+                              SpravKaru.relationships.create("Cities",sppechora)
+                              item = db.nodes.create(SpCity="Pechora", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppechora.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "pinsk" in info[1].lower():
+                         try:
+                              type(sppinsk)
+                              item = db.nodes.create(SpCity="Pinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppinsk= db.nodes.create(Spname="Pinsk",SpCity="Pinsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppinsk)
+                              SpravKaru.relationships.create("Cities",sppinsk)
+                              item = db.nodes.create(SpCity="Pinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "polotsk" in info[1].lower():
+                         try:
+                              type(sppolotsk)
+                              item = db.nodes.create(SpCity="Polotsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppolotsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppolotsk= db.nodes.create(Spname="Polotsk",SpCity="Polotsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppolotsk)
+                              SpravKaru.relationships.create("Cities",sppolotsk)
+                              item = db.nodes.create(SpCity="Polotsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppolotsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "poltava" in info[1].lower():
+                         try:
+                              type(sppoltava)
+                              item = db.nodes.create(SpCity="Poltava", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppoltava.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppoltava= db.nodes.create(Spname="Poltava",SpCity="Poltava", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppoltava)
+                              SpravKaru.relationships.create("Cities",sppoltava)
+                              item = db.nodes.create(SpCity="Poltava", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppoltava.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "porkhov" in info[1].lower():
+                         try:
+                              type(spporkhov)
+                              item = db.nodes.create(SpCity="Porkhov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spporkhov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spporkhov= db.nodes.create(Spname="Porkhov",SpCity="Porkhov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spporkhov)
+                              SpravKaru.relationships.create("Cities",spporkhov)
+                              item = db.nodes.create(SpCity="Porkhov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spporkhov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "pochinok" in info[1].lower():
+                         try:
+                              type(sppochinok)
+                              item = db.nodes.create(SpCity="Pochinok", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppochinok.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppochinok= db.nodes.create(Spname="Pochinok",SpCity="Pochinok", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppochinok)
+                              SpravKaru.relationships.create("Cities",sppochinok)
+                              item = db.nodes.create(SpCity="Pochinok", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppochinok.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "priluki" in info[1].lower():
+                         try:
+                              type(sppriluki)
+                              item = db.nodes.create(SpCity="Priluki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppriluki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppriluki= db.nodes.create(Spname="Priluki",SpCity="Priluki", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppriluki)
+                              SpravKaru.relationships.create("Cities",sppriluki)
+                              item = db.nodes.create(SpCity="Priluki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppriluki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "prokopevsk" in info[1].lower():
+                         try:
+                              type(spprokopevsk)
+                              item = db.nodes.create(SpCity="Prokopevsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spprokopevsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spprokopevsk= db.nodes.create(Spname="Prokopevsk",SpCity="Prokopevsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spprokopevsk)
+                              SpravKaru.relationships.create("Cities",spprokopevsk)
+                              item = db.nodes.create(SpCity="Prokopevsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spprokopevsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "pskov" in info[1].lower():
+                         try:
+                              type(sppskov)
+                              item = db.nodes.create(SpCity="Pskov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppskov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sppskov= db.nodes.create(Spname="Pskov",SpCity="Pskov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sppskov)
+                              SpravKaru.relationships.create("Cities",sppskov)
+                              item = db.nodes.create(SpCity="Pskov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sppskov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "razdolnoe" in info[1].lower():
+                         try:
+                              type(sprazdolnoe)
+                              item = db.nodes.create(SpCity="Razdolnoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprazdolnoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sprazdolnoe= db.nodes.create(Spname="Razdolnoe",SpCity="Razdolnoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sprazdolnoe)
+                              SpravKaru.relationships.create("Cities",sprazdolnoe)
+                              item = db.nodes.create(SpCity="Razdolnoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprazdolnoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "rakitnoe" in info[1].lower():
+                         try:
+                              type(sprakitnoe)
+                              item = db.nodes.create(SpCity="Rakitnoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprakitnoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sprakitnoe= db.nodes.create(Spname="Rakitnoe",SpCity="Rakitnoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sprakitnoe)
+                              SpravKaru.relationships.create("Cities",sprakitnoe)
+                              item = db.nodes.create(SpCity="Rakitnoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprakitnoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "repki" in info[1].lower():
+                         try:
+                              type(sprepki)
+                              item = db.nodes.create(SpCity="Repki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprepki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sprepki= db.nodes.create(Spname="Repki",SpCity="Repki", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sprepki)
+                              SpravKaru.relationships.create("Cities",sprepki)
+                              item = db.nodes.create(SpCity="Repki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprepki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "rechitsa" in info[1].lower():
+                         try:
+                              type(sprechitsa)
+                              item = db.nodes.create(SpCity="Rechitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprechitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sprechitsa= db.nodes.create(Spname="Rechitsa",SpCity="Rechitsa", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sprechitsa)
+                              SpravKaru.relationships.create("Cities",sprechitsa)
+                              item = db.nodes.create(SpCity="Rechitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprechitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "rovno" in info[1].lower():
+                         try:
+                              type(sprovno)
+                              item = db.nodes.create(SpCity="Rovno", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprovno.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sprovno= db.nodes.create(Spname="Rovno",SpCity="Rovno", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sprovno)
+                              SpravKaru.relationships.create("Cities",sprovno)
+                              item = db.nodes.create(SpCity="Rovno", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprovno.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "roslavl" in info[1].lower():
+                         try:
+                              type(sproslavl)
+                              item = db.nodes.create(SpCity="Roslavl", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sproslavl.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sproslavl= db.nodes.create(Spname="Roslavl",SpCity="Roslavl", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sproslavl)
+                              SpravKaru.relationships.create("Cities",sproslavl)
+                              item = db.nodes.create(SpCity="Roslavl", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sproslavl.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "rostov-na-donu" in info[1].lower():
+                         try:
+                              type(sprostovnadonu)
+                              item = db.nodes.create(SpCity="Rostov-Na-Donu", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprostovnadonu.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sprostovnadonu= db.nodes.create(Spname="Rostov-Na-Donu",SpCity="Rostov-Na-Donu", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sprostovnadonu)
+                              SpravKaru.relationships.create("Cities",sprostovnadonu)
+                              item = db.nodes.create(SpCity="Rostov-Na-Donu", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprostovnadonu.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "rudnya" in info[1].lower():
+                         try:
+                              type(sprudnya)
+                              item = db.nodes.create(SpCity="Rudnya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprudnya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sprudnya= db.nodes.create(Spname="Rudnya",SpCity="Rudnya", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sprudnya)
+                              SpravKaru.relationships.create("Cities",sprudnya)
+                              item = db.nodes.create(SpCity="Rudnya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprudnya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "rybnitsa" in info[1].lower():
+                         try:
+                              type(sprybnitsa)
+                              item = db.nodes.create(SpCity="Rybnitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprybnitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sprybnitsa= db.nodes.create(Spname="Rybnitsa",SpCity="Rybnitsa", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sprybnitsa)
+                              SpravKaru.relationships.create("Cities",sprybnitsa)
+                              item = db.nodes.create(SpCity="Rybnitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sprybnitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "saki" in info[1].lower():
+                         try:
+                              type(spsaki)
+                              item = db.nodes.create(SpCity="Saki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsaki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsaki= db.nodes.create(Spname="Saki",SpCity="Saki", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsaki)
+                              SpravKaru.relationships.create("Cities",spsaki)
+                              item = db.nodes.create(SpCity="Saki", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsaki.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "samara" in info[1].lower():
+                         try:
+                              type(spsamara)
+                              item = db.nodes.create(SpCity="Samara", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsamara.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsamara= db.nodes.create(Spname="Samara",SpCity="Samara", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsamara)
+                              SpravKaru.relationships.create("Cities",spsamara)
+                              item = db.nodes.create(SpCity="Samara", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsamara.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "sankt-peterburg" in info[1].lower():
+                         try:
+                              type(spsanktpeterburg)
+                              item = db.nodes.create(SpCity="Sankt-Peterburg", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsanktpeterburg.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsanktpeterburg= db.nodes.create(Spname="Sankt-Peterburg",SpCity="Sankt-Peterburg", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsanktpeterburg)
+                              SpravKaru.relationships.create("Cities",spsanktpeterburg)
+                              item = db.nodes.create(SpCity="Sankt-Peterburg", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsanktpeterburg.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "saratov" in info[1].lower():
+                         try:
+                              type(spsaratov)
+                              item = db.nodes.create(SpCity="Saratov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsaratov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsaratov= db.nodes.create(Spname="Saratov",SpCity="Saratov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsaratov)
+                              SpravKaru.relationships.create("Cities",spsaratov)
+                              item = db.nodes.create(SpCity="Saratov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsaratov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "safonovo" in info[1].lower():
+                         try:
+                              type(spsafonovo)
+                              item = db.nodes.create(SpCity="Safonovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsafonovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsafonovo= db.nodes.create(Spname="Safonovo",SpCity="Safonovo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsafonovo)
+                              SpravKaru.relationships.create("Cities",spsafonovo)
+                              item = db.nodes.create(SpCity="Safonovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsafonovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "sayansk" in info[1].lower():
+                         try:
+                              type(spsayansk)
+                              item = db.nodes.create(SpCity="Sayansk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsayansk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsayansk= db.nodes.create(Spname="Sayansk",SpCity="Sayansk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsayansk)
+                              SpravKaru.relationships.create("Cities",spsayansk)
+                              item = db.nodes.create(SpCity="Sayansk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsayansk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "svetlovodsk" in info[1].lower():
+                         try:
+                              type(spsvetlovodsk)
+                              item = db.nodes.create(SpCity="Svetlovodsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsvetlovodsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsvetlovodsk= db.nodes.create(Spname="Svetlovodsk",SpCity="Svetlovodsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsvetlovodsk)
+                              SpravKaru.relationships.create("Cities",spsvetlovodsk)
+                              item = db.nodes.create(SpCity="Svetlovodsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsvetlovodsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "svetlogorsk" in info[1].lower():
+                         try:
+                              type(spsvetlogorsk)
+                              item = db.nodes.create(SpCity="Svetlogorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsvetlogorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsvetlogorsk= db.nodes.create(Spname="Svetlogorsk",SpCity="Svetlogorsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsvetlogorsk)
+                              SpravKaru.relationships.create("Cities",spsvetlogorsk)
+                              item = db.nodes.create(SpCity="Svetlogorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsvetlogorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "sevastopol" in info[1].lower():
+                         try:
+                              type(spsevastopol)
+                              item = db.nodes.create(SpCity="Sevastopol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsevastopol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsevastopol= db.nodes.create(Spname="Sevastopol",SpCity="Sevastopol", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsevastopol)
+                              SpravKaru.relationships.create("Cities",spsevastopol)
+                              item = db.nodes.create(SpCity="Sevastopol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsevastopol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "semenovka" in info[1].lower():
+                         try:
+                              type(spsemenovka)
+                              item = db.nodes.create(SpCity="Semenovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsemenovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsemenovka= db.nodes.create(Spname="Semenovka",SpCity="Semenovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsemenovka)
+                              SpravKaru.relationships.create("Cities",spsemenovka)
+                              item = db.nodes.create(SpCity="Semenovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsemenovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "semipalatinsk" in info[1].lower():
+                         try:
+                              type(spsemipalatinsk)
+                              item = db.nodes.create(SpCity="Semipalatinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsemipalatinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsemipalatinsk= db.nodes.create(Spname="Semipalatinsk",SpCity="Semipalatinsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsemipalatinsk)
+                              SpravKaru.relationships.create("Cities",spsemipalatinsk)
+                              item = db.nodes.create(SpCity="Semipalatinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsemipalatinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "simferopol" in info[1].lower():
+                         try:
+                              type(spsimferopol)
+                              item = db.nodes.create(SpCity="Simferopol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsimferopol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsimferopol= db.nodes.create(Spname="Simferopol",SpCity="Simferopol", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsimferopol)
+                              SpravKaru.relationships.create("Cities",spsimferopol)
+                              item = db.nodes.create(SpCity="Simferopol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsimferopol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "skvira" in info[1].lower():
+                         try:
+                              type(spskvira)
+                              item = db.nodes.create(SpCity="Skvira", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spskvira.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spskvira= db.nodes.create(Spname="Skvira",SpCity="Skvira", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spskvira)
+                              SpravKaru.relationships.create("Cities",spskvira)
+                              item = db.nodes.create(SpCity="Skvira", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spskvira.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "slavgorod" in info[1].lower():
+                         try:
+                              type(spslavgorod)
+                              item = db.nodes.create(SpCity="Slavgorod", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spslavgorod.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spslavgorod= db.nodes.create(Spname="Slavgorod",SpCity="Slavgorod", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spslavgorod)
+                              SpravKaru.relationships.create("Cities",spslavgorod)
+                              item = db.nodes.create(SpCity="Slavgorod", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spslavgorod.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "slavutich" in info[1].lower():
+                         try:
+                              type(spslavutich)
+                              item = db.nodes.create(SpCity="Slavutich", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spslavutich.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spslavutich= db.nodes.create(Spname="Slavutich",SpCity="Slavutich", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spslavutich)
+                              SpravKaru.relationships.create("Cities",spslavutich)
+                              item = db.nodes.create(SpCity="Slavutich", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spslavutich.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "slobodziya" in info[1].lower():
+                         try:
+                              type(spslobodziya)
+                              item = db.nodes.create(SpCity="Slobodziya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spslobodziya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spslobodziya= db.nodes.create(Spname="Slobodziya",SpCity="Slobodziya", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spslobodziya)
+                              SpravKaru.relationships.create("Cities",spslobodziya)
+                              item = db.nodes.create(SpCity="Slobodziya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spslobodziya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "slutsk" in info[1].lower():
+                         try:
+                              type(spslutsk)
+                              item = db.nodes.create(SpCity="Slutsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spslutsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spslutsk= db.nodes.create(Spname="Slutsk",SpCity="Slutsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spslutsk)
+                              SpravKaru.relationships.create("Cities",spslutsk)
+                              item = db.nodes.create(SpCity="Slutsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spslutsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "smolensk" in info[1].lower():
+                         try:
+                              type(spsmolensk)
+                              item = db.nodes.create(SpCity="Smolensk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsmolensk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsmolensk= db.nodes.create(Spname="Smolensk",SpCity="Smolensk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsmolensk)
+                              SpravKaru.relationships.create("Cities",spsmolensk)
+                              item = db.nodes.create(SpCity="Smolensk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsmolensk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "smorgon" in info[1].lower():
+                         try:
+                              type(spsmorgon)
+                              item = db.nodes.create(SpCity="Smorgon", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsmorgon.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsmorgon= db.nodes.create(Spname="Smorgon",SpCity="Smorgon", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsmorgon)
+                              SpravKaru.relationships.create("Cities",spsmorgon)
+                              item = db.nodes.create(SpCity="Smorgon", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsmorgon.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "snezhinsk" in info[1].lower():
+                         try:
+                              type(spsnezhinsk)
+                              item = db.nodes.create(SpCity="Snezhinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsnezhinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsnezhinsk= db.nodes.create(Spname="Snezhinsk",SpCity="Snezhinsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsnezhinsk)
+                              SpravKaru.relationships.create("Cities",spsnezhinsk)
+                              item = db.nodes.create(SpCity="Snezhinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsnezhinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "sovetskiy" in info[1].lower():
+                         try:
+                              type(spsovetskiy)
+                              item = db.nodes.create(SpCity="Sovetskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsovetskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsovetskiy= db.nodes.create(Spname="Sovetskiy",SpCity="Sovetskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsovetskiy)
+                              SpravKaru.relationships.create("Cities",spsovetskiy)
+                              item = db.nodes.create(SpCity="Sovetskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsovetskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "soligorsk" in info[1].lower():
+                         try:
+                              type(spsoligorsk)
+                              item = db.nodes.create(SpCity="Soligorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsoligorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsoligorsk= db.nodes.create(Spname="Soligorsk",SpCity="Soligorsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsoligorsk)
+                              SpravKaru.relationships.create("Cities",spsoligorsk)
+                              item = db.nodes.create(SpCity="Soligorsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsoligorsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "sosnitsa" in info[1].lower():
+                         try:
+                              type(spsosnitsa)
+                              item = db.nodes.create(SpCity="Sosnitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsosnitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsosnitsa= db.nodes.create(Spname="Sosnitsa",SpCity="Sosnitsa", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsosnitsa)
+                              SpravKaru.relationships.create("Cities",spsosnitsa)
+                              item = db.nodes.create(SpCity="Sosnitsa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsosnitsa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "srebnoe" in info[1].lower():
+                         try:
+                              type(spsrebnoe)
+                              item = db.nodes.create(SpCity="Srebnoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsrebnoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsrebnoe= db.nodes.create(Spname="Srebnoe",SpCity="Srebnoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsrebnoe)
+                              SpravKaru.relationships.create("Cities",spsrebnoe)
+                              item = db.nodes.create(SpCity="Srebnoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsrebnoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "stavishche" in info[1].lower():
+                         try:
+                              type(spstavishche)
+                              item = db.nodes.create(SpCity="Stavishche", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spstavishche.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spstavishche= db.nodes.create(Spname="Stavishche",SpCity="Stavishche", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spstavishche)
+                              SpravKaru.relationships.create("Cities",spstavishche)
+                              item = db.nodes.create(SpCity="Stavishche", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spstavishche.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "stavropol" in info[1].lower():
+                         try:
+                              type(spstavropol)
+                              item = db.nodes.create(SpCity="Stavropol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spstavropol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spstavropol= db.nodes.create(Spname="Stavropol",SpCity="Stavropol", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spstavropol)
+                              SpravKaru.relationships.create("Cities",spstavropol)
+                              item = db.nodes.create(SpCity="Stavropol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spstavropol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "stolspsy" in info[1].lower():
+                         try:
+                              type(spstolspsy)
+                              item = db.nodes.create(SpCity="StolSpsy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spstolspsy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spstolspsy= db.nodes.create(Spname="StolSpsy",SpCity="StolSpsy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spstolspsy)
+                              SpravKaru.relationships.create("Cities",spstolspsy)
+                              item = db.nodes.create(SpCity="StolSpsy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spstolspsy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "stolin" in info[1].lower():
+                         try:
+                              type(spstolin)
+                              item = db.nodes.create(SpCity="Stolin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spstolin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spstolin= db.nodes.create(Spname="Stolin",SpCity="Stolin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spstolin)
+                              SpravKaru.relationships.create("Cities",spstolin)
+                              item = db.nodes.create(SpCity="Stolin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spstolin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "sudak" in info[1].lower():
+                         try:
+                              type(spsudak)
+                              item = db.nodes.create(SpCity="Sudak", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsudak.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsudak= db.nodes.create(Spname="Sudak",SpCity="Sudak", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsudak)
+                              SpravKaru.relationships.create("Cities",spsudak)
+                              item = db.nodes.create(SpCity="Sudak", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsudak.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "surgut" in info[1].lower():
+                         try:
+                              type(spsurgut)
+                              item = db.nodes.create(SpCity="Surgut", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsurgut.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsurgut= db.nodes.create(Spname="Surgut",SpCity="Surgut", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsurgut)
+                              SpravKaru.relationships.create("Cities",spsurgut)
+                              item = db.nodes.create(SpCity="Surgut", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsurgut.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "sychevka" in info[1].lower():
+                         try:
+                              type(spsychevka)
+                              item = db.nodes.create(SpCity="Sychevka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsychevka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spsychevka= db.nodes.create(Spname="Sychevka",SpCity="Sychevka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spsychevka)
+                              SpravKaru.relationships.create("Cities",spsychevka)
+                              item = db.nodes.create(SpCity="Sychevka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spsychevka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "talalaevka" in info[1].lower():
+                         try:
+                              type(sptalalaevka)
+                              item = db.nodes.create(SpCity="Talalaevka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptalalaevka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sptalalaevka= db.nodes.create(Spname="Talalaevka",SpCity="Talalaevka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sptalalaevka)
+                              SpravKaru.relationships.create("Cities",sptalalaevka)
+                              item = db.nodes.create(SpCity="Talalaevka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptalalaevka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "taldykorgan" in info[1].lower():
+                         try:
+                              type(sptaldykorgan)
+                              item = db.nodes.create(SpCity="Taldykorgan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptaldykorgan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sptaldykorgan= db.nodes.create(Spname="Taldykorgan",SpCity="Taldykorgan", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sptaldykorgan)
+                              SpravKaru.relationships.create("Cities",sptaldykorgan)
+                              item = db.nodes.create(SpCity="Taldykorgan", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptaldykorgan.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "taraz" in info[1].lower():
+                         try:
+                              type(sptaraz)
+                              item = db.nodes.create(SpCity="Taraz", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptaraz.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sptaraz= db.nodes.create(Spname="Taraz",SpCity="Taraz", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sptaraz)
+                              SpravKaru.relationships.create("Cities",sptaraz)
+                              item = db.nodes.create(SpCity="Taraz", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptaraz.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "temkino" in info[1].lower():
+                         try:
+                              type(sptemkino)
+                              item = db.nodes.create(SpCity="Temkino", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptemkino.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sptemkino= db.nodes.create(Spname="Temkino",SpCity="Temkino", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sptemkino)
+                              SpravKaru.relationships.create("Cities",sptemkino)
+                              item = db.nodes.create(SpCity="Temkino", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptemkino.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "tetiev" in info[1].lower():
+                         try:
+                              type(sptetiev)
+                              item = db.nodes.create(SpCity="Tetiev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptetiev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sptetiev= db.nodes.create(Spname="Tetiev",SpCity="Tetiev", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sptetiev)
+                              SpravKaru.relationships.create("Cities",sptetiev)
+                              item = db.nodes.create(SpCity="Tetiev", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptetiev.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "tiraspol" in info[1].lower():
+                         try:
+                              type(sptiraspol)
+                              item = db.nodes.create(SpCity="Tiraspol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptiraspol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sptiraspol= db.nodes.create(Spname="Tiraspol",SpCity="Tiraspol", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sptiraspol)
+                              SpravKaru.relationships.create("Cities",sptiraspol)
+                              item = db.nodes.create(SpCity="Tiraspol", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptiraspol.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "tyumen" in info[1].lower():
+                         try:
+                              type(sptyumen)
+                              item = db.nodes.create(SpCity="Tyumen", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptyumen.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              sptyumen= db.nodes.create(Spname="Tyumen",SpCity="Tyumen", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(sptyumen)
+                              SpravKaru.relationships.create("Cities",sptyumen)
+                              item = db.nodes.create(SpCity="Tyumen", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              sptyumen.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ugra" in info[1].lower():
+                         try:
+                              type(spugra)
+                              item = db.nodes.create(SpCity="Ugra", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spugra.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spugra= db.nodes.create(Spname="Ugra",SpCity="Ugra", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spugra)
+                              SpravKaru.relationships.create("Cities",spugra)
+                              item = db.nodes.create(SpCity="Ugra", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spugra.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ulyanovka" in info[1].lower():
+                         try:
+                              type(spulyanovka)
+                              item = db.nodes.create(SpCity="Ulyanovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spulyanovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spulyanovka= db.nodes.create(Spname="Ulyanovka",SpCity="Ulyanovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spulyanovka)
+                              SpravKaru.relationships.create("Cities",spulyanovka)
+                              item = db.nodes.create(SpCity="Ulyanovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spulyanovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "uralsk" in info[1].lower():
+                         try:
+                              type(spuralsk)
+                              item = db.nodes.create(SpCity="Uralsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spuralsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spuralsk= db.nodes.create(Spname="Uralsk",SpCity="Uralsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spuralsk)
+                              SpravKaru.relationships.create("Cities",spuralsk)
+                              item = db.nodes.create(SpCity="Uralsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spuralsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "usole-sibirskoe" in info[1].lower():
+                         try:
+                              type(spusolesibirskoe)
+                              item = db.nodes.create(SpCity="Usole-Sibirskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spusolesibirskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spusolesibirskoe= db.nodes.create(Spname="Usole-Sibirskoe",SpCity="Usole-Sibirskoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spusolesibirskoe)
+                              SpravKaru.relationships.create("Cities",spusolesibirskoe)
+                              item = db.nodes.create(SpCity="Usole-Sibirskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spusolesibirskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ustinovka" in info[1].lower():
+                         try:
+                              type(spustinovka)
+                              item = db.nodes.create(SpCity="Ustinovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spustinovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spustinovka= db.nodes.create(Spname="Ustinovka",SpCity="Ustinovka", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spustinovka)
+                              SpravKaru.relationships.create("Cities",spustinovka)
+                              item = db.nodes.create(SpCity="Ustinovka", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spustinovka.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ust-ilimsk" in info[1].lower():
+                         try:
+                              type(spustilimsk)
+                              item = db.nodes.create(SpCity="Ust-Ilimsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spustilimsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spustilimsk= db.nodes.create(Spname="Ust-Ilimsk",SpCity="Ust-Ilimsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spustilimsk)
+                              SpravKaru.relationships.create("Cities",spustilimsk)
+                              item = db.nodes.create(SpCity="Ust-Ilimsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spustilimsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ust-ordynskiy" in info[1].lower():
+                         try:
+                              type(spustordynskiy)
+                              item = db.nodes.create(SpCity="Ust-Ordynskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spustordynskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spustordynskiy= db.nodes.create(Spname="Ust-Ordynskiy",SpCity="Ust-Ordynskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spustordynskiy)
+                              SpravKaru.relationships.create("Cities",spustordynskiy)
+                              item = db.nodes.create(SpCity="Ust-Ordynskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spustordynskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ust-uda" in info[1].lower():
+                         try:
+                              type(spustuda)
+                              item = db.nodes.create(SpCity="Ust-Uda", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spustuda.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spustuda= db.nodes.create(Spname="Ust-Uda",SpCity="Ust-Uda", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spustuda)
+                              SpravKaru.relationships.create("Cities",spustuda)
+                              item = db.nodes.create(SpCity="Ust-Uda", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spustuda.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ufa" in info[1].lower():
+                         try:
+                              type(spufa)
+                              item = db.nodes.create(SpCity="Ufa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spufa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spufa= db.nodes.create(Spname="Ufa",SpCity="Ufa", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spufa)
+                              SpravKaru.relationships.create("Cities",spufa)
+                              item = db.nodes.create(SpCity="Ufa", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spufa.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "fastov" in info[1].lower():
+                         try:
+                              type(spfastov)
+                              item = db.nodes.create(SpCity="Fastov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spfastov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spfastov= db.nodes.create(Spname="Fastov",SpCity="Fastov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spfastov)
+                              SpravKaru.relationships.create("Cities",spfastov)
+                              item = db.nodes.create(SpCity="Fastov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spfastov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "feodosiya" in info[1].lower():
+                         try:
+                              type(spfeodosiya)
+                              item = db.nodes.create(SpCity="Feodosiya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spfeodosiya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spfeodosiya= db.nodes.create(Spname="Feodosiya",SpCity="Feodosiya", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spfeodosiya)
+                              SpravKaru.relationships.create("Cities",spfeodosiya)
+                              item = db.nodes.create(SpCity="Feodosiya", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spfeodosiya.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "khabarovsk" in info[1].lower():
+                         try:
+                              type(spkhabarovsk)
+                              item = db.nodes.create(SpCity="Khabarovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkhabarovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkhabarovsk= db.nodes.create(Spname="Khabarovsk",SpCity="Khabarovsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkhabarovsk)
+                              SpravKaru.relationships.create("Cities",spkhabarovsk)
+                              item = db.nodes.create(SpCity="Khabarovsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkhabarovsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kharkov" in info[1].lower():
+                         try:
+                              type(spkharkov)
+                              item = db.nodes.create(SpCity="Kharkov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkharkov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkharkov= db.nodes.create(Spname="Kharkov",SpCity="Kharkov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkharkov)
+                              SpravKaru.relationships.create("Cities",spkharkov)
+                              item = db.nodes.create(SpCity="Kharkov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkharkov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kherson" in info[1].lower():
+                         try:
+                              type(spkherson)
+                              item = db.nodes.create(SpCity="Kherson", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkherson.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkherson= db.nodes.create(Spname="Kherson",SpCity="Kherson", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkherson)
+                              SpravKaru.relationships.create("Cities",spkherson)
+                              item = db.nodes.create(SpCity="Kherson", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkherson.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "khislavichi" in info[1].lower():
+                         try:
+                              type(spkhislavichi)
+                              item = db.nodes.create(SpCity="Khislavichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkhislavichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkhislavichi= db.nodes.create(Spname="Khislavichi",SpCity="Khislavichi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkhislavichi)
+                              SpravKaru.relationships.create("Cities",spkhislavichi)
+                              item = db.nodes.create(SpCity="Khislavichi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkhislavichi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "kholm-zhirkovskiy" in info[1].lower():
+                         try:
+                              type(spkholmzhirkovskiy)
+                              item = db.nodes.create(SpCity="Kholm-Zhirkovskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkholmzhirkovskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkholmzhirkovskiy= db.nodes.create(Spname="Kholm-Zhirkovskiy",SpCity="Kholm-Zhirkovskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkholmzhirkovskiy)
+                              SpravKaru.relationships.create("Cities",spkholmzhirkovskiy)
+                              item = db.nodes.create(SpCity="Kholm-Zhirkovskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkholmzhirkovskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "khotimsk" in info[1].lower():
+                         try:
+                              type(spkhotimsk)
+                              item = db.nodes.create(SpCity="Khotimsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkhotimsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spkhotimsk= db.nodes.create(Spname="Khotimsk",SpCity="Khotimsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spkhotimsk)
+                              SpravKaru.relationships.create("Cities",spkhotimsk)
+                              item = db.nodes.create(SpCity="Khotimsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spkhotimsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "chausy" in info[1].lower():
+                         try:
+                              type(spchausy)
+                              item = db.nodes.create(SpCity="Chausy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchausy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spchausy= db.nodes.create(Spname="Chausy",SpCity="Chausy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spchausy)
+                              SpravKaru.relationships.create("Cities",spchausy)
+                              item = db.nodes.create(SpCity="Chausy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchausy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "cheboksary" in info[1].lower():
+                         try:
+                              type(spcheboksary)
+                              item = db.nodes.create(SpCity="Cheboksary", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spcheboksary.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spcheboksary= db.nodes.create(Spname="Cheboksary",SpCity="Cheboksary", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spcheboksary)
+                              SpravKaru.relationships.create("Cities",spcheboksary)
+                              item = db.nodes.create(SpCity="Cheboksary", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spcheboksary.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "chelyabinsk" in info[1].lower():
+                         try:
+                              type(spchelyabinsk)
+                              item = db.nodes.create(SpCity="Chelyabinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchelyabinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spchelyabinsk= db.nodes.create(Spname="Chelyabinsk",SpCity="Chelyabinsk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spchelyabinsk)
+                              SpravKaru.relationships.create("Cities",spchelyabinsk)
+                              item = db.nodes.create(SpCity="Chelyabinsk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchelyabinsk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "cheremkhovo" in info[1].lower():
+                         try:
+                              type(spcheremkhovo)
+                              item = db.nodes.create(SpCity="Cheremkhovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spcheremkhovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spcheremkhovo= db.nodes.create(Spname="Cheremkhovo",SpCity="Cheremkhovo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spcheremkhovo)
+                              SpravKaru.relationships.create("Cities",spcheremkhovo)
+                              item = db.nodes.create(SpCity="Cheremkhovo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spcheremkhovo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "cherepovets" in info[1].lower():
+                         try:
+                              type(spcherepovets)
+                              item = db.nodes.create(SpCity="Cherepovets", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spcherepovets.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spcherepovets= db.nodes.create(Spname="Cherepovets",SpCity="Cherepovets", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spcherepovets)
+                              SpravKaru.relationships.create("Cities",spcherepovets)
+                              item = db.nodes.create(SpCity="Cherepovets", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spcherepovets.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "cherikov" in info[1].lower():
+                         try:
+                              type(spcherikov)
+                              item = db.nodes.create(SpCity="Cherikov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spcherikov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spcherikov= db.nodes.create(Spname="Cherikov",SpCity="Cherikov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spcherikov)
+                              SpravKaru.relationships.create("Cities",spcherikov)
+                              item = db.nodes.create(SpCity="Cherikov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spcherikov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "chernigov" in info[1].lower():
+                         try:
+                              type(spchernigov)
+                              item = db.nodes.create(SpCity="Chernigov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchernigov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spchernigov= db.nodes.create(Spname="Chernigov",SpCity="Chernigov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spchernigov)
+                              SpravKaru.relationships.create("Cities",spchernigov)
+                              item = db.nodes.create(SpCity="Chernigov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchernigov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "chernomorskoe" in info[1].lower():
+                         try:
+                              type(spchernomorskoe)
+                              item = db.nodes.create(SpCity="Chernomorskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchernomorskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spchernomorskoe= db.nodes.create(Spname="Chernomorskoe",SpCity="Chernomorskoe", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spchernomorskoe)
+                              SpravKaru.relationships.create("Cities",spchernomorskoe)
+                              item = db.nodes.create(SpCity="Chernomorskoe", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchernomorskoe.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "chunskiy" in info[1].lower():
+                         try:
+                              type(spchunskiy)
+                              item = db.nodes.create(SpCity="Chunskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchunskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spchunskiy= db.nodes.create(Spname="Chunskiy",SpCity="Chunskiy", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spchunskiy)
+                              SpravKaru.relationships.create("Cities",spchunskiy)
+                              item = db.nodes.create(SpCity="Chunskiy", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spchunskiy.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "shelekhov" in info[1].lower():
+                         try:
+                              type(spshelekhov)
+                              item = db.nodes.create(SpCity="Shelekhov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshelekhov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spshelekhov= db.nodes.create(Spname="Shelekhov",SpCity="Shelekhov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spshelekhov)
+                              SpravKaru.relationships.create("Cities",spshelekhov)
+                              item = db.nodes.create(SpCity="Shelekhov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshelekhov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "shklov" in info[1].lower():
+                         try:
+                              type(spshklov)
+                              item = db.nodes.create(SpCity="Shklov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshklov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spshklov= db.nodes.create(Spname="Shklov",SpCity="Shklov", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spshklov)
+                              SpravKaru.relationships.create("Cities",spshklov)
+                              item = db.nodes.create(SpCity="Shklov", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshklov.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "shubar-kuduk" in info[1].lower():
+                         try:
+                              type(spshubarkuduk)
+                              item = db.nodes.create(SpCity="Shubar-Kuduk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshubarkuduk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spshubarkuduk= db.nodes.create(Spname="Shubar-Kuduk",SpCity="Shubar-Kuduk", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spshubarkuduk)
+                              SpravKaru.relationships.create("Cities",spshubarkuduk)
+                              item = db.nodes.create(SpCity="Shubar-Kuduk", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshubarkuduk.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "shumyachi" in info[1].lower():
+                         try:
+                              type(spshumyachi)
+                              item = db.nodes.create(SpCity="Shumyachi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshumyachi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spshumyachi= db.nodes.create(Spname="Shumyachi",SpCity="Shumyachi", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spshumyachi)
+                              SpravKaru.relationships.create("Cities",spshumyachi)
+                              item = db.nodes.create(SpCity="Shumyachi", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshumyachi.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "shymkent" in info[1].lower():
+                         try:
+                              type(spshymkent)
+                              item = db.nodes.create(SpCity="Shymkent", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshymkent.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spshymkent= db.nodes.create(Spname="Shymkent",SpCity="Shymkent", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spshymkent)
+                              SpravKaru.relationships.create("Cities",spshymkent)
+                              item = db.nodes.create(SpCity="Shymkent", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshymkent.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "shchors" in info[1].lower():
+                         try:
+                              type(spshchors)
+                              item = db.nodes.create(SpCity="Shchors", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshchors.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spshchors= db.nodes.create(Spname="Shchors",SpCity="Shchors", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spshchors)
+                              SpravKaru.relationships.create("Cities",spshchors)
+                              item = db.nodes.create(SpCity="Shchors", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshchors.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "shchuchin" in info[1].lower():
+                         try:
+                              type(spshchuchin)
+                              item = db.nodes.create(SpCity="Shchuchin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshchuchin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spshchuchin= db.nodes.create(Spname="Shchuchin",SpCity="Shchuchin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spshchuchin)
+                              SpravKaru.relationships.create("Cities",spshchuchin)
+                              item = db.nodes.create(SpCity="Shchuchin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spshchuchin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "ekibastuz" in info[1].lower():
+                         try:
+                              type(spekibastuz)
+                              item = db.nodes.create(SpCity="Ekibastuz", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spekibastuz.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spekibastuz= db.nodes.create(Spname="Ekibastuz",SpCity="Ekibastuz", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spekibastuz)
+                              SpravKaru.relationships.create("Cities",spekibastuz)
+                              item = db.nodes.create(SpCity="Ekibastuz", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spekibastuz.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "emba" in info[1].lower():
+                         try:
+                              type(spemba)
+                              item = db.nodes.create(SpCity="Emba", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spemba.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spemba= db.nodes.create(Spname="Emba",SpCity="Emba", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spemba)
+                              SpravKaru.relationships.create("Cities",spemba)
+                              item = db.nodes.create(SpCity="Emba", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spemba.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "yagotin" in info[1].lower():
+                         try:
+                              type(spyagotin)
+                              item = db.nodes.create(SpCity="Yagotin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spyagotin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spyagotin= db.nodes.create(Spname="Yagotin",SpCity="Yagotin", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spyagotin)
+                              SpravKaru.relationships.create("Cities",spyagotin)
+                              item = db.nodes.create(SpCity="Yagotin", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spyagotin.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "yalta" in info[1].lower():
+                         try:
+                              type(spyalta)
+                              item = db.nodes.create(SpCity="Yalta", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spyalta.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spyalta= db.nodes.create(Spname="Yalta",SpCity="Yalta", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spyalta)
+                              SpravKaru.relationships.create("Cities",spyalta)
+                              item = db.nodes.create(SpCity="Yalta", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spyalta.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "yaroslavl" in info[1].lower():
+                         try:
+                              type(spyaroslavl)
+                              item = db.nodes.create(SpCity="Yaroslavl", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spyaroslavl.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spyaroslavl= db.nodes.create(Spname="Yaroslavl",SpCity="Yaroslavl", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spyaroslavl)
+                              SpravKaru.relationships.create("Cities",spyaroslavl)
+                              item = db.nodes.create(SpCity="Yaroslavl", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spyaroslavl.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+                    if "yartsevo" in info[1].lower():
+                         try:
+                              type(spyartsevo)
+                              item = db.nodes.create(SpCity="Yartsevo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spyartsevo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+                         except NameError:
+                              spyartsevo= db.nodes.create(Spname="Yartsevo",SpCity="Yartsevo", SpNom="", SpAdresse="", Sptelephone="")
+                              labelSpravcity.add(spyartsevo)
+                              SpravKaru.relationships.create("Cities",spyartsevo)
+                              item = db.nodes.create(SpCity="Yartsevo", SpName=info[0], SpAdresse=info[1], Sptelephone=info[2])
+                              spyartsevo.relationships.create("Infos",item)
+                              labelSpravinfo.add(item)
+                              print(item)
+
+
+
+
 
 
 
