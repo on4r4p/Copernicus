@@ -7,8 +7,10 @@ from functools import wraps
 from neo4jrestclient.client import GraphDatabase
 from neo4jrestclient import client
 from pyfiglet import Figlet
+from PIL import Image
 from transliterate import translit, get_available_language_codes, detect_language
 import re
+import http.cookiejar
 import errno
 import imageGwall
 import os
@@ -120,6 +122,8 @@ pblancasres= []
 
 spravres=[]
 
+yellowres = []
+
 searcharglist = []
 
 
@@ -128,7 +132,13 @@ allcombparsedfinal = []
 allcombparsed = []
 tmpchance = []
 
-enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom','paginasblancas','spravkaru']
+enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom','paginasblancas','spravkaru','yellowpages']
+
+
+yellownode = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
+
+
+yellowstate =['al','ak','az','ar','ca','co','ct','de','fl','ga','hi','id','il','in','ia','ks','ky','la','me','md','ma','mi','mn','ms','mo','mt','ne','nv','nh','nj','nm','ny','nc','nd','oh','ok','or','pa','ri','sc','sd','tn','tx','ut','vt','va','wa','wv','wi','wy']
 
 spravcity = ['http://english.spravkaru.net/w/***/velcom', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BA%D1%81%D1%83_7_71837', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BA%D1%82%D0%B0%D1%83_%D1%88%D0%B5%D0%B2%D1%87%D0%B5%D0%BD%D0%BA%D0%BE_7_7292', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BA%D1%82%D0%BE%D0%B1%D0%B5_%D0%B0%D0%BA%D1%82%D1%8E%D0%B1%D0%B8%D0%BD%D1%81%D0%BA_7_7132', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D0%B3%D0%B0_7_71337', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%B8%D1%8F_38_05235', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_38_05242', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D0%BC%D0%B0%D1%82%D1%8B_%D0%B0%D0%BB%D0%BC%D0%B0_%D0%B0%D1%82%D0%B0_7_727', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BB%D1%83%D1%88%D1%82%D0%B0_38_06560', 'http://english.spravkaru.net/w/***/%D0%B0%D0%BD%D0%B3%D0%B0%D1%80%D1%81%D0%BA_7_3955', 'http://english.spravkaru.net/w/***/%D0%B0%D1%80%D0%BC%D1%8F%D0%BD%D1%81%D0%BA_38_06567', 'http://english.spravkaru.net/w/***/%D0%B0%D1%81%D1%82%D0%B0%D0%BD%D0%B0_%D0%B0%D0%BA%D0%BC%D0%BE%D0%BB%D0%B0_7_7172', 'http://english.spravkaru.net/w/***/%D0%B0%D1%82%D1%8B%D1%80%D0%B0%D1%83_%D0%B3%D1%83%D1%80%D1%8C%D0%B5%D0%B2_7_7122', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D0%B4%D0%B0%D0%BC%D1%88%D0%B0_7_71342', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D0%B9%D0%BA%D0%B0%D0%BB%D1%8C%D1%81%D0%BA_7_39542', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D0%BB%D0%B0%D0%B3%D0%B0%D0%BD%D1%81%D0%BA_7_39548', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%80%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87%D0%B8_375_163', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%80%D1%8B%D1%88%D0%B5%D0%B2%D0%BA%D0%B0_38_04476', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%85%D0%BC%D0%B0%D1%87_38_04635', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%85%D1%87%D0%B8%D1%81%D0%B0%D1%80%D0%B0%D0%B9_38_06554', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B0%D1%8F%D0%BD%D0%B4%D0%B0%D0%B9_7_39537', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B5%D0%BB%D0%B0%D1%8F_%D1%86%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C_38_04463', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B5%D0%BB%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA_38_06559', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B5%D0%BB%D1%8B%D0%BD%D0%B8%D1%87%D0%B8_375_2232', 'http://english.spravkaru.net/w/***/%D0%B1%D0%B5%D0%BD%D0%B4%D0%B5%D1%80%D1%8B_373_552', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D0%B1%D1%80%D0%BE%D0%B2%D0%B8%D1%86%D0%B0_38_04632', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D0%B1%D1%80%D1%83%D0%B9%D1%81%D0%BA_375_225_', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D0%B3%D1%83%D1%81%D0%BB%D0%B0%D0%B2_38_04461', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%80%D0%B7%D0%BD%D0%B0_38_04653', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2_375_177', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%80%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C_38_04495', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%80%D0%BE%D0%B4%D1%8F%D0%BD%D0%BA%D0%B0_38_04477', 'http://english.spravkaru.net/w/***/%D0%B1%D0%BE%D1%85%D0%B0%D0%BD_7_39538', 'http://english.spravkaru.net/w/***/%D0%B1%D1%80%D0%B0%D1%82%D1%81%D0%BA_7_3953', 'http://english.spravkaru.net/w/***/%D0%B1%D1%80%D0%B5%D1%81%D1%82_375_162', 'http://english.spravkaru.net/w/***/%D0%B1%D1%80%D0%BE%D0%B2%D0%B0%D1%80%D1%8B_38_04494', 'http://english.spravkaru.net/w/***/%D0%B1%D1%83%D0%B3%D1%83%D0%BB%D1%8C%D0%BC%D0%B0_7_85514', 'http://english.spravkaru.net/w/***/%D0%B1%D1%8B%D1%85%D0%BE%D0%B2_375_2231', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2_38_04471', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B5%D0%BB%D0%B8%D0%B6_7_48132', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B5%D0%BB%D0%B8%D0%BA%D0%B8%D0%B5_%D0%BB%D1%83%D0%BA%D0%B8_7_81153', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B5%D1%80%D1%85%D0%BD%D0%B5%D0%B4%D0%B2%D0%B8%D0%BD%D1%81%D0%BA_375_2151', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B8%D0%BB%D0%B5%D0%B9%D0%BA%D0%B0_375_1771', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B8%D0%BD%D0%BD%D0%B8%D1%86%D0%B0_38_0432', 'http://english.spravkaru.net/w/***/%D0%B2%D0%B8%D1%82%D0%B5%D0%B1%D1%81%D0%BA_375_212', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BB%D0%B0%D0%B4%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D0%BE%D0%BA_7_4232', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_7_4922', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%B3%D0%BE%D0%B3%D1%80%D0%B0%D0%B4_7_8442', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%B6%D1%81%D0%BA%D0%B8%D0%B9_7_8443', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%BA%D0%BE%D0%B2%D1%8B%D1%81%D0%BA_375_1512', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%BE%D0%B4%D0%B0%D1%80%D0%BA%D0%B0_38_04469', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D0%BB%D0%BE%D0%B6%D0%B8%D0%BD_375_1772', 'http://english.spravkaru.net/w/***/%D0%B2%D0%BE%D1%80%D0%BE%D0%BD%D0%B5%D0%B6_7_4732', 'http://english.spravkaru.net/w/***/%D0%B2%D1%8B%D1%88%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_38_04496', 'http://english.spravkaru.net/w/***/%D0%B2%D1%8F%D0%B7%D1%8C%D0%BC%D0%B0_7_48131', 'http://english.spravkaru.net/w/***/%D0%B3%D0%B0%D0%B3%D0%B0%D1%80%D0%B8%D0%BD_7_48135', 'http://english.spravkaru.net/w/***/%D0%B3%D0%B0%D0%B9%D0%B2%D0%BE%D1%80%D0%BE%D0%BD_38_05254', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BB%D0%B8%D0%BD%D0%BA%D0%B0_7_48165', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BB%D1%83%D0%B1%D0%BE%D0%BA%D0%BE%D0%B5_375_2156', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0%D0%BD%D0%B5%D0%B2%D1%81%D0%BA_38_05252', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BE%D0%BC%D0%B5%D0%BB%D1%8C_375_232', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BE%D1%80%D0%BA%D0%B8_375_2233', 'http://english.spravkaru.net/w/***/%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D1%8F_38_04645', 'http://english.spravkaru.net/w/***/%D0%B3%D1%80%D0%B8%D0%B3%D0%BE%D1%80%D0%B8%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_373_210', 'http://english.spravkaru.net/w/***/%D0%B3%D1%80%D0%BE%D0%B4%D0%BD%D0%BE_375_152', 'http://english.spravkaru.net/w/***/%D0%B4%D0%B5%D0%BC%D0%B8%D0%B4%D0%BE%D0%B2_7_48147', 'http://english.spravkaru.net/w/***/%D0%B4%D0%B5%D1%81%D0%BD%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA_7_48153', 'http://english.spravkaru.net/w/***/%D0%B4%D0%B6%D0%B0%D0%BD%D0%BA%D0%BE%D0%B9_38_06564', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BD%D0%B5%D0%BF%D1%80%D0%BE%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%B2%D1%81%D0%BA_38_056', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D0%B1%D1%80%D0%BE%D0%B2%D0%B5%D0%BB%D0%B8%D1%87%D0%BA%D0%BE%D0%B2%D0%BA%D0%B0_38_05253', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D0%BA%D1%88%D0%B8%D1%86%D1%8B_375_2157', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D0%BB%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_38_05234', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D0%BD%D0%B5%D1%86%D0%BA_38_062', 'http://english.spravkaru.net/w/***/%D0%B4%D0%BE%D1%80%D0%BE%D0%B3%D0%BE%D0%B1%D1%83%D0%B6_7_48144', 'http://english.spravkaru.net/w/***/%D0%B4%D1%80%D0%B8%D0%B1%D0%B8%D0%BD_375_2248', 'http://english.spravkaru.net/w/***/%D0%B4%D1%80%D0%BE%D0%B3%D0%B8%D1%87%D0%B8%D0%BD_375_1644', 'http://english.spravkaru.net/w/***/%D0%B4%D1%83%D0%B1%D0%BE%D1%81%D1%81%D0%B0%D1%80%D1%8B_373_215', 'http://english.spravkaru.net/w/***/%D0%B4%D1%83%D1%85%D0%BE%D0%B2%D1%89%D0%B8%D0%BD%D0%B0_7_48166', 'http://english.spravkaru.net/w/***/%D0%B5%D0%B2%D0%BF%D0%B0%D1%82%D0%BE%D1%80%D0%B8%D1%8F_38_06569', 'http://english.spravkaru.net/w/***/%D0%B5%D0%BA%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%BD%D0%B1%D1%83%D1%80%D0%B3_7_343', 'http://english.spravkaru.net/w/***/%D0%B5%D0%BB%D0%B0%D0%BD%D1%86%D1%8B_7_39519', 'http://english.spravkaru.net/w/***/%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0_7_48146', 'http://english.spravkaru.net/w/***/%D0%B5%D1%80%D0%B1%D0%BE%D0%B3%D0%B0%D1%87%D0%B5%D0%BD_7_39560', 'http://english.spravkaru.net/w/***/%D0%B5%D1%80%D1%88%D0%B8%D1%87%D0%B8_7_48155', 'http://english.spravkaru.net/w/***/%D0%B6%D0%B8%D0%B3%D0%B0%D0%BB%D0%BE%D0%B2%D0%BE_7_39551', 'http://english.spravkaru.net/w/***/%D0%B6%D0%B8%D1%82%D0%BE%D0%BC%D0%B8%D1%80_38_0412', 'http://english.spravkaru.net/w/***/%D0%B6%D0%BB%D0%BE%D0%B1%D0%B8%D0%BD_375_2334', 'http://english.spravkaru.net/w/***/%D0%B6%D0%BE%D0%B4%D0%B8%D0%BD%D0%BE_375_1775', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B0%D0%BB%D0%B0%D1%80%D0%B8_7_39552', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B0%D0%BF%D0%BE%D1%80%D0%BE%D0%B6%D1%8C%D0%B5_38_0612', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B0%D1%81%D0%BB%D0%B0%D0%B2%D0%BB%D1%8C_375_17', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B3%D1%83%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_38_04470', 'http://english.spravkaru.net/w/***/%D0%B7%D0%B8%D0%BC%D0%B0_7_39554', 'http://english.spravkaru.net/w/***/%D0%B7%D0%BB%D0%B0%D1%82%D0%BE%D1%83%D1%81%D1%82_7_3513', 'http://english.spravkaru.net/w/***/%D0%B7%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D0%BA%D0%B0_38_05233', 'http://english.spravkaru.net/w/***/%D0%B8%D0%B2%D0%B0%D0%BD%D0%BA%D0%BE%D0%B2_38_04491', 'http://english.spravkaru.net/w/***/***%D0%BE_7_4932', 'http://english.spravkaru.net/w/***/%D0%B8%D1%80%D0%BA%D1%83%D1%82%D1%81%D0%BA_7_3952', 'http://english.spravkaru.net/w/***/%D0%B8%D1%80%D0%BF%D0%B5%D0%BD%D1%8C_38_04497', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D1%8C_7_843', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D0%BB%D1%83%D0%B3%D0%B0_7_4842', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D0%BD%D0%B4%D1%8B%D0%B0%D0%B3%D0%B0%D1%88_7_71333', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D1%80%D0%B0%D0%B3%D0%B0%D0%BD%D0%B4%D0%B0_7_7212', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D1%80%D0%B4%D1%8B%D0%BC%D0%BE%D0%B2%D0%BE_7_48167', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B0%D1%87%D1%83%D0%B3_7_39540', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B5%D0%BC%D0%B5%D1%80%D0%BE%D0%B2%D0%BE_7_3842', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B5%D1%80%D1%87%D1%8C_38_06561', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D0%B5%D0%B2_38_044', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D0%B5%D0%B2%D0%BE_%D1%81%D0%B2%D1%8F%D1%82%D0%BE%D1%88%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D1%80%D0%B0%D0%B9%D0%BE%D0%BD_38_04498', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BE%D0%B3%D1%80%D0%B0%D0%B4_38_0522', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D1%81%D0%BA_375_2237', 'http://english.spravkaru.net/w/***/%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B5_38_06555', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BB%D0%B8%D0%BC%D0%BE%D0%B2%D0%B8%D1%87%D0%B8_375_2244', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BB%D0%B8%D1%87%D0%B5%D0%B2_375_2236', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D0%BA%D1%88%D0%B5%D1%82%D0%B0%D1%83_%D0%BA%D0%BE%D0%BA%D1%87%D0%B5%D1%82%D0%B0%D0%B2_7_7162', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B5%D0%B5%D0%B2%D0%BA%D0%B0_38_05240', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%80%D0%BE%D0%BF_38_04656', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%80%D1%8E%D0%BA%D0%BE%D0%B2%D0%BA%D0%B0_38_04657', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%B0%D0%B9_7_7142', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%BC%D0%B0_7_4942', 'http://english.spravkaru.net/w/***/%D0%BA%D0%BE%D1%81%D1%82%D1%8E%D0%BA%D0%BE%D0%B2%D0%B8%D1%87%D0%B8_375_2245', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B3%D0%B2%D0%B0%D1%80%D0%B4%D0%B5%D0%B9%D1%81%D0%BA%D0%BE%D0%B5_38_06556', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80_7_861', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%BF%D0%B5%D1%80%D0%B5%D0%BA%D0%BE%D0%BF%D1%81%D0%BA_38_06565', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C%D0%B5_375_2238', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D1%8F%D1%80%D1%81%D0%BA_7_391', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D1%8B%D0%B9_7_48145', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B0%D1%81%D1%8F%D1%82%D0%B8%D1%87%D0%B8_38_04492', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B8%D0%B2%D0%BE%D0%B9_%D1%80%D0%BE%D0%B3_38_0564', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D0%B8%D1%87%D0%B5%D0%B2_375_2241', 'http://english.spravkaru.net/w/***/%D0%BA%D1%80%D1%83%D0%B3%D0%BB%D0%BE%D0%B5_375_2234', 'http://english.spravkaru.net/w/***/%D0%BA%D1%83%D1%80%D0%B3%D0%B0%D0%BD_7_3522', 'http://english.spravkaru.net/w/***/%D0%BA%D1%8B%D0%B7%D1%8B%D0%BB%D0%BE%D1%80%D0%B4%D0%B0_7_7242', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B0%D0%BD%D0%B3%D0%B5%D0%BF%D0%B0%D1%81_7_34669', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B5%D0%BD%D0%B8%D0%BD%D0%BE_38_06557', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B5%D0%BD%D0%B8%D0%BD%D1%81%D0%BA_%D0%BA%D1%83%D0%B7%D0%BD%D0%B5%D1%86%D0%BA%D0%B8%D0%B9_7_38456', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B8%D0%B2%D0%BD%D1%8B_7_48677', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B8%D0%B4%D0%B0_375_1561', 'http://english.spravkaru.net/w/***/%D0%BB%D0%B8%D0%BF%D0%B5%D1%86%D0%BA_7_4742', 'http://english.spravkaru.net/w/***/%D0%BB%D1%83%D0%B3%D0%B0%D0%BD%D1%81%D0%BA_38_0642', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D0%B3%D0%B0%D0%B4%D0%B0%D0%BD_7_4132', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D0%B3%D0%BD%D0%B8%D1%82%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA_7_3519', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D0%BA%D0%B0%D1%80%D0%BE%D0%B2_38_04478', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D0%BB%D0%B0%D1%8F_%D0%B2%D0%B8%D1%81%D0%BA%D0%B0_38_05258', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D1%80%D0%B8%D1%83%D0%BF%D0%BE%D0%BB%D1%8C_38_0629', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D1%80%D1%82%D1%83%D0%BA_7_71331', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B0%D1%87%D1%83%D0%BB%D0%B8%D1%89%D0%B8_375_177', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B8%D0%BD%D1%81%D0%BA_375_17', 'http://english.spravkaru.net/w/***/%D0%BC%D0%B8%D1%80%D0%BE%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_38_04474', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D0%B3%D0%B8%D0%BB%D1%91%D0%B2_375_222', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D0%B7%D1%8B%D1%80%D1%8C_375_2351', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D0%BB%D0%BE%D0%B4%D0%B5%D1%87%D0%BD%D0%BE_375_1773', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%89%D0%B8%D0%BD%D0%B0_7_48148', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0_7_495', 'http://english.spravkaru.net/w/***/%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0_7_499', 'http://english.spravkaru.net/w/***/%D0%BC%D1%81%D1%82%D0%B8%D1%81%D0%BB%D0%B0%D0%B2%D0%BB%D1%8C_375_2240', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B0%D0%B1%D0%B5%D1%80%D0%B5%D0%B6%D0%BD%D1%8B%D0%B5_%D1%87%D0%B5%D0%BB%D0%BD%D1%8B_7_8552', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B0%D0%BB%D1%8C%D1%87%D0%B8%D0%BA_7_8662', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B0%D1%85%D0%BE%D0%B4%D0%BA%D0%B0_7_4236', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B5%D0%B6%D0%B8%D0%BD_38_04631', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%B6%D0%BD%D0%B5%D0%B2%D0%B0%D1%80%D1%82%D0%BE%D0%B2%D1%81%D0%BA_7_3466', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%B6%D0%BD%D0%B5%D0%B3%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9_38_06550', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%B6%D0%BD%D0%B8%D0%B9_%D0%BD%D0%BE%D0%B2%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_7_831', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%B6%D0%BD%D0%B8%D0%B9_%D1%82%D0%B0%D0%B3%D0%B8%D0%BB_7_3435', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2_38_0512', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2%D1%81%D0%BA_%D0%BD%D0%B0_%D0%B0%D0%BC%D1%83%D1%80%D0%B5_7_42135', 'http://english.spravkaru.net/w/***/%D0%BD%D0%B8%D0%BA%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_38_0566', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_%D1%81%D0%B5%D0%B2%D0%B5%D1%80%D1%81%D0%BA%D0%B8%D0%B9_38_04658', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%BA%D0%B0_38_05241', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%B0%D1%80%D1%85%D0%B0%D0%BD%D0%B3%D0%B5%D0%BB%D1%8C%D1%81%D0%BA_38_05255', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%B4%D1%83%D0%B3%D0%B8%D0%BD%D0%BE_7_48138', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%BC%D0%B8%D1%80%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_38_05256', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%BD%D1%83%D0%BA%D1%83%D1%82%D1%81%D0%BA%D0%B8%D0%B9_7_39549', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D0%BF%D0%BE%D0%BB%D0%BE%D1%86%D0%BA_375_214', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA_7_383', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D1%83%D0%BA%D1%80%D0%B0%D0%B8%D0%BD%D0%BA%D0%B0_38_05251', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D0%BE%D1%87%D0%B5%D1%80%D0%BA%D0%B0%D1%81%D1%81%D0%BA_7_8635', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9_%D1%83%D1%80%D0%B5%D0%BD%D0%B3%D0%BE%D0%B9_7_3494', 'http://english.spravkaru.net/w/***/%D0%BD%D0%BE%D1%81%D0%BE%D0%B2%D0%BA%D0%B0_38_04642', 'http://english.spravkaru.net/w/***/%D0%BE%D0%B4%D0%B5%D1%81%D1%81%D0%B0_38_048', 'http://english.spravkaru.net/w/***/%D0%BE%D0%B7%D1%91%D1%80%D1%81%D0%BA_7_35130', 'http://english.spravkaru.net/w/***/%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D0%BD%D0%BA%D0%B0_38_05250', 'http://english.spravkaru.net/w/***/%D0%BE%D0%BC%D1%81%D0%BA_7_3812', 'http://english.spravkaru.net/w/***/%D0%BE%D0%BD%D1%83%D1%84%D1%80%D0%B8%D0%B5%D0%B2%D0%BA%D0%B0_38_05238', 'http://english.spravkaru.net/w/***/%D0%BE%D1%80%D1%91%D0%BB_7_4862', 'http://english.spravkaru.net/w/***/%D0%BE%D1%80%D0%B5%D1%85%D0%BE%D0%B2%D0%BE_%D0%B7%D1%83%D0%B5%D0%B2%D0%BE_7_496', 'http://english.spravkaru.net/w/***/%D0%BE%D1%81%D0%B8%D0%BF%D0%BE%D0%B2%D0%B8%D1%87%D0%B8_375_2235', 'http://english.spravkaru.net/w/***/%D0%BE%D1%81%D1%82%D1%91%D1%80_38_04646', 'http://english.spravkaru.net/w/***/%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B2_7_81152', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B0%D0%B2%D0%BB%D0%BE%D0%B4%D0%B0%D1%80_7_7182', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%80%D0%B2%D0%BE%D0%BC%D0%B0%D0%B9%D1%81%D0%BA%D0%BE%D0%B5_38_06552', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%80%D0%B5%D1%8F%D1%81%D0%BB%D0%B0%D0%B2_%D1%85%D0%BC%D0%B5%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D0%BA%D0%B8%D0%B9_38_04467', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%B2%D0%BE_38_05237', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%B7%D0%B0%D0%B2%D0%BE%D0%B4%D1%81%D0%BA_7_8142', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%BF%D0%B0%D0%B2%D0%BB%D0%BE%D0%B2%D1%81%D0%BA_7_7152', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B5%D1%87%D0%BE%D1%80%D0%B0_7_82142', 'http://english.spravkaru.net/w/***/%D0%BF%D0%B8%D0%BD%D1%81%D0%BA_375_165', 'http://english.spravkaru.net/w/***/%D0%BF%D0%BE%D0%BB%D0%BE%D1%86%D0%BA_375_214', 'http://english.spravkaru.net/w/***/%D0%BF%D0%BE%D0%BB%D1%82%D0%B0%D0%B2%D0%B0_38_0532', 'http://english.spravkaru.net/w/***/%D0%BF%D0%BE%D1%80%D1%85%D0%BE%D0%B2_7_81134', 'http://english.spravkaru.net/w/***/%D0%BF%D0%BE%D1%87%D0%B8%D0%BD%D0%BE%D0%BA_7_48149', 'http://english.spravkaru.net/w/***/%D0%BF%D1%80%D0%B8%D0%BB%D1%83%D0%BA%D0%B8_38_04637', 'http://english.spravkaru.net/w/***/%D0%BF%D1%80%D0%BE%D0%BA%D0%BE%D0%BF%D1%8C%D0%B5%D0%B2%D1%81%D0%BA_7_3846', 'http://english.spravkaru.net/w/***/%D0%BF%D1%81%D0%BA%D0%BE%D0%B2_7_8112', 'http://english.spravkaru.net/w/***/%D1%80%D0%B0%D0%B7%D0%B4%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5_38_06553', 'http://english.spravkaru.net/w/***/%D1%80%D0%B0%D0%BA%D0%B8%D1%82%D0%BD%D0%BE%D0%B5_38_04462', 'http://english.spravkaru.net/w/***/%D1%80%D0%B5%D0%BF%D0%BA%D0%B8_38_04641', 'http://english.spravkaru.net/w/***/%D1%80%D0%B5%D1%87%D0%B8%D1%86%D0%B0_375_2340', 'http://english.spravkaru.net/w/***/%D1%80%D0%BE%D0%B2%D0%BD%D0%BE_38_0362', 'http://english.spravkaru.net/w/***/%D1%80%D0%BE%D1%81%D0%BB%D0%B0%D0%B2%D0%BB%D1%8C_7_48134', 'http://english.spravkaru.net/w/***/%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B2_%D0%BD%D0%B0_%D0%B4%D0%BE%D0%BD%D1%83_7_863', 'http://english.spravkaru.net/w/***/%D1%80%D1%83%D0%B4%D0%BD%D1%8F_7_48141', 'http://english.spravkaru.net/w/***/%D1%80%D1%8B%D0%B1%D0%BD%D0%B8%D1%86%D0%B0_373_555', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D0%BA%D0%B8_38_06563', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D0%BC%D0%B0%D1%80%D0%B0_7_846', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D0%BD%D0%BA%D1%82_%D0%BF%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3_7_812', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D1%80%D0%B0%D1%82%D0%BE%D0%B2_7_8452', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D1%84%D0%BE%D0%BD%D0%BE%D0%B2%D0%BE_7_48142', 'http://english.spravkaru.net/w/***/%D1%81%D0%B0%D1%8F%D0%BD%D1%81%D0%BA_7_39553', 'http://english.spravkaru.net/w/***/%D1%81%D0%B2%D0%B5%D1%82%D0%BB%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D0%BA_38_05236', 'http://english.spravkaru.net/w/***/%D1%81%D0%B2%D0%B5%D1%82%D0%BB%D0%BE%D0%B3%D0%BE%D1%80%D1%81%D0%BA_375_2342', 'http://english.spravkaru.net/w/***/%D1%81%D0%B5%D0%B2%D0%B0%D1%81%D1%82%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_38_0692', 'http://english.spravkaru.net/w/***/%D1%81%D0%B5%D0%BC%D1%91%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_38_04659', 'http://english.spravkaru.net/w/***/%D1%81%D0%B5%D0%BC%D0%B8%D0%BF%D0%B0%D0%BB%D0%B0%D1%82%D0%B8%D0%BD%D1%81%D0%BA_7_7222', 'http://english.spravkaru.net/w/***/%D1%81%D0%B8%D0%BC%D1%84%D0%B5%D1%80%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_38_0652', 'http://english.spravkaru.net/w/***/%D1%81%D0%BA%D0%B2%D0%B8%D1%80%D0%B0_38_04468', 'http://english.spravkaru.net/w/***/%D1%81%D0%BB%D0%B0%D0%B2%D0%B3%D0%BE%D1%80%D0%BE%D0%B4_375_2246', 'http://english.spravkaru.net/w/***/%D1%81%D0%BB%D0%B0%D0%B2%D1%83%D1%82%D0%B8%D1%87_38_04479', 'http://english.spravkaru.net/w/***/%D1%81%D0%BB%D0%BE%D0%B1%D0%BE%D0%B4%D0%B7%D0%B8%D1%8F_373_557', 'http://english.spravkaru.net/w/***/%D1%81%D0%BB%D1%83%D1%86%D0%BA_375_1795', 'http://english.spravkaru.net/w/***/%D1%81%D0%BC%D0%BE%D0%BB%D0%B5%D0%BD%D1%81%D0%BA_7_4812', 'http://english.spravkaru.net/w/***/%D1%81%D0%BC%D0%BE%D1%80%D0%B3%D0%BE%D0%BD%D1%8C_375_1592', 'http://english.spravkaru.net/w/***/%D1%81%D0%BD%D0%B5%D0%B6%D0%B8%D0%BD%D1%81%D0%BA_7_35146', 'http://english.spravkaru.net/w/***/%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9_38_06551', 'http://english.spravkaru.net/w/***/%D1%81%D0%BE%D0%BB%D0%B8%D0%B3%D0%BE%D1%80%D1%81%D0%BA_375_174', 'http://english.spravkaru.net/w/***/%D1%81%D0%BE%D1%81%D0%BD%D0%B8%D1%86%D0%B0_38_04655', 'http://english.spravkaru.net/w/***/%D1%81%D1%80%D0%B5%D0%B1%D0%BD%D0%BE%D0%B5_38_04639', 'http://english.spravkaru.net/w/***/%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%89%D0%B5_38_04465', 'http://english.spravkaru.net/w/***/%D1%81%D1%82%D0%B0%D0%B2%D1%80%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C_7_8652', 'http://english.spravkaru.net/w/***/%D1%81%D1%82%D0%BE%D0%BB%D0%B1%D1%86%D1%8B_375_1717', 'http://english.spravkaru.net/w/***/%D1%81%D1%82%D0%BE%D0%BB%D0%B8%D0%BD_375_1655', 'http://english.spravkaru.net/w/***/%D1%81%D1%83%D0%B4%D0%B0%D0%BA_38_06566', 'http://english.spravkaru.net/w/***/%D1%81%D1%83%D1%80%D0%B3%D1%83%D1%82_7_3462', 'http://english.spravkaru.net/w/***/%D1%81%D1%8B%D1%87%D1%91%D0%B2%D0%BA%D0%B0_7_48130', 'http://english.spravkaru.net/w/***/%D1%82%D0%B0%D0%BB%D0%B0%D0%BB%D0%B0%D0%B5%D0%B2%D0%BA%D0%B0_38_04634', 'http://english.spravkaru.net/w/***/%D1%82%D0%B0%D0%BB%D0%B4%D1%8B%D0%BA%D0%BE%D1%80%D0%B3%D0%B0%D0%BD_7_72822', 'http://english.spravkaru.net/w/***/%D1%82%D0%B0%D1%80%D0%B0%D0%B7_7_7262', 'http://english.spravkaru.net/w/***/%D1%82%D1%91%D0%BC%D0%BA%D0%B8%D0%BD%D0%BE_7_48136', 'http://english.spravkaru.net/w/***/%D1%82%D0%B5%D1%82%D0%B8%D0%B5%D0%B2_38_04460', 'http://english.spravkaru.net/w/***/%D1%82%D0%B8%D1%80%D0%B0%D1%81%D0%BF%D0%BE%D0%BB%D1%8C_373_533', 'http://english.spravkaru.net/w/***/%D1%82%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C_7_3452', 'http://english.spravkaru.net/w/***/%D1%83%D0%B3%D1%80%D0%B0_7_48137', 'http://english.spravkaru.net/w/***/%D1%83%D0%BB%D1%8C%D1%8F%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_38_05259', 'http://english.spravkaru.net/w/***/%D1%83%D1%80%D0%B0%D0%BB%D1%8C%D1%81%D0%BA_7_7112', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D0%BE%D0%BB%D1%8C%D0%B5_%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA%D0%BE%D0%B5_7_39543', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D1%82%D0%B8%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_38_05239', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D1%82%D1%8C_%D0%B8%D0%BB%D0%B8%D0%BC%D1%81%D0%BA_7_39535', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D1%82%D1%8C_%D0%BE%D1%80%D0%B4%D1%8B%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_7_39541', 'http://english.spravkaru.net/w/***/%D1%83%D1%81%D1%82%D1%8C_%D1%83%D0%B4%D0%B0_7_39545', 'http://english.spravkaru.net/w/***/%D1%83%D1%84%D0%B0_7_347', 'http://english.spravkaru.net/w/***/%D1%84%D0%B0%D1%81%D1%82%D0%BE%D0%B2_38_04465', 'http://english.spravkaru.net/w/***/%D1%84%D0%B5%D0%BE%D0%B4%D0%BE%D1%81%D0%B8%D1%8F_38_06562', 'http://english.spravkaru.net/w/***/%D1%85%D0%B0%D0%B1%D0%B0%D1%80%D0%BE%D0%B2%D1%81%D0%BA_7_4212', 'http://english.spravkaru.net/w/***/%D1%85%D0%B0%D1%80%D1%8C%D0%BA%D0%BE%D0%B2_38_057', 'http://english.spravkaru.net/w/***/%D1%85%D0%B5%D1%80%D1%81%D0%BE%D0%BD_38_0552', 'http://english.spravkaru.net/w/***/%D1%85%D0%B8%D1%81%D0%BB%D0%B0%D0%B2%D0%B8%D1%87%D0%B8_7_48140', 'http://english.spravkaru.net/w/***/%D1%85%D0%BE%D0%BB%D0%BC_%D0%B6%D0%B8%D1%80%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9_7_48139', 'http://english.spravkaru.net/w/***/%D1%85%D0%BE%D1%82%D0%B8%D0%BC%D1%81%D0%BA_375_2247', 'http://english.spravkaru.net/w/***/%D1%87%D0%B0%D1%83%D1%81%D1%8B_375_2242', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D0%B1%D0%BE%D0%BA%D1%81%D0%B0%D1%80%D1%8B_7_8352', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D0%BB%D1%8F%D0%B1%D0%B8%D0%BD%D1%81%D0%BA_7_351', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%B5%D0%BC%D1%85%D0%BE%D0%B2%D0%BE_7_39546', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%B5%D0%BF%D0%BE%D0%B2%D0%B5%D1%86_7_8202', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%B8%D0%BA%D0%BE%D0%B2_375_2243', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%BD%D0%B8%D0%B3%D0%BE%D0%B2_38_04622', 'http://english.spravkaru.net/w/***/%D1%87%D0%B5%D1%80%D0%BD%D0%BE%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%B5_38_06558', 'http://english.spravkaru.net/w/***/%D1%87%D1%83%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_7_39567', 'http://english.spravkaru.net/w/***/%D1%88%D0%B5%D0%BB%D0%B5%D1%85%D0%BE%D0%B2_7_39550', 'http://english.spravkaru.net/w/***/%D1%88%D0%BA%D0%BB%D0%BE%D0%B2_375_2239', 'http://english.spravkaru.net/w/***/%D1%88%D1%83%D0%B1%D0%B0%D1%80_%D0%BA%D1%83%D0%B4%D1%83%D0%BA_7_71346', 'http://english.spravkaru.net/w/***/%D1%88%D1%83%D0%BC%D1%8F%D1%87%D0%B8_7_48133', 'http://english.spravkaru.net/w/***/%D1%88%D1%8B%D0%BC%D0%BA%D0%B5%D0%BD%D1%82_7_7252', 'http://english.spravkaru.net/w/***/%D1%89%D0%BE%D1%80%D1%81_38_04654', 'http://english.spravkaru.net/w/***/%D1%89%D1%83%D1%87%D0%B8%D0%BD_375_1514', 'http://english.spravkaru.net/w/***/%D1%8D%D0%BA%D0%B8%D0%B1%D0%B0%D1%81%D1%82%D1%83%D0%B7_7_7187', 'http://english.spravkaru.net/w/***/%D1%8D%D0%BC%D0%B1%D0%B0_7_71334', 'http://english.spravkaru.net/w/***/%D1%8F%D0%B3%D0%BE%D1%82%D0%B8%D0%BD_38_04475_', 'http://english.spravkaru.net/w/***/%D1%8F%D0%BB%D1%82%D0%B0_38_0654', 'http://english.spravkaru.net/w/***/%D1%8F%D1%80%D0%BE%D1%81%D0%BB%D0%B0%D0%B2%D0%BB%D1%8C_7_4852', 'http://english.spravkaru.net/w/***/%D1%8F%D1%80%D1%86%D0%B5%D0%B2%D0%BE_7_48143']
 
@@ -180,6 +190,231 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
         return wraps(func)(wrapper)
 
     return decorator
+
+
+def ocr(im, threshold=200, mask="./Data/Pictures/letters.bmp", alphabet="0123456789"):
+    img = Image.open(im)
+    img = img.convert("RGB")
+    box = (8, 8, 76, 21)
+    img = img.crop(box)
+    pixdata = img.load()
+
+    # open the mask
+    letters = Image.open(mask)
+    ledata = letters.load()
+
+    def test_letter(img, letter):
+        A = img.load()
+        B = letter.load()
+        mx = 1000000
+        max_x = 0
+        x = 0
+        for x in range(img.size[0] - letter.size[0]):
+            _sum = 0
+            for i in range(letter.size[0]):
+                for j in range(letter.size[1]):
+                    _sum = _sum + abs(A[x + i, j][0] - B[i, j][0])
+            if _sum < mx:
+                mx = _sum
+                max_x = x
+        return mx, max_x
+
+    # Clean the background noise, if color != white, then set to black.
+    for y in range(img.size[1]):
+        for x in range(img.size[0]):
+            if (pixdata[x, y][0] > threshold) \
+                    and (pixdata[x, y][1] > threshold) \
+                    and (pixdata[x, y][2] > threshold):
+
+                pixdata[x, y] = (255, 255, 255, 255)
+            else:
+                pixdata[x, y] = (0, 0, 0, 255)
+
+    counter = 0
+    old_x = -1
+
+    letterlist = []
+
+    for x in range(letters.size[0]):
+        black = True
+        for y in range(letters.size[1]):
+            if ledata[x, y][0] != 0:
+                black = False
+                break
+        if black:
+            if True:
+                box = (old_x + 1, 0, x, 10)
+                letter = letters.crop(box)
+                t = test_letter(img, letter)
+                letterlist.append((t[0], alphabet[counter], t[1]))
+            old_x = x
+            counter += 1
+
+    box = (old_x + 1, 0, 140, 10)
+    letter = letters.crop(box)
+    t = test_letter(img, letter)
+    letterlist.append((t[0], alphabet[counter], t[1]))
+
+    t = sorted(letterlist)
+    t = t[0:5]  # 5-letter captcha
+
+    final = sorted(t, key=lambda e: e[2])
+
+    answer = ''.join(map(lambda l: l[1], final))
+    answer = ""
+    for l in final:
+         answer = answer + l[1]
+    print(answer)
+
+
+
+def yellowpages(fname,city):
+     global yellowres
+     print()
+     Fig = Figlet(font='cybermedium')
+     print(Fig.renderText('Searching Family Name in People.YellowPages'))
+     print()
+     ywuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+     UserAgent = random.choice(ywuser_agent_list)
+
+     
+     if city == "none":
+          try:
+               for state in yellowstate:
+                    pagenbr = 1
+                    stopwhile = 0
+                    while stopwhile != 1 and:
+                    #while stopwhile != 1 and len(yellowres) < 30:
+                              name=[]
+                              loc=[]
+                              tel=[] 
+                              maxpage = ''     
+
+                              cj = http.cookiejar.CookieJar()
+                   
+                              query = "http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
+                              print("query:",query)
+                              opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              send = opener.open(query)
+
+
+                              soup = BeautifulSoup(send,'lxml')
+                              #Do a Barrel Roll
+#                              print(soup)
+#                              print()
+#                              print("Souptitle")
+#                              print()
+#                              print(soup.title)
+                              print()
+                              titre = soup.title
+                              if "Alert" in str(titre):
+                                   print()
+                                   print("FIGHT THE CAPTCHA")
+                                   print()
+                                   print("Cookie Saved :",cj)
+                                   cj2 = http.cookiejar.CookieJar()
+                                   query = "http://people.yellowpages.com/inc/randomimage.php"
+                                   print("query:",query)
+                                   opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                   opener.addheaders = [('User-Agent', str(UserAgent))]
+     
+                                   send = opener.open(query)
+                                   with open('./Data/Pictures/capcha.png', 'b+w') as f:
+                                        f.write(send.read())
+                                   print()
+                                   print("Cj2:")
+                                   print(cj2)
+                                   print()
+
+                                   try:
+                                        print("found captcha :")
+                                        print(imageGwall.Image("./Data/Pictures/capcha.png"))
+                                        print()
+                                        
+                                   except Exception as e:
+                                         print(e)
+                                   
+                                   #ry:
+                                   print("captcha solver:")
+                                   print()
+                                   ocr("./Data/Pictures/capcha.png")
+                                   print()
+
+
+                                   ##xcept Exception as e:
+                                   ###print(e)
+                              else:
+
+                                   ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
+#                                   print()
+#                                   print(ypend)
+#                                   print()
+                                    
+
+                                   for item in ypend:
+                                        item = item.split('of')
+                                        
+                                        #print("name: ",item)
+                                        #print()
+                                        for subtem in item[1]:
+                                             subtem = subtem.replace(" ","")
+                                             maxpage = subtem
+                                             
+                                    
+#                                   print()          
+#                                   print("max page found : ", maxpage)
+#                                   print()
+
+                                   ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
+#                                   print(ypres)
+
+
+
+                                   for item in ypres:
+                                        item = item.split(';form=sbn">')
+                                        
+                                        #print("name: ",item)
+                                        #print()
+                                        for subtem in item:
+                                             subtem = subtem.split('</a>')
+                                             if "href=" not in subtem[0]:
+                                                  name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                   for item in ypres:
+                                        item = item.split('<div class="address">')
+                                        for subtem in item:
+                                             subtem = subtem.split('</div>')
+                                             if "href=" not in subtem[0]:
+                                                  loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                   for item in ypres:
+                                        item = item.split('<div class="phone">')
+                                        for subtem in item:
+                                             subtem = subtem.split('</div>')
+                                             if "href=" not in subtem[0]:
+                                                  tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+
+
+                                   for item1,item2,item3 in zip(name,loc,tel):
+                                                       print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                       yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+
+                              pagenbr = pagenbr +1
+                              
+                              if pagenbr >int(maxpage):
+                              #if pagenbr >2:
+                                   print("end Of Res")
+                                   stopwhile=1
+
+                              time.sleep(random.randint(32,123))
+                                             
+                              #sys.exit()
+                         
+          except Exception as e:
+               print(e)
+
 
 
 def spravkaru(fname,city):
@@ -2998,6 +3233,19 @@ if fullauto == "true":
 
 permutation(argsname)
 
+
+
+
+for item in splitengine:
+     if item.lower() == "yellowpages":
+          if family != "none":
+               yellowpages(family,args.city)
+          if family == "none":
+               quickfix=""
+               while len(quickfix) < 1:
+                    quickfix= input("What's the familly name already?\nInput:")
+               yellowpages(str(quickfix),args.city)
+
 for item in splitengine:
      if item.lower() == "spravkaru":
           if family != "none":
@@ -3339,7 +3587,7 @@ for item in splitengine:
           s7 = db.nodes.create(Enginename="PaginasBlancas")
           srcheng.add(s7)
           s0.relationships.create("Query", s7)
-spravres
+
 
 for item in splitengine:
      if item.lower() == "spravkaru":
@@ -3347,6 +3595,13 @@ for item in splitengine:
           s8 = db.nodes.create(Enginename="Spravkaru")
           srcheng.add(s8)
           s0.relationships.create("Query", s8)
+
+for item in splitengine:
+     if item.lower() == "yellowpages":
+           
+          s9 = db.nodes.create(Enginename="YellowPages")
+          srcheng.add(s9)
+          s0.relationships.create("Query", s9)
 
 labelwebsite = db.labels.create("Website")
 labelFile = db.labels.create("File")
@@ -3375,6 +3630,9 @@ labelLullarinfo = db.labels.create("LullareInfo")
 labelSpravres = db.labels.create("National")
 labelSpravcity = db.labels.create("Cities")
 labelSpravinfo = db.labels.create("InfoSprav")
+labelYellowres = db.labels.create("National")
+labelYellowcity = db.labels.create("Cities")
+labelYellowinfo = db.labels.create("InfoYellowPages")
 
 for item in splitengine:
      if item.lower() == "google":
@@ -3479,6 +3737,12 @@ for item in splitengine:
                s8.relationships.create("LinkResults", SpravKaru)
                labelSpravres.add(SpravKaru)
 
+for item in splitengine:
+     if item.lower() == "yellowpages":
+               YellowPages = db.nodes.create(City="Cities", Names="Cities", Adresse="Cities", telephone="Cities")
+               s9.relationships.create("LinkResults", YellowPages)
+               labelYellowres.add(YellowPages)
+
 print()
 print()
 print()
@@ -3547,6 +3811,873 @@ print()
 
 
 print()
+
+
+for item in splitengine:
+     if item.lower() == "yellowpages":
+
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Yellow Pages Results'))
+          print("")
+          for info in yellowres:
+                    info = info.split("#***#")
+                    #print(info)
+
+                    if ", al " in info[1].lower():
+                         try:
+                              type(ypalabama)
+                              item = db.nodes.create(YpCity="Alabama", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypalabama.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypalabama= db.nodes.create(Ypname="Alabama",YpCity="Alabama", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypalabama)
+                              YellowPages.relationships.create("Cities",ypalabama)
+                              item = db.nodes.create(YpCity="Alabama", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypalabama.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ak " in info[1].lower():
+                         try:
+                              type(ypalaska)
+                              item = db.nodes.create(YpCity="Alaska", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypalaska.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypalaska= db.nodes.create(Ypname="Alaska",YpCity="Alaska", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypalaska)
+                              YellowPages.relationships.create("Cities",ypalaska)
+                              item = db.nodes.create(YpCity="Alaska", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypalaska.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", az " in info[1].lower():
+                         try:
+                              type(yparizona)
+                              item = db.nodes.create(YpCity="Arizona", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yparizona.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yparizona= db.nodes.create(Ypname="Arizona",YpCity="Arizona", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yparizona)
+                              YellowPages.relationships.create("Cities",yparizona)
+                              item = db.nodes.create(YpCity="Arizona", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yparizona.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ar " in info[1].lower():
+                         try:
+                              type(yparkansas)
+                              item = db.nodes.create(YpCity="Arkansas", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yparkansas.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yparkansas= db.nodes.create(Ypname="Arkansas",YpCity="Arkansas", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yparkansas)
+                              YellowPages.relationships.create("Cities",yparkansas)
+                              item = db.nodes.create(YpCity="Arkansas", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yparkansas.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ca " in info[1].lower():
+                         try:
+                              type(ypcalifornia)
+                              item = db.nodes.create(YpCity="California", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypcalifornia.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypcalifornia= db.nodes.create(Ypname="California",YpCity="California", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypcalifornia)
+                              YellowPages.relationships.create("Cities",ypcalifornia)
+                              item = db.nodes.create(YpCity="California", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypcalifornia.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", co " in info[1].lower():
+                         try:
+                              type(ypcolorado)
+                              item = db.nodes.create(YpCity="Colorado", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypcolorado.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypcolorado= db.nodes.create(Ypname="Colorado",YpCity="Colorado", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypcolorado)
+                              YellowPages.relationships.create("Cities",ypcolorado)
+                              item = db.nodes.create(YpCity="Colorado", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypcolorado.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ct " in info[1].lower():
+                         try:
+                              type(ypconnecticut)
+                              item = db.nodes.create(YpCity="Connecticut", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypconnecticut.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypconnecticut= db.nodes.create(Ypname="Connecticut",YpCity="Connecticut", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypconnecticut)
+                              YellowPages.relationships.create("Cities",ypconnecticut)
+                              item = db.nodes.create(YpCity="Connecticut", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypconnecticut.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", de " in info[1].lower():
+                         try:
+                              type(ypdelaware)
+                              item = db.nodes.create(YpCity="Delaware", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypdelaware.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypdelaware= db.nodes.create(Ypname="Delaware",YpCity="Delaware", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypdelaware)
+                              YellowPages.relationships.create("Cities",ypdelaware)
+                              item = db.nodes.create(YpCity="Delaware", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypdelaware.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", fl " in info[1].lower():
+                         try:
+                              type(ypflorida)
+                              item = db.nodes.create(YpCity="Florida", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypflorida.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypflorida= db.nodes.create(Ypname="Florida",YpCity="Florida", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypflorida)
+                              YellowPages.relationships.create("Cities",ypflorida)
+                              item = db.nodes.create(YpCity="Florida", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypflorida.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ga " in info[1].lower():
+                         try:
+                              type(ypgeorgia)
+                              item = db.nodes.create(YpCity="Georgia", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypgeorgia.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypgeorgia= db.nodes.create(Ypname="Georgia",YpCity="Georgia", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypgeorgia)
+                              YellowPages.relationships.create("Cities",ypgeorgia)
+                              item = db.nodes.create(YpCity="Georgia", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypgeorgia.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", hi " in info[1].lower():
+                         try:
+                              type(yphawaii)
+                              item = db.nodes.create(YpCity="Hawaii", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yphawaii.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yphawaii= db.nodes.create(Ypname="Hawaii",YpCity="Hawaii", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yphawaii)
+                              YellowPages.relationships.create("Cities",yphawaii)
+                              item = db.nodes.create(YpCity="Hawaii", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yphawaii.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", id " in info[1].lower():
+                         try:
+                              type(ypidaho)
+                              item = db.nodes.create(YpCity="Idaho", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypidaho.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypidaho= db.nodes.create(Ypname="Idaho",YpCity="Idaho", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypidaho)
+                              YellowPages.relationships.create("Cities",ypidaho)
+                              item = db.nodes.create(YpCity="Idaho", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypidaho.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", il " in info[1].lower():
+                         try:
+                              type(ypillinois)
+                              item = db.nodes.create(YpCity="Illinois", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypillinois.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypillinois= db.nodes.create(Ypname="Illinois",YpCity="Illinois", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypillinois)
+                              YellowPages.relationships.create("Cities",ypillinois)
+                              item = db.nodes.create(YpCity="Illinois", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypillinois.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", in " in info[1].lower():
+                         try:
+                              type(ypindiana)
+                              item = db.nodes.create(YpCity="Indiana", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypindiana.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypindiana= db.nodes.create(Ypname="Indiana",YpCity="Indiana", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypindiana)
+                              YellowPages.relationships.create("Cities",ypindiana)
+                              item = db.nodes.create(YpCity="Indiana", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypindiana.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ia " in info[1].lower():
+                         try:
+                              type(ypiowa)
+                              item = db.nodes.create(YpCity="Iowa", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypiowa.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypiowa= db.nodes.create(Ypname="Iowa",YpCity="Iowa", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypiowa)
+                              YellowPages.relationships.create("Cities",ypiowa)
+                              item = db.nodes.create(YpCity="Iowa", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypiowa.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ks " in info[1].lower():
+                         try:
+                              type(ypkansas)
+                              item = db.nodes.create(YpCity="Kansas", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypkansas.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypkansas= db.nodes.create(Ypname="Kansas",YpCity="Kansas", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypkansas)
+                              YellowPages.relationships.create("Cities",ypkansas)
+                              item = db.nodes.create(YpCity="Kansas", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypkansas.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ky " in info[1].lower():
+                         try:
+                              type(ypkentucky)
+                              item = db.nodes.create(YpCity="Kentucky", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypkentucky.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypkentucky= db.nodes.create(Ypname="Kentucky",YpCity="Kentucky", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypkentucky)
+                              YellowPages.relationships.create("Cities",ypkentucky)
+                              item = db.nodes.create(YpCity="Kentucky", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypkentucky.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", la " in info[1].lower():
+                         try:
+                              type(yplouisiana)
+                              item = db.nodes.create(YpCity="Louisiana", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yplouisiana.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yplouisiana= db.nodes.create(Ypname="Louisiana",YpCity="Louisiana", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yplouisiana)
+                              YellowPages.relationships.create("Cities",yplouisiana)
+                              item = db.nodes.create(YpCity="Louisiana", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yplouisiana.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", me " in info[1].lower():
+                         try:
+                              type(ypmaine)
+                              item = db.nodes.create(YpCity="Maine", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmaine.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypmaine= db.nodes.create(Ypname="Maine",YpCity="Maine", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypmaine)
+                              YellowPages.relationships.create("Cities",ypmaine)
+                              item = db.nodes.create(YpCity="Maine", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmaine.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", md " in info[1].lower():
+                         try:
+                              type(ypmaryland)
+                              item = db.nodes.create(YpCity="Maryland", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmaryland.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypmaryland= db.nodes.create(Ypname="Maryland",YpCity="Maryland", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypmaryland)
+                              YellowPages.relationships.create("Cities",ypmaryland)
+                              item = db.nodes.create(YpCity="Maryland", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmaryland.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ma " in info[1].lower():
+                         try:
+                              type(ypmassachusetts)
+                              item = db.nodes.create(YpCity="Massachusetts", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmassachusetts.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypmassachusetts= db.nodes.create(Ypname="Massachusetts",YpCity="Massachusetts", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypmassachusetts)
+                              YellowPages.relationships.create("Cities",ypmassachusetts)
+                              item = db.nodes.create(YpCity="Massachusetts", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmassachusetts.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", mi " in info[1].lower():
+                         try:
+                              type(ypmichigan)
+                              item = db.nodes.create(YpCity="Michigan", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmichigan.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypmichigan= db.nodes.create(Ypname="Michigan",YpCity="Michigan", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypmichigan)
+                              YellowPages.relationships.create("Cities",ypmichigan)
+                              item = db.nodes.create(YpCity="Michigan", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmichigan.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", mn " in info[1].lower():
+                         try:
+                              type(ypminnesota)
+                              item = db.nodes.create(YpCity="Minnesota", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypminnesota.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypminnesota= db.nodes.create(Ypname="Minnesota",YpCity="Minnesota", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypminnesota)
+                              YellowPages.relationships.create("Cities",ypminnesota)
+                              item = db.nodes.create(YpCity="Minnesota", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypminnesota.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ms " in info[1].lower():
+                         try:
+                              type(ypmississippi)
+                              item = db.nodes.create(YpCity="Mississippi", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmississippi.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypmississippi= db.nodes.create(Ypname="Mississippi",YpCity="Mississippi", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypmississippi)
+                              YellowPages.relationships.create("Cities",ypmississippi)
+                              item = db.nodes.create(YpCity="Mississippi", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmississippi.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", mo " in info[1].lower():
+                         try:
+                              type(ypmissouri)
+                              item = db.nodes.create(YpCity="Missouri", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmissouri.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypmissouri= db.nodes.create(Ypname="Missouri",YpCity="Missouri", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypmissouri)
+                              YellowPages.relationships.create("Cities",ypmissouri)
+                              item = db.nodes.create(YpCity="Missouri", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmissouri.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", mt " in info[1].lower():
+                         try:
+                              type(ypmontana)
+                              item = db.nodes.create(YpCity="Montana", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmontana.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypmontana= db.nodes.create(Ypname="Montana",YpCity="Montana", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypmontana)
+                              YellowPages.relationships.create("Cities",ypmontana)
+                              item = db.nodes.create(YpCity="Montana", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypmontana.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ne " in info[1].lower():
+                         try:
+                              type(ypnebraska)
+                              item = db.nodes.create(YpCity="Nebraska", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnebraska.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypnebraska= db.nodes.create(Ypname="Nebraska",YpCity="Nebraska", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypnebraska)
+                              YellowPages.relationships.create("Cities",ypnebraska)
+                              item = db.nodes.create(YpCity="Nebraska", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnebraska.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", nv " in info[1].lower():
+                         try:
+                              type(ypnevada)
+                              item = db.nodes.create(YpCity="Nevada", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnevada.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypnevada= db.nodes.create(Ypname="Nevada",YpCity="Nevada", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypnevada)
+                              YellowPages.relationships.create("Cities",ypnevada)
+                              item = db.nodes.create(YpCity="Nevada", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnevada.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", nh " in info[1].lower():
+                         try:
+                              type(ypnewhampshire)
+                              item = db.nodes.create(YpCity="New Hampshire", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnewhampshire.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypnewhampshire= db.nodes.create(Ypname="New Hampshire",YpCity="New Hampshire", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypnewhampshire)
+                              YellowPages.relationships.create("Cities",ypnewhampshire)
+                              item = db.nodes.create(YpCity="New Hampshire", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnewhampshire.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", nj " in info[1].lower():
+                         try:
+                              type(ypnewjersey)
+                              item = db.nodes.create(YpCity="New Jersey", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnewjersey.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypnewjersey= db.nodes.create(Ypname="New Jersey",YpCity="New Jersey", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypnewjersey)
+                              YellowPages.relationships.create("Cities",ypnewjersey)
+                              item = db.nodes.create(YpCity="New Jersey", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnewjersey.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", nm " in info[1].lower():
+                         try:
+                              type(ypnewmexico)
+                              item = db.nodes.create(YpCity="New Mexico", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnewmexico.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypnewmexico= db.nodes.create(Ypname="New Mexico",YpCity="New Mexico", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypnewmexico)
+                              YellowPages.relationships.create("Cities",ypnewmexico)
+                              item = db.nodes.create(YpCity="New Mexico", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnewmexico.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ny " in info[1].lower():
+                         try:
+                              type(ypnewyork)
+                              item = db.nodes.create(YpCity="New York", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnewyork.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypnewyork= db.nodes.create(Ypname="New York",YpCity="New York", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypnewyork)
+                              YellowPages.relationships.create("Cities",ypnewyork)
+                              item = db.nodes.create(YpCity="New York", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnewyork.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", nc " in info[1].lower():
+                         try:
+                              type(ypnorthcarolina)
+                              item = db.nodes.create(YpCity="North Carolina", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnorthcarolina.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypnorthcarolina= db.nodes.create(Ypname="North Carolina",YpCity="North Carolina", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypnorthcarolina)
+                              YellowPages.relationships.create("Cities",ypnorthcarolina)
+                              item = db.nodes.create(YpCity="North Carolina", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnorthcarolina.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", nd " in info[1].lower():
+                         try:
+                              type(ypnorthdakota)
+                              item = db.nodes.create(YpCity="North Dakota", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnorthdakota.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypnorthdakota= db.nodes.create(Ypname="North Dakota",YpCity="North Dakota", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypnorthdakota)
+                              YellowPages.relationships.create("Cities",ypnorthdakota)
+                              item = db.nodes.create(YpCity="North Dakota", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypnorthdakota.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", oh " in info[1].lower():
+                         try:
+                              type(ypohio)
+                              item = db.nodes.create(YpCity="Ohio", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypohio.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypohio= db.nodes.create(Ypname="Ohio",YpCity="Ohio", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypohio)
+                              YellowPages.relationships.create("Cities",ypohio)
+                              item = db.nodes.create(YpCity="Ohio", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypohio.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ok " in info[1].lower():
+                         try:
+                              type(ypoklahoma)
+                              item = db.nodes.create(YpCity="Oklahoma", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypoklahoma.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypoklahoma= db.nodes.create(Ypname="Oklahoma",YpCity="Oklahoma", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypoklahoma)
+                              YellowPages.relationships.create("Cities",ypoklahoma)
+                              item = db.nodes.create(YpCity="Oklahoma", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypoklahoma.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", or " in info[1].lower():
+                         try:
+                              type(yporegon)
+                              item = db.nodes.create(YpCity="Oregon", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yporegon.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yporegon= db.nodes.create(Ypname="Oregon",YpCity="Oregon", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yporegon)
+                              YellowPages.relationships.create("Cities",yporegon)
+                              item = db.nodes.create(YpCity="Oregon", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yporegon.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", pa " in info[1].lower():
+                         try:
+                              type(yppennsylvania)
+                              item = db.nodes.create(YpCity="Pennsylvania", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yppennsylvania.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yppennsylvania= db.nodes.create(Ypname="Pennsylvania",YpCity="Pennsylvania", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yppennsylvania)
+                              YellowPages.relationships.create("Cities",yppennsylvania)
+                              item = db.nodes.create(YpCity="Pennsylvania", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yppennsylvania.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ri " in info[1].lower():
+                         try:
+                              type(yprhodeisland)
+                              item = db.nodes.create(YpCity="Rhode Island", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yprhodeisland.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yprhodeisland= db.nodes.create(Ypname="Rhode Island",YpCity="Rhode Island", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yprhodeisland)
+                              YellowPages.relationships.create("Cities",yprhodeisland)
+                              item = db.nodes.create(YpCity="Rhode Island", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yprhodeisland.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", sc " in info[1].lower():
+                         try:
+                              type(ypsouthcarolina)
+                              item = db.nodes.create(YpCity="South Carolina", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypsouthcarolina.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypsouthcarolina= db.nodes.create(Ypname="South Carolina",YpCity="South Carolina", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypsouthcarolina)
+                              YellowPages.relationships.create("Cities",ypsouthcarolina)
+                              item = db.nodes.create(YpCity="South Carolina", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypsouthcarolina.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", sd " in info[1].lower():
+                         try:
+                              type(ypsouthdakota)
+                              item = db.nodes.create(YpCity="South Dakota", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypsouthdakota.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypsouthdakota= db.nodes.create(Ypname="South Dakota",YpCity="South Dakota", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypsouthdakota)
+                              YellowPages.relationships.create("Cities",ypsouthdakota)
+                              item = db.nodes.create(YpCity="South Dakota", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypsouthdakota.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", tn " in info[1].lower():
+                         try:
+                              type(yptennessee)
+                              item = db.nodes.create(YpCity="Tennessee", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yptennessee.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yptennessee= db.nodes.create(Ypname="Tennessee",YpCity="Tennessee", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yptennessee)
+                              YellowPages.relationships.create("Cities",yptennessee)
+                              item = db.nodes.create(YpCity="Tennessee", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yptennessee.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", tx " in info[1].lower():
+                         try:
+                              type(yptexas)
+                              item = db.nodes.create(YpCity="Texas", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yptexas.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yptexas= db.nodes.create(Ypname="Texas",YpCity="Texas", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yptexas)
+                              YellowPages.relationships.create("Cities",yptexas)
+                              item = db.nodes.create(YpCity="Texas", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yptexas.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", ut " in info[1].lower():
+                         try:
+                              type(yputah)
+                              item = db.nodes.create(YpCity="Utah", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yputah.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              yputah= db.nodes.create(Ypname="Utah",YpCity="Utah", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(yputah)
+                              YellowPages.relationships.create("Cities",yputah)
+                              item = db.nodes.create(YpCity="Utah", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              yputah.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", vt " in info[1].lower():
+                         try:
+                              type(ypvermont)
+                              item = db.nodes.create(YpCity="Vermont", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypvermont.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypvermont= db.nodes.create(Ypname="Vermont",YpCity="Vermont", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypvermont)
+                              YellowPages.relationships.create("Cities",ypvermont)
+                              item = db.nodes.create(YpCity="Vermont", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypvermont.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", va " in info[1].lower():
+                         try:
+                              type(ypvirginia)
+                              item = db.nodes.create(YpCity="Virginia", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypvirginia.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypvirginia= db.nodes.create(Ypname="Virginia",YpCity="Virginia", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypvirginia)
+                              YellowPages.relationships.create("Cities",ypvirginia)
+                              item = db.nodes.create(YpCity="Virginia", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypvirginia.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", wa " in info[1].lower():
+                         try:
+                              type(ypwashington)
+                              item = db.nodes.create(YpCity="Washington", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypwashington.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypwashington= db.nodes.create(Ypname="Washington",YpCity="Washington", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypwashington)
+                              YellowPages.relationships.create("Cities",ypwashington)
+                              item = db.nodes.create(YpCity="Washington", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypwashington.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", wv " in info[1].lower():
+                         try:
+                              type(ypwestvirginia)
+                              item = db.nodes.create(YpCity="West Virginia", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypwestvirginia.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypwestvirginia= db.nodes.create(Ypname="West Virginia",YpCity="West Virginia", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypwestvirginia)
+                              YellowPages.relationships.create("Cities",ypwestvirginia)
+                              item = db.nodes.create(YpCity="West Virginia", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypwestvirginia.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", wi " in info[1].lower():
+                         try:
+                              type(ypwisconsin)
+                              item = db.nodes.create(YpCity="Wisconsin", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypwisconsin.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypwisconsin= db.nodes.create(Ypname="Wisconsin",YpCity="Wisconsin", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypwisconsin)
+                              YellowPages.relationships.create("Cities",ypwisconsin)
+                              item = db.nodes.create(YpCity="Wisconsin", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypwisconsin.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+                    if ", wy " in info[1].lower():
+                         try:
+                              type(ypwyoming)
+                              item = db.nodes.create(YpCity="Wyoming", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypwyoming.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+                         except NameError:
+                              ypwyoming= db.nodes.create(Ypname="Wyoming",YpCity="Wyoming", YpNom="", YpAdresse="", Yptelephone="")
+                              labelYellowcity.add(ypwyoming)
+                              YellowPages.relationships.create("Cities",ypwyoming)
+                              item = db.nodes.create(YpCity="Wyoming", YpName=info[0], YpAdresse=info[1], Yptelephone=info[2])
+                              ypwyoming.relationships.create("Infos",item)
+                              labelYellowinfo.add(item)
+                              print(item)
+
+
+
+
+
+
+
 for item in splitengine:
      if item.lower() == "lullar":
 

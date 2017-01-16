@@ -1,7 +1,7 @@
 #Copernicus
 
 
-Osint tool to get results from Google, Bing, Yahoo,British Telecom,PagesBlanches,PaginasBlancas,lullar, about people.
+Osint tool to get results from Google, Bing, Yahoo,British Telecom,PagesBlanches,PaginasBlancas,SpravKaru,Yellow Pages,lullar, about people.
 
 1. No Smeging Api key required.
 
@@ -26,9 +26,11 @@ Search in all regions in France for family name ,adresses,phone numbers.
 9. Search in russian city specified by user for family name ,adresses,phone numbers.
  Search in all cities in Russia for family name ,adresses,phone numbers.
  
-10. Search social relations with Lullar if email is provided
+10. Search in all States of Usa for family name ,adresses,phone numbers. 
  
-11. Then make a graph in neo4j .
+11. Search social relations with Lullar if email is provided
+ 
+12. Then make a graph in neo4j .
 
 ^(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to work directly in neo4j .)^
 
@@ -49,7 +51,8 @@ Search in all regions in France for family name ,adresses,phone numbers.
 -   ~~Add whitepage engine for uk.~~
 -   ~~Add whitepage engine for es.~~
 -   ~~Add whitepage engine for ru.~~
--   Add whitepage engine for usa.
+-   ~~Add whitepage engine for usa.~~
+- add Captcha solver for yellowpages.com.
 -  Add ability to save current session and continue where it stopped in  case of uncaught error.
 -  Add graphml , gephi , cytoscape ,export format .
 -  Add image search for yahoo and bing
