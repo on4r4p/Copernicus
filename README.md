@@ -52,7 +52,7 @@ Search in all regions in France for family name ,adresses,phone numbers.
 -   ~~Add whitepage engine for es.~~
 -   ~~Add whitepage engine for ru.~~
 -   ~~Add whitepage engine for usa.~~
-- ~~add Captcha solver for yellowpages.com.~~
+- ~~Add Captcha solver for yellowpages.com.~~
 - Add ability to choose to use city for engine or whitePages
 -  Add ability to save current session and continue where it stopped in  case of uncaught error.
 -  Add graphml , gephi , cytoscape ,export format .

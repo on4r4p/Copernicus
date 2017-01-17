@@ -256,7 +256,7 @@ def yellowpages(fname,city):
                                    try:
                                         print("Found captcha :")
                                                                                      
-                                        print(imageGwall.Image("./Data/Pictures/capcha.png"))
+                                        print(imageGwall.Image("./Data/Pictures/captcha.png"))
                                         print()
                                         
                                    except Exception as e:
@@ -266,8 +266,8 @@ def yellowpages(fname,city):
                                    print("Captcha solver:")
                                    print()
                                    try:
-                                        print(pytesseract.image_to_string(Image.open('./Data/Pictures/capcha.png'), config="digits"))
-                                        captchares = pytesseract.image_to_string(Image.open('./Data/Pictures/capcha.png'), config="digits")
+                                        print(pytesseract.image_to_string(Image.open('./Data/Pictures/captcha.png'), config="digits"))
+                                        captchares = pytesseract.image_to_string(Image.open('./Data/Pictures/captcha.png'), config="digits")
                                     
                                    except Exception as e:
                                              print(e)
@@ -281,7 +281,7 @@ def yellowpages(fname,city):
                                    req.addheaders = [('User-Agent', str(UserAgent))]
 
 # The data should be URL-encoded and then encoded using UTF-8 for best compatilibity
-                                   data = urllib.parse.urlencode({"randomText": capchares, "randomTextButton": 'Submit'}).encode("UTF-8")
+                                   data = urllib.parse.urlencode({"randomText": captchares, "randomTextButton": 'Submit'}).encode("UTF-8")
                                    res = req.open(url, data)
                                    soup = BeautifulSoup(res,'lxml')
 
