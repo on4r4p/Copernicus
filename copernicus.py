@@ -9,6 +9,7 @@ from neo4jrestclient import client
 from pyfiglet import Figlet
 from PIL import Image
 from transliterate import translit, get_available_language_codes, detect_language
+import pytesseract
 import re
 import http.cookiejar
 import errno
@@ -192,87 +193,13 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
     return decorator
 
 
-def ocr(im, threshold=200, mask="./Data/Pictures/letters.bmp", alphabet="0123456789"):
-    img = Image.open(im)
-    img = img.convert("RGB")
-    box = (8, 8, 76, 21)
-    img = img.crop(box)
-    pixdata = img.load()
-
-    # open the mask
-    letters = Image.open(mask)
-    ledata = letters.load()
-
-    def test_letter(img, letter):
-        A = img.load()
-        B = letter.load()
-        mx = 1000000
-        max_x = 0
-        x = 0
-        for x in range(img.size[0] - letter.size[0]):
-            _sum = 0
-            for i in range(letter.size[0]):
-                for j in range(letter.size[1]):
-                    _sum = _sum + abs(A[x + i, j][0] - B[i, j][0])
-            if _sum < mx:
-                mx = _sum
-                max_x = x
-        return mx, max_x
-
-    # Clean the background noise, if color != white, then set to black.
-    for y in range(img.size[1]):
-        for x in range(img.size[0]):
-            if (pixdata[x, y][0] > threshold) \
-                    and (pixdata[x, y][1] > threshold) \
-                    and (pixdata[x, y][2] > threshold):
-
-                pixdata[x, y] = (255, 255, 255, 255)
-            else:
-                pixdata[x, y] = (0, 0, 0, 255)
-
-    counter = 0
-    old_x = -1
-
-    letterlist = []
-
-    for x in range(letters.size[0]):
-        black = True
-        for y in range(letters.size[1]):
-            if ledata[x, y][0] != 0:
-                black = False
-                break
-        if black:
-            if True:
-                box = (old_x + 1, 0, x, 10)
-                letter = letters.crop(box)
-                t = test_letter(img, letter)
-                letterlist.append((t[0], alphabet[counter], t[1]))
-            old_x = x
-            counter += 1
-
-    box = (old_x + 1, 0, 140, 10)
-    letter = letters.crop(box)
-    t = test_letter(img, letter)
-    letterlist.append((t[0], alphabet[counter], t[1]))
-
-    t = sorted(letterlist)
-    t = t[0:5]  # 5-letter captcha
-
-    final = sorted(t, key=lambda e: e[2])
-
-    answer = ''.join(map(lambda l: l[1], final))
-    answer = ""
-    for l in final:
-         answer = answer + l[1]
-    print(answer)
-
 
 
 def yellowpages(fname,city):
      global yellowres
      print()
      Fig = Figlet(font='cybermedium')
-     print(Fig.renderText('Searching Family Name in People.YellowPages'))
+     print(Fig.renderText('Searching Family Name in YellowPages'))
      print()
      ywuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
@@ -285,7 +212,7 @@ def yellowpages(fname,city):
                for state in yellowstate:
                     pagenbr = 1
                     stopwhile = 0
-                    while stopwhile != 1 and:
+                    while stopwhile != 1:
                     #while stopwhile != 1 and len(yellowres) < 30:
                               name=[]
                               loc=[]
@@ -313,40 +240,107 @@ def yellowpages(fname,city):
                               titre = soup.title
                               if "Alert" in str(titre):
                                    print()
-                                   print("FIGHT THE CAPTCHA")
+                                   print("FIGHT THE CAPTCHA!")
                                    print()
                                    print("Cookie Saved :",cj)
-                                   cj2 = http.cookiejar.CookieJar()
                                    query = "http://people.yellowpages.com/inc/randomimage.php"
                                    print("query:",query)
-                                   opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                   opener = urllib.request.build_opener()
                                    opener.addheaders = [('User-Agent', str(UserAgent))]
      
                                    send = opener.open(query)
-                                   with open('./Data/Pictures/capcha.png', 'b+w') as f:
+                                   with open('./Data/Pictures/captcha.png', 'b+w') as f:
                                         f.write(send.read())
-                                   print()
-                                   print("Cj2:")
-                                   print(cj2)
                                    print()
 
                                    try:
-                                        print("found captcha :")
+                                        print("Found captcha :")
+                                                                                     
                                         print(imageGwall.Image("./Data/Pictures/capcha.png"))
                                         print()
                                         
                                    except Exception as e:
                                          print(e)
                                    
-                                   #ry:
-                                   print("captcha solver:")
+                                  
+                                   print("Captcha solver:")
                                    print()
-                                   ocr("./Data/Pictures/capcha.png")
+                                   try:
+                                        print(pytesseract.image_to_string(Image.open('./Data/Pictures/capcha.png'), config="digits"))
+                                        captchares = pytesseract.image_to_string(Image.open('./Data/Pictures/capcha.png'), config="digits")
+                                    
+                                   except Exception as e:
+                                             print(e)
+                                             captchares = 0
                                    print()
+
+
+                                   url="http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
+                                   #cj = http.cookiejar.CookieJar()
+                                   req = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                   req.addheaders = [('User-Agent', str(UserAgent))]
+
+# The data should be URL-encoded and then encoded using UTF-8 for best compatilibity
+                                   data = urllib.parse.urlencode({"randomText": capchares, "randomTextButton": 'Submit'}).encode("UTF-8")
+                                   res = req.open(url, data)
+                                   soup = BeautifulSoup(res,'lxml')
+
+
+                                   ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
+#                                   print()
+#                                   print(ypend)
+#                                   print()
+                                    
+
+                                   for item in ypend:
+                                        item = item.split('of')
+                                        
+                                        #print("name: ",item)
+                                        #print()
+                                        for subtem in item[1]:
+                                             subtem = subtem.replace(" ","")
+                                             maxpage = subtem
+                                             
+                                    
+#                                   print()          
+#                                   print("max page found : ", maxpage)
+#                                   print()
+
+                                   ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
+#                                   print(ypres)
+
+
+
+                                   for item in ypres:
+                                        item = item.split(';form=sbn">')
+                                        
+                                        #print("name: ",item)
+                                        #print()
+                                        for subtem in item:
+                                             subtem = subtem.split('</a>')
+                                             if "href=" not in subtem[0]:
+                                                  name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                   for item in ypres:
+                                        item = item.split('<div class="address">')
+                                        for subtem in item:
+                                             subtem = subtem.split('</div>')
+                                             if "href=" not in subtem[0]:
+                                                  loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                   for item in ypres:
+                                        item = item.split('<div class="phone">')
+                                        for subtem in item:
+                                             subtem = subtem.split('</div>')
+                                             if "href=" not in subtem[0]:
+                                                  tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+
+
+                                   for item1,item2,item3 in zip(name,loc,tel):
+                                                       print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                       yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
 
                                    ##xcept Exception as e:
-                                   ###print(e)
+                                   ###prin
                               else:
 
                                    ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
@@ -408,7 +402,7 @@ def yellowpages(fname,city):
                                    print("end Of Res")
                                    stopwhile=1
 
-                              time.sleep(random.randint(32,123))
+                              time.sleep(random.randint(23,84))
                                              
                               #sys.exit()
                          
