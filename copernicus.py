@@ -254,7 +254,7 @@ def yellowpages(fname,city):
                                    captcheck=0
                                    while captcheck != 1:
                                         time.sleep(2)
-                                        opener = urllib.request.build_opener()
+                                        opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
                                         opener.addheaders = [('User-Agent', str(UserAgent))]
 
                                         send = opener.open(query)
@@ -317,6 +317,10 @@ def yellowpages(fname,city):
                                              titre = soup.title
                                              if "Alert" in str(titre):
                                                   #captcheck = 0
+                                                  print()
+                                                  print("Wrong captcha result.")
+                                                  print("Retrying with another one ..")
+                                                  print()
                                                   err = err + 1
                                                   #pass
                                                   if err >3 :
@@ -377,46 +381,58 @@ def yellowpages(fname,city):
                                                                  soup = BeautifulSoup(res,'lxml')
           
                                                                  #print("soup2: ",soup)
-                                                                 ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
 
 
-                                                                 for item in ypend:
-                                                                      item = item.split('of')
+                                                                 yperr = re.findall('<div class="error">(.*?)</div>', str(soup),re.DOTALL)
+                                                                 nores = 0    
+                                                                 for item in yperr:
+                                                                      if "YP didn't find any results for" in item:
+                                                                           nores = 1
+                                                                           print()
+                                                                           print("YP didn't find any results for %s in %s"% (family,state))
+                                                                           print()
+                                                                 if nores == 0:
+
+                                                                      ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
+
+
+                                                                      for item in ypend:
+                                                                           item = item.split('of')
 
                                                                       for subtem in item[1]:
-                                                                           subtem = subtem.replace(" ","")
-                                                                           maxpage = subtem
-                                                  
+                                                                                subtem = subtem.replace(" ","")
+                                                                                maxpage = subtem
+                                                       
                                     
 
-                                                                 ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
+                                                                      ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
 
 
           
-                                                                 for item in ypres:
-                                                                      item = item.split(';form=sbn">')
+                                                                      for item in ypres:
+                                                                           item = item.split(';form=sbn">')
           
-                                                                      for subtem in item:
-                                                                           subtem = subtem.split('</a>')
-                                                                           if "href=" not in subtem[0]:
-                                                                                name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
-                                                                 for item in ypres:
-                                                                      item = item.split('<div class="address">')
-                                                                      for subtem in item:
-                                                                           subtem = subtem.split('</div>')
-                                                                           if "href=" not in subtem[0]:
-                                                                                loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r","")) 
-                                                                 for item in ypres:
-                                                                      item = item.split('<div class="phone">')
-                                                                      for subtem in item:
-                                                                           subtem = subtem.split('</div>')
-                                                                           if "href=" not in subtem[0]:
-                                                                                tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                                                           for subtem in item:
+                                                                                subtem = subtem.split('</a>')
+                                                                                if "href=" not in subtem[0]:
+                                                                                     name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                                                      for item in ypres:
+                                                                           item = item.split('<div class="address">')
+                                                                           for subtem in item:
+                                                                                subtem = subtem.split('</div>')
+                                                                                if "href=" not in subtem[0]:
+                                                                                     loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r","")) 
+                                                                      for item in ypres:
+                                                                           item = item.split('<div class="phone">')
+                                                                           for subtem in item:
+                                                                                subtem = subtem.split('</div>')
+                                                                                if "href=" not in subtem[0]:
+                                                                                     tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
 
      
-                                                                 for item1,item2,item3 in zip(name,loc,tel):
-                                                                                     print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
-                                                                                     yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                      for item1,item2,item3 in zip(name,loc,tel):
+                                                                                          print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                                          yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
 
 
@@ -427,9 +443,8 @@ def yellowpages(fname,city):
 
 
 
-
+                                             
                                              else:
-
 
                                                   captcheck = 1
                                                   url="http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
@@ -442,104 +457,123 @@ def yellowpages(fname,city):
                                                   res = req.open(url, data)
                                                   #print("debug1")
                                                   soup = BeautifulSoup(res,'lxml')
+                                                                                     
+                                                  #print("Wev made it soup2: ",soup)
+                                                  yperr = re.findall('<div class="error">(.*?)</div>', str(soup),re.DOTALL)
+                                                  nores = 0    
+                                                  for item in yperr:
+                                                       if "YP didn't find any results for" in item:
+                                                            nores = 1
+                                                            print()
+                                                            print("YP didn't find any results for %s in %s"% (family,state))
+                                                            print()
+                                                  if nores == 0:
 
-                                                  #print("soup2: ",soup)
-                                                  ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
 
+                                                       ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
+                         
 
-                                                  for item in ypend:
-                                                       item = item.split('of')
+                                                       for item in ypend:
+                                                            item = item.split('of')
 
-                                                       for subtem in item[1]:
-                                                            subtem = subtem.replace(" ","")
-                                                            maxpage = subtem
+                                                            for subtem in item[1]:
+                                                                 subtem = subtem.replace(" ","")
+                                                                 maxpage = subtem
                                              
                                     
 
-                                                  ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
+                                                       ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
 
 
      
-                                                  for item in ypres:
-                                                       item = item.split(';form=sbn">')
+                                                       for item in ypres:
+                                                            item = item.split(';form=sbn">')
      
-                                                       for subtem in item:
-                                                            subtem = subtem.split('</a>')
-                                                            if "href=" not in subtem[0]:
-                                                                 name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
-                                                  for item in ypres:
-                                                       item = item.split('<div class="address">')
-                                                       for subtem in item:
-                                                            subtem = subtem.split('</div>')
-                                                            if "href=" not in subtem[0]:
-                                                                 loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r","")) 
-                                                  for item in ypres:
-                                                       item = item.split('<div class="phone">')
-                                                       for subtem in item:
-                                                            subtem = subtem.split('</div>')
-                                                            if "href=" not in subtem[0]:
-                                                                 tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                                            for subtem in item:
+                                                                 subtem = subtem.split('</a>')
+                                                                 if "href=" not in subtem[0]:
+                                                                      name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                                       for item in ypres:
+                                                            item = item.split('<div class="address">')
+                                                            for subtem in item:
+                                                                 subtem = subtem.split('</div>')
+                                                                 if "href=" not in subtem[0]:
+                                                                      loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r","")) 
+                                                       for item in ypres:
+                                                            item = item.split('<div class="phone">')
+                                                            for subtem in item:
+                                                                 subtem = subtem.split('</div>')
+                                                                 if "href=" not in subtem[0]:
+                                                                      tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
 
 
-                                                  for item1,item2,item3 in zip(name,loc,tel):
-                                                                      print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
-                                                                      yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                       for item1,item2,item3 in zip(name,loc,tel):
+                                                                           print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                           yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
 
 
 ###########
                               else:
+                                  yperr = re.findall('<div class="error">(.*?)</div>', str(soup),re.DOTALL)
+                                  nores = 0    
+                                  for item in yperr:
+                                      if "YP didn't find any results for" in item:
+                                                            nores = 1
+                                                            print("YP didn't find any results for %s in %s"% (family,state))
+                                      if nores == 0:
+                                             ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
 
-                                   ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
 
-
-                                   for item in ypend:
-                                        item = item.split('of')
+                                             for item in ypend:
+                                                  item = item.split('of')
                                         
 
-                                        for subtem in item[1]:
-                                             subtem = subtem.replace(" ","")
-                                             maxpage = subtem
+                                                  for subtem in item[1]:
+                                                       subtem = subtem.replace(" ","")
+                                                       maxpage = subtem
                                              
 
 
-                                   ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
+                                             ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
 
 
 
-                                   for item in ypres:
-                                        item = item.split(';form=sbn">')
+                                             for item in ypres:
+                                                  item = item.split(';form=sbn">')
                                         
 
-                                        for subtem in item:
-                                             subtem = subtem.split('</a>')
-                                             if "href=" not in subtem[0]:
-                                                  name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
-                                   for item in ypres:
-                                        item = item.split('<div class="address">')
-                                        for subtem in item:
-                                             subtem = subtem.split('</div>')
-                                             if "href=" not in subtem[0]:
-                                                  loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
-                                   for item in ypres:
-                                        item = item.split('<div class="phone">')
-                                        for subtem in item:
-                                             subtem = subtem.split('</div>')
-                                             if "href=" not in subtem[0]:
-                                                  tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                                  for subtem in item:
+                                                       subtem = subtem.split('</a>')
+                                                       if "href=" not in subtem[0]:
+                                                            name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                             for item in ypres:
+                                                  item = item.split('<div class="address">')
+                                                  for subtem in item:
+                                                       subtem = subtem.split('</div>')
+                                                       if "href=" not in subtem[0]:
+                                                            loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                             for item in ypres:
+                                                  item = item.split('<div class="phone">')
+                                                  for subtem in item:
+                                                       subtem = subtem.split('</div>')
+                                                       if "href=" not in subtem[0]:
+                                                            tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
 
 
-                                   for item1,item2,item3 in zip(name,loc,tel):
-                                                       print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
-                                                       yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                             for item1,item2,item3 in zip(name,loc,tel):
+                                                                 print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                 yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
                               pagenbr = pagenbr +1
-                              
-                              if pagenbr >int(maxpage):
+                              try:
 
-                                   print("end Of Res")
+                                   if pagenbr >int(maxpage):
+
+                                        #print("end Of Res")
+                                        stopwhile=1
+                              except:
                                    stopwhile=1
-
                               time.sleep(random.randint(23,42))
                                              
 
