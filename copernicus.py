@@ -1278,18 +1278,20 @@ def pblancas(fname,city):
 
      UserAgent = random.choice(pbuser_agent_list)
 
-     
+     stopeverything = 0
      if city == "none":
           try:
                for ville in proves:
                     pagenbr = 1
                     stopwhile = 0
-                    while stopwhile != 1:
+                    while stopwhile != 1 and stopeverything !=1:
                               pblancasname=""
                               pblancasloc=""
-                              pblancastel=""                         
+                              pblancastel=""
+                              res = "" 
+                                                 
                               query = "http://blancas.paginasamarillas.es/jsp/resultados.jsp?no="+urllib.parse.quote(fname)+"&nomprov="+ville+"&idioma=spa&pg="+str(pagenbr)
-                              #print("query:",query)
+                              print("query:",query)
                               opener = urllib.request.build_opener()
                               opener.addheaders = [('User-Agent', str(UserAgent))]
 
@@ -1300,9 +1302,9 @@ def pblancas(fname,city):
                               soup = BeautifulSoup(send,'lxml')
 
                          
-                              Pblancasres = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
+                              res = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
                               
-                              for item in Pblancasres:
+                              for item in res:
                
                                    item = item.replace("'resultados_imp.jsp?","").replace("&nbsp;Imprimir Ficha","").replace("</a>","").replace("-->","").replace(" >","").replace("(","").replace(")","").replace("\t","").replace("\n","").replace("\r","")
                                    
@@ -1328,8 +1330,16 @@ def pblancas(fname,city):
                                                   for lastem in subtem:
                                                        lastem = lastem.replace("!"," : ").replace("\\","")
                                                        pblancastel += " " + lastem.replace("listatel=","")
-                                   print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
-                                   pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+                                   if len(pblancasname) >0 and len(pblancasloc) >0 and len(pblancastel):
+                                        oldres = pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel
+                                        if pblancasres.count(oldres) >0:
+                                             print("Only "+ str(len(pblancasres)) +" Results for " +family+ " in Spain .")
+                                             stopeverything = 1
+                                             stopwhile = 1
+                                             print()
+                                        else:
+                                             print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+                                             pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
 
                               endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
 
@@ -1337,12 +1347,14 @@ def pblancas(fname,city):
                                    item = item.replace("\n","").replace("\t","").replace("\r","")#putain d'espakek..
                                    
                                    if "<b>Siguiente</b>" in item:
-                                        print("Paginas Blancas results counter : ",len(pblancasres))
+                                       # print(" nextPaginas Blancas results counter : ",len(pblancasres))
                                         pagenbr = pagenbr + 1
                                    else:
-                                        print("Paginas Blancas results counter : ",len(pblancasres))
+                                        #print("no nextPaginas Blancas results counter : ",len(pblancasres))
+                                        #print()
+
                                         stopwhile = 1
-                                   time.sleep(random.randint(42,123))
+                                   time.sleep(random.randint(32,42))
 
 
           except Exception as e:
@@ -1377,9 +1389,7 @@ def pblancas(fname,city):
                     pagenbr = 1
                     stopwhile = 0
                     while stopwhile != 1:
-                              pblancasname=""
-                              pblancasloc=""
-                              pblancastel=""                         
+                    
                               query = "http://blancas.paginasamarillas.es/jsp/resultados.jsp?no="+urllib.parse.quote(fname)+"&nomprov="+urllib.parse.quote(city)+"&idioma=spa&pg="+str(pagenbr)
 
                               opener = urllib.request.build_opener()
@@ -1392,9 +1402,9 @@ def pblancas(fname,city):
                               soup = BeautifulSoup(send,'lxml')
 
                          
-                              Pblancasres = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
+                              res = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
                               
-                              for item in Pblancasres:
+                              for item in res:
                
                                    item = item.replace("'resultados_imp.jsp?","").replace("&nbsp;Imprimir Ficha","").replace("</a>","").replace("-->","").replace(" >","").replace("(","").replace(")","").replace("\t","").replace("\n","").replace("\r","")
                                    
@@ -1420,8 +1430,17 @@ def pblancas(fname,city):
                                                   for lastem in subtem:
                                                        lastem = lastem.replace("!"," : ").replace("\\","")
                                                        pblancastel += " " + lastem.replace("listatel=","")
-                                   print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
-                                   pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+                                   if len(pblancasname) >0 and len(pblancasloc) >0 and len(pblancastel):
+
+                                        oldres = pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel
+                                        if pblancasres.count(oldres) >0:
+                                             print("Only "+ str(len(pblancasres)) +" Results for " +family+ " in Spain .")
+                                             stopeverything = 1
+                                             stopwhile = 1
+                                             print()
+                                        else:
+                                             print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+                                             pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
 
                               endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
 
@@ -1429,12 +1448,12 @@ def pblancas(fname,city):
                                    item = item.replace("\n","").replace("\t","").replace("\r","")#putain d'espakek..
                                    
                                    if "<b>Siguiente</b>" in item:
-                                        print("Paginas Blancas results counter : ",len(pblancasres))
+                                        #print("Paginas Blancas results counter : ",len(pblancasres))
                                         pagenbr = pagenbr + 1
                                    else:
-                                        print("Paginas Blancas results counter : ",len(pblancasres))
+                                        #print("Paginas Blancas results counter : ",len(pblancasres))
                                         stopwhile = 1
-                                   time.sleep(random.randint(42,123))
+                                   time.sleep(random.randint(32,42))
 
           except Exception as e:
                print(e)
