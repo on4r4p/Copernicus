@@ -322,6 +322,8 @@ def yellowpages(fname,city):
                                                   Fig = Figlet(font='cybermedium')
                                                   print(Fig.renderText('Captcha Solver Failed'))
                                                   print()
+                                                  print("Launching feh ./Data/Pictures/captcha.png")
+                                                  
 
                                                   dir = os.path.dirname(os.path.realpath(__file__))
                                                   dirfile = str(dir) +"/Data/Pictures/captcha.png"
@@ -341,7 +343,7 @@ def yellowpages(fname,city):
                                                   res = req.open(url, data)
                                              #print("debug1")
                                                   soup = BeautifulSoup(res,'lxml')
-                                                  print("soup2: ",soup)
+                                                  #print("soup2: ",soup)
                                                   titre = soup.title
                                                   if "Alert" in str(titre):      
                                                                     print()    
@@ -423,14 +425,14 @@ def yellowpages(fname,city):
 
                                                   req = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
                                                   req.addheaders = [('User-Agent', str(UserAgent))]
-                                                  print("debug")
+                                                  #print("debug")
 
                                                   data = urllib.parse.urlencode({"randomText": str(captchares), "randomTextButton": 'Submit'}).encode("UTF-8")
                                                   res = req.open(url, data)
-                                                  print("debug1")
+                                                  #print("debug1")
                                                   soup = BeautifulSoup(res,'lxml')
 
-                                                  print("soup2: ",soup)
+                                                  #print("soup2: ",soup)
                                                   ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
 
 
