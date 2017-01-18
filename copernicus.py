@@ -583,6 +583,407 @@ def yellowpages(fname,city):
 
 
 
+######
+#####################
+##################################
+#####################
+#####
+
+
+     if city != "none":
+          cj = http.cookiejar.CookieJar()
+          state = ""
+          ok = 0
+          while ok !=1:
+               for item1,item2 in zip(yellownode,yellowstate):
+                  if city.lower() in item1.lower() and len(state) >3:
+                         state = item2
+                         ok=1
+                  if ok != 1:
+                    print()
+                    print(yellownode)
+                    print()
+                    state = input("State or city does not match this list .\n\n Enter State/city:")
+                    print()
+                    print()
+                    for item1,item2 in zip(yellownode,yellowstate):
+                       if state.lower() in item1.lower() and len(state) >3:
+                              state = item2
+                              ok=1
+
+
+          try:
+                    pagenbr = 1
+                    stopwhile = 0
+                    err = 0
+                    while stopwhile != 1:
+                    #while stopwhile != 1 and len(yellowres) < 30:
+                              name=[]
+                              loc=[]
+                              tel=[] 
+                              maxpage = ''     
+
+                              
+                   
+                              query = "http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
+                              print("query:",query)
+                              opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              send = opener.open(query)
+
+
+                              soup = BeautifulSoup(send,'lxml')
+                              #Do a Barrel Roll
+#                              print(soup)
+#                              print()
+#                              print("Souptitle")
+#                              print()
+#                              print(soup.title)
+                              print()
+                              titre = soup.title
+                              if "Alert" in str(titre):
+                                   print()
+                                   print()
+                                   Fig = Figlet(font='cybermedium')
+                                   print(Fig.renderText('Captcha Fight!'))
+                                   print()
+                                   print()
+                                   print("Cookie Saved :",cj)
+                                   query = "http://people.yellowpages.com/inc/randomimage.php"
+                                   print("query:",query)
+                                   captcheck=0
+                                   while captcheck != 1:
+                                        time.sleep(2)
+                                        opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                        opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                        send = opener.open(query)
+                                        with open('./Data/Pictures/captcha.png', 'b+w') as f:
+                                             f.write(send.read())
+
+
+
+                                        col = Image.open("./Data/Pictures/captcha.png")
+                                        gray = col.convert('L')
+                                        bw = gray.point(lambda x: 0 if x<128 else 255, '1')
+                                        bw.save("./Data/Pictures/captcha.png")
+                                        
+
+
+                                        try:
+                                             captchares = pytesseract.image_to_string(Image.open('./Data/Pictures/captcha.png'), config="digits")
+                                        except Exception as e:
+                                             print("error captcha : ",e)
+                                             captchares = ""
+
+####################
+                                        if len(captchares) >4:
+                                             
+                                             captchares = captchares.replace(" ","").replace("\n","").replace("-","").replace(".","")
+                                             try:
+                                                  print()
+                                                  Fig = Figlet(font='cybermedium')
+                                                  print(Fig.renderText('Captcha Downloaded'))
+                                                  print()
+                                                                                     
+                                                  print(imageGwall.Image("./Data/Pictures/captcha.png"))
+                                                  print()
+                                        
+                                             except Exception as e:
+                                                  print(e)
+
+                                             print()
+                                             Fig = Figlet(font='cybermedium')
+                                             print(Fig.renderText('Captcha Result'))
+                                             print()
+                                   
+                                             print()
+                                             print(captchares)
+                                             print()
+            
+
+                                             url="http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
+
+                                             req = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                             req.addheaders = [('User-Agent', str(UserAgent))]
+                                             #print("debug")
+     
+                                             data = urllib.parse.urlencode({"randomText": str(captchares), "randomTextButton": 'Submit'}).encode("UTF-8")
+                                             res = req.open(url, data)
+                                             #print("debug1")
+                                             soup = BeautifulSoup(res,'lxml')
+     
+                                             #print("soup2: ",soup)
+                                             titre = soup.title
+                                             if "Alert" in str(titre):
+                                                  #captcheck = 0
+                                                  print()
+                                                  print("Wrong captcha result.")
+                                                  print("Retrying with another one ..")
+                                                  print()
+                                                  err = err + 1
+                                                  #pass
+                                                  if err >3 :
+                                                       opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                                       opener.addheaders = [('User-Agent', str(UserAgent))]
+     
+                                                       send = opener.open(query)
+                                                       with open('./Data/Pictures/captcha.png', 'b+w') as f:
+                                                            f.write(send.read())
+                                                       print()
+
+                                                       print()
+                                                       Fig = Figlet(font='cybermedium')
+                                                       print(Fig.renderText('Captcha Solver Failed'))
+                                                       print()
+                                                       print("Opening ./Data/Pictures/captcha.png")
+                                                  
+
+                                                       dir = os.path.dirname(os.path.realpath(__file__))
+                                                       dirfile = "/usr/bin/xdg-open "+ dir + "/Data/Pictures/captcha.png &"
+                                                       subprocess.call(dirfile,shell=True)
+                                                       ok= 0
+                                                       while ok != 1:
+                                                            captchares = input('Enter captcha result : ')
+                                                            if len(captchares) >4:
+                                                                        ok = 1
+
+                                                       url="http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
+
+                                                       req = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                                       req.addheaders = [('User-Agent', str(UserAgent))]
+                                             #print("debug")
+     
+                                                       data = urllib.parse.urlencode({"randomText": str(captchares), "randomTextButton": 'Submit'}).encode("UTF-8")
+                                                       res = req.open(url, data)
+                                             #print("debug1")
+                                                       soup = BeautifulSoup(res,'lxml')
+                                                       #print("soup2: ",soup)
+                                                       titre = soup.title
+                                                       if "Alert" in str(titre):      
+                                                                    print()    
+                                                                    print("FUCK")
+                                                                    print()
+                                                       else:
+                                                                 print()
+                                                                 print("cool")
+                                                                 print()
+                                                                 captcheck = 1
+                                                                 url="http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
+
+                                                                 req = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                                                 req.addheaders = [('User-Agent', str(UserAgent))]
+                                                            #print("debug")
+          
+                                                                 data = urllib.parse.urlencode({"randomText": str(captchares), "randomTextButton": 'Submit'}).encode("UTF-8")
+                                                                 res = req.open(url, data)
+                                                                 #print("debug1")
+                                                                 soup = BeautifulSoup(res,'lxml')
+          
+                                                                 #print("soup2: ",soup)
+
+
+                                                                 yperr = re.findall('<div class="error">(.*?)</div>', str(soup),re.DOTALL)
+                                                                 nores = 0    
+                                                                 for item in yperr:
+                                                                      if "YP didn't find any results for" in item:
+                                                                           nores = 1
+                                                                           print()
+                                                                           print("YP didn't find any results for %s in %s"% (family,state))
+                                                                           print()
+                                                                 if nores == 0:
+
+                                                                      ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
+
+
+                                                                      for item in ypend:
+                                                                           item = item.split('of')
+
+                                                                      for subtem in item[1]:
+                                                                                subtem = subtem.replace(" ","")
+                                                                                maxpage = subtem
+                                                       
+                                    
+
+                                                                      ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
+
+
+          
+                                                                      for item in ypres:
+                                                                           item = item.split(';form=sbn">')
+          
+                                                                           for subtem in item:
+                                                                                subtem = subtem.split('</a>')
+                                                                                if "href=" not in subtem[0]:
+                                                                                     name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                                                      for item in ypres:
+                                                                           item = item.split('<div class="address">')
+                                                                           for subtem in item:
+                                                                                subtem = subtem.split('</div>')
+                                                                                if "href=" not in subtem[0]:
+                                                                                     loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r","")) 
+                                                                      for item in ypres:
+                                                                           item = item.split('<div class="phone">')
+                                                                           for subtem in item:
+                                                                                subtem = subtem.split('</div>')
+                                                                                if "href=" not in subtem[0]:
+                                                                                     tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+
+     
+                                                                      for item1,item2,item3 in zip(name,loc,tel):
+                                                                                          print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                                          yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+
+
+
+
+
+
+
+
+
+
+                                             
+                                             else:
+
+                                                  captcheck = 1
+                                                  url="http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
+
+                                                  req = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                                                  req.addheaders = [('User-Agent', str(UserAgent))]
+                                                  #print("debug")
+
+                                                  data = urllib.parse.urlencode({"randomText": str(captchares), "randomTextButton": 'Submit'}).encode("UTF-8")
+                                                  res = req.open(url, data)
+                                                  #print("debug1")
+                                                  soup = BeautifulSoup(res,'lxml')
+                                                                                     
+                                                  #print("Wev made it soup2: ",soup)
+                                                  yperr = re.findall('<div class="error">(.*?)</div>', str(soup),re.DOTALL)
+                                                  nores = 0    
+                                                  for item in yperr:
+                                                       if "YP didn't find any results for" in item:
+                                                            nores = 1
+                                                            print()
+                                                            print("YP didn't find any results for %s in %s"% (family,state))
+                                                            print()
+                                                  if nores == 0:
+
+
+                                                       ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
+                         
+
+                                                       for item in ypend:
+                                                            item = item.split('of')
+
+                                                            for subtem in item[1]:
+                                                                 subtem = subtem.replace(" ","")
+                                                                 maxpage = subtem
+                                             
+                                    
+
+                                                       ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
+
+
+     
+                                                       for item in ypres:
+                                                            item = item.split(';form=sbn">')
+     
+                                                            for subtem in item:
+                                                                 subtem = subtem.split('</a>')
+                                                                 if "href=" not in subtem[0]:
+                                                                      name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                                       for item in ypres:
+                                                            item = item.split('<div class="address">')
+                                                            for subtem in item:
+                                                                 subtem = subtem.split('</div>')
+                                                                 if "href=" not in subtem[0]:
+                                                                      loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r","")) 
+                                                       for item in ypres:
+                                                            item = item.split('<div class="phone">')
+                                                            for subtem in item:
+                                                                 subtem = subtem.split('</div>')
+                                                                 if "href=" not in subtem[0]:
+                                                                      tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+
+
+                                                       for item1,item2,item3 in zip(name,loc,tel):
+                                                                           print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                           yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+
+
+
+###########
+                              else:
+                                  yperr = re.findall('<div class="error">(.*?)</div>', str(soup),re.DOTALL)
+                                  nores = 0    
+                                  for item in yperr:
+                                      if "YP didn't find any results for" in item:
+                                                            nores = 1
+                                                            print("YP didn't find any results for %s in %s"% (family,state))
+                                      if nores == 0:
+                                             ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
+
+
+                                             for item in ypend:
+                                                  item = item.split('of')
+                                        
+
+                                                  for subtem in item[1]:
+                                                       subtem = subtem.replace(" ","")
+                                                       maxpage = subtem
+                                             
+
+
+                                             ypres = re.findall('<div class="result-left">(.*?)<div class="address-map">', str(soup),re.DOTALL)
+
+
+
+                                             for item in ypres:
+                                                  item = item.split(';form=sbn">')
+                                        
+
+                                                  for subtem in item:
+                                                       subtem = subtem.split('</a>')
+                                                       if "href=" not in subtem[0]:
+                                                            name.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                             for item in ypres:
+                                                  item = item.split('<div class="address">')
+                                                  for subtem in item:
+                                                       subtem = subtem.split('</div>')
+                                                       if "href=" not in subtem[0]:
+                                                            loc.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                             for item in ypres:
+                                                  item = item.split('<div class="phone">')
+                                                  for subtem in item:
+                                                       subtem = subtem.split('</div>')
+                                                       if "href=" not in subtem[0]:
+                                                            tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+
+
+                                             for item1,item2,item3 in zip(name,loc,tel):
+                                                                 print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                 yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+
+                              pagenbr = pagenbr +1
+                              try:
+
+                                   if pagenbr >int(maxpage):
+
+                                        #print("end Of Res")
+                                        stopwhile=1
+                              except:
+                                   stopwhile=1
+                              time.sleep(random.randint(23,42))
+                                             
+
+                         
+          except Exception as e:
+               print(e)
+
+
+
 def spravkaru(fname,city):
   global spravres
 
@@ -721,6 +1122,29 @@ def spravkaru(fname,city):
 
 
   if city != "none":
+
+
+     state = ""
+     ok = 0
+     while ok !=1:
+               for item1 in spravcitynode:
+                  if city.lower() in item1.lower() and len(city) >3:
+                         
+                         ok=1
+                  if ok != 1:
+                    print()
+                    print(spravcitynode)
+                    print()
+                    state = input("State or city does not match this list .\n\n Enter State/city:")
+                    print()
+                    print()
+                    for item1 in spravcitynode:
+                       if state.lower() in item1.lower() and len(state) >3:
+                              city = item1.lower()
+                              ok=1
+
+
+     
      for query in spravcity:
           for url,ville in zip(spravcity,spravcitynode):
                if city in ville:
@@ -930,6 +1354,24 @@ def pblancas(fname,city):
 
 
      if city != "none":
+          state = ""
+          ok = 0
+          while ok !=1:
+               for item1 in provesnode:
+                  if city.lower() in item1.lower() and len(city) >3:
+                         
+                         ok=1
+                  if ok != 1:
+                    print()
+                    print(provesnode)
+                    print()
+                    state = input("State or city does not match this list .\n\n Enter State/city:")
+                    print()
+                    print()
+                    for item1 in provesnode:
+                       if state.lower() in item1.lower() and len(state) >3:
+                              city = item1.lower()
+                              ok=1
           try:
                
                     pagenbr = 1
@@ -1075,7 +1517,24 @@ def btelecom(fname,city):
 
      if city != "none":
           try:
-               
+                    state = ""
+                    ok = 0
+                    while ok !=1:
+                         for item1 in cityuknode:
+                              if city.lower() in item1.lower() and len(city) >3:
+                         
+                                   ok=1
+                         if ok != 1:
+                              print()
+                              print(cityuknode)
+                              print()
+                              state = input("State or city does not match this list .\n\n Enter State/city:")
+                              print()
+                              print()
+                              for item1 in cityuknode:
+                                 if state.lower() in item1.lower() and len(state) >3:
+                                        city = item1.lower()
+                                        ok=1               
                     pagenbr = 1
                     stopwhile = 0
                     while stopwhile != 1:
@@ -1192,6 +1651,27 @@ def pageblanche(familyname,city):
 
 
      if city != "none":
+          ok = 0
+          while ok !=1:
+                         for item1 in villefr:
+                              if city.lower() in item1.lower() and len(city) >3:
+                         
+                                   ok=1
+                         if ok != 1:
+                              print()
+                              print(villefr)
+                              print()
+                              state = input("State or city does not match this list .\n\n Enter State/city:")
+                              print()
+                              print()
+                              for item1 in villefr:
+                                 if state.lower() in item1.lower() and len(state) >3:
+                                        city = item1.lower()
+                                        ok=1 
+
+
+
+
 
           try:
                          query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+city+"&proximite=1"
@@ -1847,10 +2327,6 @@ def getYahooLinks(language,link,depth): #from https://github.com/geckogecko
                     print()
                     print()
                     print("Yahoo Total : ",len(yahoores))
-                    if len(yahoores) > 600 :
-                         print("ITS OVER 9000 !")
-                         print("Need to fix that loop")
-                         return
 
                     endofres = re.findall('<span>(.*?)results</span></div></div></li></ol></div>', str(soup),re.DOTALL)
                     try:

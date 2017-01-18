@@ -1,7 +1,7 @@
 #Copernicus
 
 
-Osint tool to get results from Google, Bing, Yahoo,British Telecom,PagesBlanches,PaginasBlancas,SpravKaru,Yellow Pages,lullar, about people.
+Osint tool to get results from Google, Bing, Yahoo,British Telecom,PagesBlanches,PaginasBlancas,SpravKaru,Yellow Pages,lullar, about peoples.
 
 1. No Smeging Api key required.
 
