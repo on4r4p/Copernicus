@@ -278,7 +278,7 @@ def yellowpages(fname,city):
 
 ####################
                                         if len(captchares) >4:
-                                             captcheck = 1
+                                             
                                              captchares = captchares.replace(" ","").replace("\n","").replace("-","").replace(".","")
                                              try:
                                                   print()
@@ -336,12 +336,13 @@ def yellowpages(fname,city):
                                                   
 
                                                        dir = os.path.dirname(os.path.realpath(__file__))
-                                                       dirfile = "/usr/bin/xdg-open "+ dir_path + "/Data/Pictures/captcha.png &"
+                                                       dirfile = "/usr/bin/xdg-open "+ dir + "/Data/Pictures/captcha.png &"
                                                        subprocess.call(dirfile,shell=True)
-
-                                                       while len(captchares) <1:
+                                                       ok= 0
+                                                       while ok != 1:
                                                             captchares = input('Enter captcha result : ')
-               
+                                                            if len(captchares) >4:
+                                                                        ok = 1
 
                                                        url="http://people.yellowpages.com/whitepages?first=&last="+urllib.parse.quote(fname)+"&zip=&state="+state+"&page="+str(pagenbr)+"&site=79"
 
@@ -539,7 +540,7 @@ def yellowpages(fname,city):
                                    print("end Of Res")
                                    stopwhile=1
 
-                              time.sleep(random.randint(23,84))
+                              time.sleep(random.randint(23,42))
                                              
 
                          
