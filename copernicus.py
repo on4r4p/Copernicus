@@ -410,7 +410,7 @@ def yellowpages(fname,city):
                                                                       for subtem in item:
                                                                            subtem = subtem.split('</div>')
                                                                            if "href=" not in subtem[0]:
-                                                                           tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
+                                                                                tel.append(subtem[0].replace("  ","").replace("/n","").replace("/t","").replace("/r",""))
 
      
                                                                  for item1,item2,item3 in zip(name,loc,tel):
