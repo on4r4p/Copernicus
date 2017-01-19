@@ -1303,61 +1303,70 @@ def pblancas(fname,city):
 
 
                               soup = BeautifulSoup(send,'lxml')
-
-                         
-                              res = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
-                              
-                              for item in res:
-               
-                                   item = item.replace("'resultados_imp.jsp?","").replace("&nbsp;Imprimir Ficha","").replace("</a>","").replace("-->","").replace(" >","").replace("(","").replace(")","").replace("\t","").replace("\n","").replace("\r","")
-                                   
-                                   item = item.split('<a class="yellcardprint"') 
-                                   
-                                   item = item[0].replace("'","")
-                                   item = item.split("&")
-                                   for subtem in item:
-                                        if "NO=" in subtem:
-                                             pblancasname = subtem.replace("NO=","")
-                                        if "LO1=" in subtem:
-                                             pblancasloc = subtem.replace("LO1=","")
-                                        if "CALL=" in subtem:
-                                             pblancasloc += " " + subtem.replace("CALL=","")
-                                        if "PR=" in subtem:
-                                             pblancasloc += " " + subtem.replace("PR=","")
-                                        if "CP=" in subtem:
-                                             pblancasloc += " " + subtem.replace("CP=","")
-                                        if "tel=" in subtem and not "listatel=" in subtem:
-                                             pblancastel = subtem.replace("tel=","")
-                                        if "listatel=" in subtem:
-                                                  subtem = subtem.split("^")
-                                                  for lastem in subtem:
-                                                       lastem = lastem.replace("!"," : ").replace("\\","")
-                                                       pblancastel += " " + lastem.replace("listatel=","")
-                                   if len(pblancasname) >0 and len(pblancasloc) >0 and len(pblancastel):
-                                        oldres = pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel
-                                        if pblancasres.count(oldres) >0:
-                                             print("Only "+ str(len(pblancasres)) +" Results for " +family+ " in Spain .")
-                                             stopeverything = 1
-                                             stopwhile = 1
-                                             print()
-                                        else:
-                                             print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
-                                             pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
-
-                              endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
-
-                              for item in endofresults:
-                                   item = item.replace("\n","").replace("\t","").replace("\r","")#putain d'espakek..
-                                   
-                                   if "<b>Siguiente</b>" in item:
-                                       # print(" nextPaginas Blancas results counter : ",len(pblancasres))
-                                        pagenbr = pagenbr + 1
-                                   else:
-                                        #print("no nextPaginas Blancas results counter : ",len(pblancasres))
-                                        #print()
-
+                              #print(soup)
+                              ayuda=0
+                              nores = re.findall('<div id="ayuda">(.*?)</div>', str(soup),re.DOTALL)
+                              for item in nores :
+                                   if "Lo sentimos, no se ha encontrado nada por" in item:
+                                        #print("nores")
                                         stopwhile = 1
-                                   time.sleep(random.randint(32,42))
+                                        ayuda = 1
+                                        time.sleep(random.randint(23,42))
+
+                              if ayuda != 1:
+                                   res = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
+                              
+                                   for item in res:
+               
+                                        item = item.replace("'resultados_imp.jsp?","").replace("&nbsp;Imprimir Ficha","").replace("</a>","").replace("-->","").replace(" >","").replace("(","").replace(")","").replace("\t","").replace("\n","").replace("\r","")
+                                   
+                                        item = item.split('<a class="yellcardprint"') 
+                                   
+                                        item = item[0].replace("'","")
+                                        item = item.split("&")
+                                        for subtem in item:
+                                             if "NO=" in subtem:
+                                                  pblancasname = subtem.replace("NO=","")
+                                             if "LO1=" in subtem:
+                                                  pblancasloc = subtem.replace("LO1=","")
+                                             if "CALL=" in subtem:
+                                                  pblancasloc += " " + subtem.replace("CALL=","")
+                                             if "PR=" in subtem:
+                                                  pblancasloc += " " + subtem.replace("PR=","")
+                                             if "CP=" in subtem:
+                                                  pblancasloc += " " + subtem.replace("CP=","")
+                                             if "tel=" in subtem and not "listatel=" in subtem:
+                                                  pblancastel = subtem.replace("tel=","")
+                                             if "listatel=" in subtem:
+                                                       subtem = subtem.split("^")
+                                                       for lastem in subtem:
+                                                            lastem = lastem.replace("!"," : ").replace("\\","")
+                                                            pblancastel += " " + lastem.replace("listatel=","")
+                                        if len(pblancasname) >0 and len(pblancasloc) >0 and len(pblancastel):
+                                             oldres = pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel
+                                             if pblancasres.count(oldres) >0:
+                                                  print("Only "+ str(len(pblancasres)) +" Results for " +family+ " in Spain .")
+                                                  stopeverything = 1
+                                                  stopwhile = 1
+                                                  print()
+                                             else:
+                                                  print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+                                                  pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+     
+                                   endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
+
+                                   for item in endofresults:
+                                        item = item.replace("\n","").replace("\t","").replace("\r","")#putain d'espakek..
+                                   
+                                        if "<b>Siguiente</b>" in item:
+                                             print(" nextPaginas Blancas results counter : ",len(pblancasres))
+                                             pagenbr = pagenbr + 1
+                                        else:
+                                             print("no nextPaginas Blancas results counter : ",len(pblancasres))
+                                             #print()
+
+                                             stopwhile = 1
+                                        time.sleep(random.randint(32,42))
 
 
           except Exception as e:
@@ -1370,6 +1379,7 @@ def pblancas(fname,city):
 
      if city != "none":
           state = ""
+          
           ok = 0
           while ok !=1:
                for item1 in provesnode:
@@ -1403,60 +1413,69 @@ def pblancas(fname,city):
 
 
                               soup = BeautifulSoup(send,'lxml')
-
-                         
-                              res = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
-                              
-                              for item in res:
-               
-                                   item = item.replace("'resultados_imp.jsp?","").replace("&nbsp;Imprimir Ficha","").replace("</a>","").replace("-->","").replace(" >","").replace("(","").replace(")","").replace("\t","").replace("\n","").replace("\r","")
-                                   
-                                   item = item.split('<a class="yellcardprint"') 
-                                   
-                                   item = item[0].replace("'","")
-                                   item = item.split("&")
-                                   for subtem in item:
-                                        if "NO=" in subtem:
-                                             pblancasname = subtem.replace("NO=","")
-                                        if "LO1=" in subtem:
-                                             pblancasloc = subtem.replace("LO1=","")
-                                        if "CALL=" in subtem:
-                                             pblancasloc += " " + subtem.replace("CALL=","")
-                                        if "PR=" in subtem:
-                                             pblancasloc += " " + subtem.replace("PR=","")
-                                        if "CP=" in subtem:
-                                             pblancasloc += " " + subtem.replace("CP=","")
-                                        if "tel=" in subtem and not "listatel=" in subtem:
-                                             pblancastel = subtem.replace("tel=","")
-                                        if "listatel=" in subtem:
-                                                  subtem = subtem.split("^")
-                                                  for lastem in subtem:
-                                                       lastem = lastem.replace("!"," : ").replace("\\","")
-                                                       pblancastel += " " + lastem.replace("listatel=","")
-                                   if len(pblancasname) >0 and len(pblancasloc) >0 and len(pblancastel):
-
-                                        oldres = pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel
-                                        if pblancasres.count(oldres) >0:
-                                             print("Only "+ str(len(pblancasres)) +" Results for " +family+ " in Spain .")
-                                             stopeverything = 1
-                                             stopwhile = 1
-                                             print()
-                                        else:
-                                             print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
-                                             pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
-
-                              endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
-
-                              for item in endofresults:
-                                   item = item.replace("\n","").replace("\t","").replace("\r","")#putain d'espakek..
-                                   
-                                   if "<b>Siguiente</b>" in item:
-                                        #print("Paginas Blancas results counter : ",len(pblancasres))
-                                        pagenbr = pagenbr + 1
-                                   else:
-                                        #print("Paginas Blancas results counter : ",len(pblancasres))
+                              ayuda=0
+                              nores = re.findall('<div id="ayuda">(.*?)</div>', str(soup),re.DOTALL)
+                              for item in nores :
+                                   if "Lo sentimos, no se ha encontrado nada por" in item:
+                                        #print("nores")
                                         stopwhile = 1
-                                   time.sleep(random.randint(32,42))
+                                        ayuda = 1
+                                        time.sleep(random.randint(23,42))
+
+                              if ayuda != 1:
+                         
+                                   res = re.findall('<a href="#" class="yellcardprint" onclick="return imprimeAnuncio(.*?)">', str(soup),re.DOTALL)
+                              
+                                   for item in res:
+               
+                                        item = item.replace("'resultados_imp.jsp?","").replace("&nbsp;Imprimir Ficha","").replace("</a>","").replace("-->","").replace(" >","").replace("(","").replace(")","").replace("\t","").replace("\n","").replace("\r","")
+                                   
+                                        item = item.split('<a class="yellcardprint"') 
+                                   
+                                        item = item[0].replace("'","")
+                                        item = item.split("&")
+                                        for subtem in item:
+                                             if "NO=" in subtem:
+                                                  pblancasname = subtem.replace("NO=","")
+                                             if "LO1=" in subtem:
+                                                  pblancasloc = subtem.replace("LO1=","")
+                                             if "CALL=" in subtem:
+                                                  pblancasloc += " " + subtem.replace("CALL=","")
+                                             if "PR=" in subtem:
+                                                  pblancasloc += " " + subtem.replace("PR=","")
+                                             if "CP=" in subtem:
+                                                  pblancasloc += " " + subtem.replace("CP=","")
+                                             if "tel=" in subtem and not "listatel=" in subtem:
+                                                  pblancastel = subtem.replace("tel=","")
+                                             if "listatel=" in subtem:
+                                                       subtem = subtem.split("^")
+                                                       for lastem in subtem:
+                                                            lastem = lastem.replace("!"," : ").replace("\\","")
+                                                            pblancastel += " " + lastem.replace("listatel=","")
+                                        if len(pblancasname) >0 and len(pblancasloc) >0 and len(pblancastel):
+
+                                             oldres = pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel
+                                             if pblancasres.count(oldres) >0:
+                                                  print("Only "+ str(len(pblancasres)) +" Results for " +family+ " in Spain .")
+                                                  stopeverything = 1
+                                                  stopwhile = 1
+                                                  print()
+                                             else:
+                                                  print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+                                                  pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+
+                                   endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
+
+                                   for item in endofresults:
+                                        item = item.replace("\n","").replace("\t","").replace("\r","")#putain d'espakek..
+                                        
+                                        if "<b>Siguiente</b>" in item:
+                                             #print("Paginas Blancas results counter : ",len(pblancasres))
+                                             pagenbr = pagenbr + 1
+                                        else:
+                                             #print("Paginas Blancas results counter : ",len(pblancasres))
+                                             stopwhile = 1
+                                        time.sleep(random.randint(32,42))
 
           except Exception as e:
                print(e)
