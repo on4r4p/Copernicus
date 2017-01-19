@@ -44,21 +44,32 @@ Search in all regions in France for family name ,adresses,phone numbers.
                      [-a OPTION] [-c CITY] [-i TRUE-FALSE] [-m EMAIL]
                      [-fa TRUE-FALSE]
 - optional arguments:
->
->  -h, --help            show this help message and exit
->  -e Engine, Engine Use specific search engine: -e yahoo,bing
->  -l LANG, Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...
->  -c2e TRUE-FALSE Only use the city arg with search engine
->  -c2w TRUE-FALSE, Only use the city arg with whitepages 
->  -s 'NAME', Name to Search
->  -f FAMILY NAME, --family FAMILY NAME
->  -a OPTION, Word1,Word2,Word3
->  -c CITY, --city CITY  Specify city
->  -i TRUE-FALSE, Search and download pictures too
->  -m EMAIL,  will ask lullar.com about it.
->  -fa TRUE-FALSE, Take more than 3 hours can get your ip banned.
->
 
+	  -h, --help            show this help message and exit
+	  
+	  -e Engine, Engine Use specific search engine: -e yahoo,bing
+	  
+	  -l LANG, Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...
+	  
+	  -c2e TRUE-FALSE Only use the city arg with search engine
+	  
+	  -c2w TRUE-FALSE, Only use the city arg with whitepages 
+	  
+	  -s 'NAME', Name to Search
+	  
+	  -f FAMILY NAME, --family FAMILY NAME
+	  
+	  -a OPTION, Word1,Word2,Word3
+	  
+	  -c CITY, --city CITY  Specify city
+	  
+	  -i TRUE-FALSE, Search and download pictures too
+	  
+	  -m EMAIL,  will ask lullar.com about it
+	  
+	  -fa TRUE-FALSE, Take more than 3 hours can get your ip banned
+	
+	
 
 
 
