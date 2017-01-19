@@ -195,6 +195,390 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
 
 
 
+def savesession(moteur,data,url):
+
+     if moteur == "paginasblancas":
+          saveto = "./Data/paginasblancas.save"
+          savetourl = "./Data/paginasblancas.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+
+
+
+
+
+     if moteur == "pagesblanches":
+          saveto = "./Data/pagesblanches.save"
+          savetourl = "./Data/pagesblanches.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+
+     if moteur == "britishtelecom":
+          saveto = "./Data/britishtelecom.save"
+          savetourl = "./Data/britishtelecom.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+
+     if moteur == "yellowpages":
+          saveto = "./Data/yellowpages.save"
+          savetourl = "./Data/yellowpages.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+     if moteur == "spravkaru":
+          saveto = "./Data/spravkaru.save"
+          savetourl = "./Data/spravkaru.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+     if moteur == "google":
+          saveto = "./Data/google.save"
+          savetourl = "./Data/google.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+     if moteur == "yahoo":
+          saveto = "./Data/yahoo.save"
+          savetourl = "./Data/yahoo.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+     if moteur == "bing":
+          saveto = "./Data/bing.save"
+          savetourl = "./Data/bing.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+     if moteur == "lullar":
+          saveto = "./Data/lullar.save"
+          savetourl = "./Data/lullar.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"a")
+          filelog.write("\n"+str(url))
+          filelog.close()
+
+
+
+
+
+     savearg = "./Data/args.save"
+
+     try:
+                                        filelog = open(savearg,"r")
+                                        filelog.close()
+     except:
+                                        print("==")
+                                        print("file does not exist:)",savearg)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savearg,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+     filelog = open(savearg,"w")
+     filelog.write("\nengine:"+str(argsengine)+"\nc2e:"+str(c2e)+"\nc2w:"+str(c2w)+"\nlang:"+str(lang)+"\nargsname:"+str(argsname)+"\nargscity:"+str(argscity)+"\nargsfamily:"+str(argsfamily)+"\nemails:"+str(emails)+"\nargsadd:"+str(argsadd)+"\nargsimg:"+str(argsimg)+"\nfullauto:"+str(fullauto))
+     filelog.close()
+
 
 def yellowpages(fname,city):
      global yellowres
@@ -432,6 +816,7 @@ def yellowpages(fname,city):
      
                                                                       for item1,item2,item3 in zip(name,loc,tel):
                                                                                           print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                                          savesession("yellowpages",item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""),url)
                                                                                           yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
 
@@ -509,6 +894,7 @@ def yellowpages(fname,city):
 
                                                        for item1,item2,item3 in zip(name,loc,tel):
                                                                            print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                           savesession("yellowpages",item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""),url)
                                                                            yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
 
@@ -563,6 +949,8 @@ def yellowpages(fname,city):
 
                                              for item1,item2,item3 in zip(name,loc,tel):
                                                                  print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+
+                                                                 savesession("yellowpages",item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""),query)
                                                                  yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
                               pagenbr = pagenbr +1
@@ -833,6 +1221,7 @@ def yellowpages(fname,city):
      
                                                                       for item1,item2,item3 in zip(name,loc,tel):
                                                                                           print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                                          savesession("yellowpages",item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""),url)
                                                                                           yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
 
@@ -910,6 +1299,7 @@ def yellowpages(fname,city):
 
                                                        for item1,item2,item3 in zip(name,loc,tel):
                                                                            print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                           savesession("yellowpages",item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""),url)
                                                                            yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
 
@@ -964,6 +1354,7 @@ def yellowpages(fname,city):
 
                                              for item1,item2,item3 in zip(name,loc,tel):
                                                                  print(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
+                                                                 savesession("yellowpages",item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""),query)
                                                                  yellowres.append(item1.replace("\n","")+"#***#"+item2.replace("\n","")+"#***#"+item3.replace("\n",""))
 
                               pagenbr = pagenbr +1
@@ -1078,6 +1469,7 @@ def spravkaru(fname,city):
                                                                  if "+" in subtem:
                                                                       tel= subtem
                                                        print(name+"#***#"+loc+"#***#"+tel)
+                                                       savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
                                                        spravres.append(name+"#***#"+loc+"#***#"+tel)
                                                   
                                              
@@ -1092,6 +1484,7 @@ def spravkaru(fname,city):
                                                                  if "+" in subtem:
                                                                       tel= subtem
                                                        print(name+"#***#"+loc+"#***#"+tel)
+                                                       savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
                                                        spravres.append(name+"#***#"+loc+"#***#"+tel)
 
                                              except Exception as e :
@@ -1227,6 +1620,7 @@ def spravkaru(fname,city):
                                                                  if "+" in subtem:
                                                                       tel= subtem
                                                        print(name+"#***#"+loc+"#***#"+tel)
+                                                       savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
                                                        spravres.append(name+"#***#"+loc+"#***#"+tel)
                                                   
                                              
@@ -1241,6 +1635,7 @@ def spravkaru(fname,city):
                                                                  if "+" in subtem:
                                                                       tel= subtem
                                                        print(name+"#***#"+loc+"#***#"+tel)
+                                                       savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
                                                        spravres.append(name+"#***#"+loc+"#***#"+tel)
 
                                              except Exception as e :
@@ -1351,6 +1746,7 @@ def pblancas(fname,city):
                                                   print()
                                              else:
                                                   print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+                                                  savesession("paginasblancas",pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel,query)
                                                   pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
      
                                    endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
@@ -1462,6 +1858,7 @@ def pblancas(fname,city):
                                                   print()
                                              else:
                                                   print(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
+                                                  savesession("paginasblancas",pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel,query)
                                                   pblancasres.append(pblancasname+"#***#"+pblancasloc+"#***#"+pblancastel)
 
                                    endofresults = re.findall('<!--  ENLACES ANTERIOR Y SIGUIENTE -->(.*?)<!--/ESTADILLO-->', str(soup),re.DOTALL)   
@@ -1530,6 +1927,7 @@ def btelecom(fname,city):
                                    t = t.replace("\n"," ").replace('\r', ' ')
 
                                    print(n+"#***#"+l+"#***#"+t)
+                                   savesession("britishtelecom",n+"#***#"+l+"#***#"+t,query)
                                    btres.append(n+"#***#"+l+"#***#"+t)
                               nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
                               for item in nextpage:
@@ -1602,6 +2000,7 @@ def btelecom(fname,city):
                                    t = t.replace("\n"," ").replace('\r', ' ')
 
                                    print(n+"#***#"+l+"#***#"+t)
+                                   savesession("britishtelecom",n+"#***#"+l+"#***#"+t,query)
                                    btres.append(n+"#***#"+l+"#***#"+t)
                               nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
                               for item in nextpage:
@@ -1661,9 +2060,11 @@ def lullaremail(email):
                               item = item.replace(">","").replace("<a","").replace('"','')
                               item = item.split(" ")
                               item = item[0]+"#***#"+item[1]
+                              savesession("lullar",item,query)
                               newemailres.append(item)
                          for item in emailspokeo:
                               item = "spokeo#***#"+ "http://www.spokeo.com"+item
+                              savesession("lullar",item,query)
                               newemailres.append(item)
                          for item in newemailres:
                               print(item)     
@@ -1827,6 +2228,7 @@ def pageblanche(familyname,city):
 
                                         if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
                                              print("Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                             savesession("pagesblanches","Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
                                              pageBacu.append("Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
                                              i = i + 1 
 
@@ -1958,6 +2360,7 @@ def pageblanche(familyname,city):
                                    
                                         if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
                                              print(region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                             savesession("pagesblanches",region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
                                              pageBres.append(region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
                                              i = i + 1 
 
@@ -2050,6 +2453,7 @@ def pageblanche(familyname,city):
 
                                              if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
                                                   print(region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                  savesession("pagesblanches",region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
                                                   pageBres.append(region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
                                                   i = i + 1 
                                              else:
@@ -2172,6 +2576,7 @@ def pageblanche(familyname,city):
                                    
                                         if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
                                              print(ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                             savesession("pagesblanches",ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
                                              pageBresfullauto.append(ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
                                              i = i + 1 
 
@@ -2262,6 +2667,7 @@ def pageblanche(familyname,city):
 
                                              if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
                                                   print(ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                  savesession("pagesblanches",ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
                                                   pageBresfullauto.append(ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
                                                   i = i + 1 
                                              else:
@@ -2361,6 +2767,7 @@ def getYahooLinks(language,link,depth): #from https://github.com/geckogecko
                          try:
                               cleanlink = cleanlink.split("/RK")
                               cleanlink[0] = "http://"+urllib.parse.unquote(cleanlink[0])
+                              savesession("yahoo",cleanlink[0],query)
                               yahoores.append(cleanlink[0]) 
                          except Exception as e:
                               #print(e)
@@ -2557,7 +2964,7 @@ def google(language,searcharg,cityarg,addarg):
 
                                                        if not link in googleresults:
                                                             
-
+                                                            savesession("google",link,query)
                                                             googleresults.append(link)
                                                        else:
 
@@ -2575,7 +2982,7 @@ def google(language,searcharg,cityarg,addarg):
                                                   for link in links:
                                                   
                                                        if not link in googleresults:
-
+                                                               savesession("google",link,query)
                                                                googleresults.append(link)
                                                        else:
 
@@ -2624,7 +3031,7 @@ def google(language,searcharg,cityarg,addarg):
                                                   for link in links:
 
                                                        if not link in googleresults:
-
+                                                            savesession("google",link,query)
                                                             googleresults.append(link)
                                                        else:
 
@@ -2643,6 +3050,7 @@ def google(language,searcharg,cityarg,addarg):
                                                        
                                                        if not link in googleresults:
                                                                print(link)
+                                                               savesession("google",link,query)
                                                                googleresults.append(link)
                                                        else:
 
