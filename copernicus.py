@@ -521,7 +521,7 @@ def yellowpages(fname,city):
                                       if "YP didn't find any results for" in item:
                                                             nores = 1
                                                             print("YP didn't find any results for %s in %s"% (family,state))
-                                      if nores == 0:
+                                  if nores == 0:
                                              ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
 
 
@@ -922,7 +922,7 @@ def yellowpages(fname,city):
                                       if "YP didn't find any results for" in item:
                                                             nores = 1
                                                             print("YP didn't find any results for %s in %s"% (family,state))
-                                      if nores == 0:
+                                  if nores == 0:
                                              ypend = re.findall('<span class="record_count">(.*?)</span>', str(soup),re.DOTALL)
 
 
@@ -1114,8 +1114,11 @@ def spravkaru(fname,city):
                                    if len(tmpres) < 80:
                                                        stopwhile = 1
                                                        time.sleep(random.randint(15,23))
-  
-                              print("Stravkaru results counter : ",len(spravres))               
+
+                              luck = random.randint(0,10)
+                              if luck == 1:
+
+                                   print("Stravkaru results counter : ",len(spravres))               
 
 
 
@@ -2288,12 +2291,12 @@ def getYahooLinks(language,link,depth): #from https://github.com/geckogecko
                               print("Without city arg")
                               yahoodone = 1
                          query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
-                    if argscity != "none" and pbarg != "true":
+                    if argscity != "none" and c2e != "true":
                          if yahoodone != 1:
                               print("With city arg")
                               yahoodone = 1
                          query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"%20"+urllib.parse.quote(argscity)+"&b="+str((i*100)+1)+"&pz=100"
-                    if argscity != "none" and pbarg == "true":
+                    if argscity != "none" and c2e == "true":
                          if yahoodone != 1:
                               print("Without city arg")
                               yahoodone = 1
@@ -2388,7 +2391,7 @@ def random_user_agent_bing():
 
 def make_request_bing(keyword,first):
     global bingdone
-    if argscity != "none" and pbarg != "true":
+    if argscity != "none" and c2w != "true":
                     if bingdone == 0:
                          print("With city arg")
                          bingdone = 1
@@ -2397,7 +2400,7 @@ def make_request_bing(keyword,first):
                     if bingdone == 0:
                          print("Without city arg")
                          bingdone = 1
-    if argscity != "none" and pbarg == "true":
+    if argscity != "none" and c2w == "true":
                     print("Without city arg")
                     bingdone = 1
 
@@ -2494,12 +2497,12 @@ def google(language,searcharg,cityarg,addarg):
             print()
             if cityarg != "none":
                
-               if pbarg.lower() != "true":
+               if c2w.lower() != "true":
                     if googledone != 1:
                          print("with cityarg")
                          googledone = 1
                     pass
-               if pbarg.lower() == "true":
+               if c2w.lower() == "true":
                     if googledone != 1:
                          print("without cityarg")
                          googledone = 1
@@ -3578,14 +3581,17 @@ def getPDFContent(path):
 
 parser = ArgumentParser()
 
-parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches,britishtelecom,paginasblancas,spravkaru',
+parser.add_argument("-e","--engine", dest="engine",default='google,bing,yahoo,pagesblanches,britishtelecom,paginasblancas,spravkaru,yellowpages',
                     help="Use specific search engine: -e yahoo,bing ", metavar="Engine")
 
 parser.add_argument("-l","--language", dest="lang",default='fr',
                     help="Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...", metavar="LANG")
 
-parser.add_argument("-pb","--pagesblanches", dest="pbarg",default='none',
-                    help="-pb true : Only use the city arg with pagesblanches", metavar="TRUE-FALSE")
+parser.add_argument("-c2e","--citytosearchengine", dest="c2e",default='none',
+                    help="-c2c true : Only use the city arg with search engine not whitepages.", metavar="TRUE-FALSE")
+
+parser.add_argument("-c2w","--citytowhitepages", dest="c2w",default='none',
+                    help="-c2w true : Only use the city arg with whitepages not search engine.", metavar="TRUE-FALSE")
 
 parser.add_argument("-s","--search", dest="name",default='Marcel Menou',
                     help="Name to Search", metavar="'NAME'")
@@ -3612,6 +3618,10 @@ args = parser.parse_args()
 
 argsengine = args.engine.lower()
 
+c2e = args.c2e.lower()
+
+c2w = args.c2w.lower()
+
 lang = args.lang.lower()
 
 argsname = args.name
@@ -3626,7 +3636,6 @@ argsadd = args.add
 
 argsimg = args.image.lower()
 
-pbarg = args.pbarg.lower()
 
 family = argsfamily
 
@@ -3686,41 +3695,72 @@ if argsadd == "none" and family != "none":
      sys.exit()
 
 
-if pbarg != "none" and family == "none":
-     print()
-     print("some options are missing")
-     print()
-     print("-pb option must be used in combination with -c and -f :")
-     print()
-     print(" -s Albert Einstein -f Einstein -c Berne -pb true")
-     print()
-     print("")
-     sys.exit()
 
-if pbarg != "none" and argscity == "none":
+if c2e != "none" and argscity == "none":
      print()
      print("some options are missing")
      print()
-     print("-pb option must be used in combination with -c and -f :")
+     print("-c2e option must be used in combination with -c and -f :")
      print()
-     print(" -s Albert Einstein -f Einstein -c Berne -pb true")
+     print(" -s Albert Einstein -f Einstein -c Berne -c2e true")
      print()
      print("")
      sys.exit()
 
 
-if pbarg.lower() != "none" :
-     if pbarg.lower() != "true" :
-          if pbarg.lower() != "false":
+if c2e != "none" :
+     if c2e != "true" :
+          if c2e != "false":
                print()
                print("some options are missing")
                print()
-               print("-pb option must be True or False")
+               print("-c2e option must be True or False")
                print()
-               print(" -s Albert Einstein -f Einstein -c Berne -pb true")
+               print(" -s Albert Einstein -f Einstein -c Berne -c2e true")
                print()
                print("")
                sys.exit()
+
+
+if c2w != "none" and argscity == "none":
+     print()
+     print("some options are missing")
+     print()
+     print("-c2w option must be used in combination with -c and -f :")
+     print()
+     print(" -s Albert Einstein -f Einstein -c Berne -c2w true")
+     print()
+     print("")
+     sys.exit()
+
+
+if c2w != "none" :
+     if c2w != "true" :
+          if c2w != "false":
+               print()
+               print("some options are missing")
+               print()
+               print("-c2w option must be True or False")
+               print()
+               print(" -s Albert Einstein -f Einstein -c Berne -c2w true")
+               print()
+               print("")
+               sys.exit()
+
+
+
+if c2e != "none" and c2w != "none" :
+
+               print()
+               print("some options can't stand each other")
+               print()
+               print("-c2e option or -c2w not both of them.\nJust don't use -c .")
+               print()
+               print(" -s Albert Einstein -f Einstein -c Berne -c2e true")
+               print()
+               print("")
+               sys.exit()
+
 
 if argsimg.lower() != "none" :
      if argsimg.lower() != "true" :
@@ -3813,44 +3853,80 @@ permutation(argsname)
 for item in splitengine:
      if item.lower() == "yellowpages":
           if family != "none":
-               yellowpages(family,args.city)
+
+               if c2e == "true":
+                    yellowpages(family,"none")
+               else:
+                    yellowpages(family,args.city)
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
-               yellowpages(str(quickfix),args.city)
+
+               if c2e == "true":
+                    yellowpages(str(quickfix),"none")
+               else:
+
+                    yellowpages(str(quickfix),args.city)
 
 for item in splitengine:
      if item.lower() == "spravkaru":
           if family != "none":
-               spravkaru(family,args.city)
+
+               if c2e == "true":
+                    spravkaru(family,"none")
+               else:
+                    spravkaru(family,args.city)
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
-               spravkaru(str(quickfix),args.city)
+               if c2e == "true":
+                    spravkaru(str(quickfix),"none")
+               else:
+
+                    spravkaru(str(quickfix),args.city)
 
 for item in splitengine:
      if item.lower() == "paginasblancas":
           if family != "none":
-               pblancas(family,args.city)
+
+
+               if c2e == "true":
+                    pblancas(family,"none")
+               else:
+                    pblancas(family,args.city)
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
-               pblancas(str(quickfix),args.city)
+
+               if c2e == "true":
+                    pblancas(str(quickfix),"none")
+               else:
+                    pblancas(str(quickfix),args.city)
 
 
 
 for item in splitengine:
      if item.lower() == "britishtelecom":
           if family != "none":
-               btelecom(family,args.city)
+
+
+
+               if c2e == "true":
+                    btelecom(family,"none")
+               else:
+                    btelecom(family,args.city)
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
-               btelecom(str(quickfix),args.city)
+               if c2e == "true":
+                    btelecom(str(quickfix),"none")
+               else:
+
+                    btelecom(str(quickfix),args.city)
 
 for item in splitengine:
      if item.lower() == "lullar":
@@ -3860,26 +3936,55 @@ for item in splitengine:
 for item in splitengine:
      if item.lower() == "pagesblanches":
           if family != "none":
-               pageblanche(family,args.city)
+               if c2e == "true":
+                    pageblanche(family,"none")
+               else:
+                    pageblanche(family,args.city)
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
-               pageblanche(str(quickfix),args.city)
+
+               if c2e == "true":
+                    pageblanche(str(quickfix),"none")
+               else:
+
+                    pageblanche(str(quickfix),args.city)
 for item in splitengine:
      if item.lower() == "google":
-          google(lng,argsname,argscity,argsadd)
+          if c2w == "true":
+               google(lng,argsname,"none",argsadd)
+          else:
+               google(lng,argsname,argscity,argsadd)
 
 for item in splitengine:
      if item.lower() == "yahoo":
-          getYahooLinks(lng,argsname,5)
+          if c2w == "true":
+
+               getYahooLinks(lng,argsname,8)
+          
+          else:
+               namecity = str(argsname) + " " + str(argscity)
+               getYahooLinks(lng,namecity,8)
 
 for item in splitengine:
      if item.lower() == "bing":
-          bing(argsname)
-if argsimg.lower() == "true":
-     getimg(argsname,argscity)
 
+          if c2w == "true":
+               bing(argsname)
+          
+          else:
+               namecity = str(argsname) + " " + str(argscity)
+               bing(namecity)
+
+if argsimg.lower() == "true":
+
+          if c2w == "true":
+               getimg(argsname,"none")
+          else:
+               getimg(argsname,argscity)
+
+          
 
 
 
@@ -4027,7 +4132,7 @@ print()
 print("##############################################")
 print()
 print()
-
+##wtf
 for item in splitengine:
      if item.lower() == "pagesblanches":
           if fullauto != "true":
@@ -4068,7 +4173,7 @@ for item in splitengine:
 for item in splitengine:
      if item.lower() == "lullar":
           lullarres = newemailres
-
+##
 stop = 0
 
 try:

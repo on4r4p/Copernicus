@@ -39,10 +39,30 @@ Search in all regions in France for family name ,adresses,phone numbers.
 
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
 
- - usage: copernicus.py [-h] [-e 'ENGINE'] [-i  'True/False']  [-l 'LANG'] [-pb 'True/False'] [-s 'NAME'] [-f
-   FAMILY NAME] [-a OPTION] [-c CITY] [-fa TRUE-FALSE] [-m EMAIL]
+- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e TRUE-FALSE]
+                     [-c2w TRUE-FALSE] [-s 'NAME'] [-f FAMILY NAME]
+                     [-a OPTION] [-c CITY] [-i TRUE-FALSE] [-m EMAIL]
+                     [-fa TRUE-FALSE]
+- optional arguments:
+>
+>  -h, --help            show this help message and exit
+>  -e Engine, Engine Use specific search engine: -e yahoo,bing
+>  -l LANG, Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...
+>  -c2e TRUE-FALSE Only use the city arg with search engine
+>  -c2w TRUE-FALSE, Only use the city arg with whitepages 
+>  -s 'NAME', Name to Search
+>  -f FAMILY NAME, --family FAMILY NAME
+>  -a OPTION, Word1,Word2,Word3
+>  -c CITY, --city CITY  Specify city
+>  -i TRUE-FALSE, Search and download pictures too
+>  -m EMAIL,  will ask lullar.com about it.
+>  -fa TRUE-FALSE, Take more than 3 hours can get your ip banned.
+>
 
->./copernicus.py -e google,yahoo,pagesblanches,lullar -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh  -pb true -i true -m some@mail.something
+
+
+
+>./copernicus.py -e google,yahoo,pagesblanches,lullar -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w true
    
 ###To do list:
 - Rewrite all this shit
@@ -53,7 +73,7 @@ Search in all regions in France for family name ,adresses,phone numbers.
 -   ~~Add whitepage engine for ru.~~
 -   ~~Add whitepage engine for usa.~~
 - ~~Add Captcha solver for yellowpages.com.~~
-- Add ability to choose to use city for engine or whitePages
+- ~~Add ability to choose to use city for engine or whitePages.~~
 -  Add ability to save current session and continue where it stopped in  case of uncaught error.
 -  Add graphml , gephi , cytoscape ,export format .
 -  Add image search for yahoo and bing
