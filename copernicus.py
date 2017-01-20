@@ -15,6 +15,7 @@ import http.cookiejar
 import errno
 import imageGwall
 import os
+import glob
 import sys
 import signal
 import urllib.request, urllib.parse, urllib.error
@@ -53,9 +54,9 @@ joinvar = []
 allcomb = ""
 googledone = 0
 yahoodone = 0
-bingdone = 0
 bingtitles =[]
 bingurls = []
+bingquery = ""
 bingmeta_descs = []
 
 finalres = []
@@ -77,6 +78,14 @@ pdfinalink = []
 pdfinalinkchance =[]
 
 pdflink = []
+
+bingok = []
+
+bingstart = ""
+
+googlestart =""
+     
+googleok = []
 
 bingpdflink = []
 
@@ -193,9 +202,191 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
 
     return decorator
 
+def loadsession():
+          global googleresults
+          global googlestart
+          global bingstart
+          global bingtitles
+          global bingurls
+          global bingmeta_descs
+          global argsengine
+          global c2e
+          global c2w
+          global lang
+          global argsname
+          global argscity
+          global family
+          global argsfamily
+          global emails
+          global argsadd
+          global argsimg
+          global fullauto
 
+          print()
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Loading Last Session'))
+          print()
+          try:
+               with open("./Data/args.save") as f:
+                   content = f.readlines()
+               content = [x.strip() for x in content]
+          except:
+               print()
+               print()
+               print("Error While Trying to Read args.save")
+               print()
+               print("No last session found")
+               print()
+
+               sys.exit()
+
+          for item in content:
+             
+             if "engine" in item:
+                 item = item.split(":")
+                 argsengine = item[1]
+                 print(item[1])
+             if "c2e" in item:
+                 item = item.split(":")
+                 c2e = item[1]
+                 print(item[1])
+
+             if "c2w" in item:
+                 item = item.split(":")
+                 c2w = item[1]
+                 print(item[1])
+             if "lang" in item:
+                 item = item.split(":")
+                 lang = item[1]
+                 print(item[1])
+             if "argsname" in item:
+                 item = item.split(":")
+                 argsname = item[1]
+                 print(item[1])
+             if "argscity" in item:
+                 item = item.split(":")
+                 argscity = item[1]
+                 print(item[1])
+             if "argsfamily" in item:
+                 item = item.split(":")
+                 argsfamily = item[1]
+                 family = argsfamily
+                 print(item[1])
+             if "emails" in item:
+                 item = item.split(":")
+                 emails = item[1]
+                 print(item[1])
+             if "argsadd" in item:
+                 item = item.split(":")
+                 argsadd = item[1]
+                 print(item[1])
+             if "argsimg" in item:
+                 item = item.split(":")
+                 argsimg = item[1]
+                 print(item[1])
+             if "fullauto" in item:
+                 item = item.split(":")
+                 fullauto = item[1]
+                 print(item[1])
+
+          
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/bing"):
+                         print()
+                         print("Found bing.save")
+                         with open("./Data/bing.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              ligne = ligne.split("#***#")
+                              if len(ligne) == 3:
+                                   
+                                   bingtitles.append(ligne[0])
+                                   bingurls.append(ligne[1])
+                                   bingmeta_descs.append(ligne[2])
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/google"):
+                         print()
+                         print("Found google.save")
+                         with open("./Data/google.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              googleresults.append(ligne)
+                          
+                          
+                              
+          for f in glob.glob("./Data/*.url"):
+                    if  f.startswith("./Data/bing"):
+                         print()
+                         print("Found bing.url")
+                         with open("./Data/bing.url") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              bingstart = ligne
+
+          for f in glob.glob("./Data/*.url"):
+                    if  f.startswith("./Data/google"):
+                         print()
+                         print("Found google.url")
+                         with open("./Data/google.url") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              googlestart = ligne
+                              
+
+
+
+             
+
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Loaded'))
+          print()
+
+def cleansession():
+
+          for f in glob.glob("./Data/*.save"):
+                  os.remove(f)
+          for f in glob.glob("./Data/*.url"):          
+                  os.remove(f)
+ 
+          Fig = Figlet(font='cybermedium')
+          print(Fig.renderText('Last Session erased'))
+          print() 
 
 def savesession(moteur,data,url):
+
+     lastname = ""
+     try:
+               with open("./Data/args.save") as f:
+                   content = f.readlines()
+               content = [x.strip() for x in content]
+
+               for item in content:
+                       if "lastname" in item:
+                           item = item.split(":")
+                           lastname = item[1]
+                           print(item[1])
+               if lastname != lastname:
+                    print("im supposed to erase old session here")
+                    cleansession()
+
+
+     except:
+               print()
+               print()
+               print("Error While Trying to Read args.save")
+               print()
+               print("No last session found")
+               print()
+
+
 
      if moteur == "paginasblancas":
           saveto = "./Data/paginasblancas.save"
@@ -233,7 +424,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
 
@@ -277,7 +468,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
 
@@ -317,7 +508,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
 
@@ -357,7 +548,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
      if moteur == "spravkaru":
@@ -396,7 +587,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
      if moteur == "google":
@@ -435,7 +626,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
      if moteur == "yahoo":
@@ -474,7 +665,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
      if moteur == "bing":
@@ -513,7 +704,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
      if moteur == "lullar":
@@ -552,7 +743,7 @@ def savesession(moteur,data,url):
                                         filelog.close()
 
 
-          filelog = open(savetourl,"a")
+          filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
 
@@ -2816,28 +3007,34 @@ def random_user_agent_bing():
 
 
 def make_request_bing(keyword,first):
-    global bingdone
-    if argscity != "none" and c2w != "true":
-                    if bingdone == 0:
-                         print("With city arg")
-                         bingdone = 1
-                    keyword = keyword + " " + argscity
-    if argscity == "none":
-                    if bingdone == 0:
-                         print("Without city arg")
-                         bingdone = 1
-    if argscity != "none" and c2w == "true":
-                    print("Without city arg")
-                    bingdone = 1
+    global bingquery
+    global bingok
+    
 
     base_url = 'http://www.bing.com/search?q='
     result_count = '&count=50'
-    try:
-        r = requests.get('{}{}{}{}'.format(base_url,urllib.parse.quote(keyword),result_count,first),headers=random_user_agent_bing())
-        #print("\n\n",r)
-        return r
-    except Exception as e:
-        print(e)
+    bingquery= str(base_url)+str(urllib.parse.quote(keyword))+str(result_count)+str(first)
+    if last == True: 
+         if bingquery == bingstart or bingok == 1:
+              bingok = 1
+              try:
+                  r = requests.get('{}{}{}{}'.format(base_url,urllib.parse.quote(keyword),result_count,first),headers=random_user_agent_bing())
+                  #print("bing query :",bingquery)
+     
+      #           print("\n\n",r)
+                  return r
+              except Exception as e:                  
+                  print(e)
+                  r = ""
+                  return r
+
+    if last != True: 
+              try:
+                  r = requests.get('{}{}{}{}'.format(base_url,urllib.parse.quote(keyword),result_count,first),headers=random_user_agent_bing())
+
+                  return r
+              except Exception as e:
+                  print(e)
         
 
 def parse_soup_bing(keyword,response):
@@ -2846,6 +3043,7 @@ def parse_soup_bing(keyword,response):
     meta_descs = []
     if response.status_code == 200:
         soup = BeautifulSoup(response.text,'lxml')
+        #print(soup)
         results = soup.find_all('li',attrs={'class':'b_algo'})
         for result in results:
             title = result.find('h2')
@@ -2857,10 +3055,10 @@ def parse_soup_bing(keyword,response):
             meta_desc = result.find('p')
             meta_desc = meta_desc.get_text()
             meta_descs.append(meta_desc)
+  #      print(titles,urls,meta_descs)
         return titles,urls,meta_descs
         
     else:
-        
         return titles, urls, meta_descs
 
 
@@ -2878,30 +3076,72 @@ def bing(keyword): #from https://github.com/EdmundMartin
         print(Fig.renderText('Getting results from Bing'))
         print()
 
-        while page < 401:
-               print()
-               valuepage = "&first=" + str(page)
-               print("Results from Bing : ",page)
+        if last != True:
+             while page < 551:
+                    print()
+                    save = []
+                    valuepage = "&first=" + str(page)
+                    print("Results from Bing : ",page)
+                    respage.append(make_request_bing(keyword,valuepage))
+                    #print(respage)
+                    page = page + 50
+                    time.sleep(random.randint(23,123))
 
-               respage.append(make_request_bing(keyword,valuepage))
-               page = page + 50
-               time.sleep(random.randint(60,120))
+
         
 
-        for response in respage:
-               #print(response)
-               try:
-                   titles, urls, meta_descs = parse_soup_bing(keyword,response)
-                   for titres in titles:
-                         bingtitles.append(titres)
-                   for liens in urls:
-                         bingurls.append(liens)
-                   for meta in meta_descs:
-                         bingmeta_descs.append(meta)
+             for response in respage:
+                    #print(response)
+                    try:
+                        titles, urls, meta_descs = parse_soup_bing(keyword,response)
+                        for titres,liens,meta in zip(titles,urls,meta_descs):
+                                   savesession("bing",titres+"#***#"+liens+"#***#"+meta,bingquery)
+                                   bingtitles.append(titres)
+                                   bingurls.append(liens)
+                                   bingmeta_descs.append(meta)
+                    except:
+                              pass
 
-               except:
-                         pass
+        if last == True:
+             while page < 551:
+                    print()
+                    save = []
+                    valuepage = "&first=" + str(page)
+                    tmp= make_request_bing(keyword,valuepage)
+                    print("Results from Bing : ",page)
+                    respage.append(tmp)
+                    save.append(tmp)
+                    for response in save:
+                         #print(response)
+                         try:
+                             titles, urls, meta_descs = parse_soup_bing(keyword,response)
+                             for titres,liens,meta in zip(titles,urls,meta_descs):
+                                        savesession("bing",titres+"#***#"+liens+"#***#"+meta,bingquery)
+                                        #print("saved:","bing",titres+"#***#"+liens+"#***#"+meta,bingquery)
 
+                         except:
+                                   pass
+
+
+                    #print(respage)
+                    page = page + 50
+                    if bingok == 1:
+                         time.sleep(random.randint(23,123))
+
+
+             if bingok == 1:        
+
+                  for response in respage:
+                         #print(response)
+                         try:
+                             titles, urls, meta_descs = parse_soup_bing(keyword,response)
+                             for titres,liens,meta in zip(titles,urls,meta_descs):
+                                        #savesession("bing",titres+"#***#"+liens+"#***#"+meta,bingquery)
+                                        bingtitles.append(titres)
+                                        bingurls.append(liens)
+                                        bingmeta_descs.append(meta)
+                         except:
+                                   pass
 
 
 def get_soup(url,header):
@@ -2952,47 +3192,94 @@ def google(language,searcharg,cityarg,addarg):
                                         while stop != 1:
                                              
                                              query = "https://www.google.com/search?hl="+boka+"&q="+urllib.parse.quote(searcharg)+"+"+urllib.parse.quote(cityarg)+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
+                                             print(query)
+                                             if last == True:
+                                                  if query == googlestart:
+                                                       opener = urllib.request.build_opener()
+                                                       opener.addheaders = [('User-Agent', UserAgent)]
+                                                       send = opener.open(query)
+                                                       soup = BeautifulSoup(send,'lxml')
+                                                       theend = re.findall('id="pnnext"',str(soup))
+                                                       if len(theend) >0:
+                                                            links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                            for link in links:
 
-                                             opener = urllib.request.build_opener()
-                                             opener.addheaders = [('User-Agent', UserAgent)]
-                                             send = opener.open(query)
-                                             soup = BeautifulSoup(send,'lxml')
-                                             theend = re.findall('id="pnnext"',str(soup))
-                                             if len(theend) >0:
-                                                  links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
-                                                  for link in links:
-
-                                                       if not link in googleresults:
+                                                                 if not link in googleresults:
                                                             
-                                                            savesession("google",link,query)
-                                                            googleresults.append(link)
-                                                       else:
+                                                                      savesession("google",link,query)
+                                                                      googleresults.append(link)
+                                                                 else:
 
-                                                                 pass
-                                                  print()
+                                                                           pass
+                                                            print()
                        
-
-                                                  print("Google founds new links:",len(links))
-                                                  page = page + 100
+          
+                                                            print("Google founds new links:",len(links))
+                                                            page = page + 100
                               
-                                                  time.sleep(random.randint(60,123))
+                                                            time.sleep(random.randint(60,123))
                                                   
-                                             else:
-                                                  links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
-                                                  for link in links:
-                                                  
-                                                       if not link in googleresults:
-                                                               savesession("google",link,query)
-                                                               googleresults.append(link)
                                                        else:
+                                                            links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                            for link in links:
+                                                  
+                                                                 if not link in googleresults:
+                                                                         savesession("google",link,query)
+                                                                         googleresults.append(link)
+                                                                 else:
 
-                                                                 pass
+                                                                           pass
 
-                                                  print()
-                                                  print("Google total Links :",len(googleresults))
-                                                  print("End of results")
+                                                            print()
+                                                            print("Google total Links :",len(googleresults))
+                                                            print("End of results")
+                                        
+                                                            stop = 1
+                                                  else:
+
+                                                            page = page + 100
+                                             if last != True:
+                                                  
+                                                       opener = urllib.request.build_opener()
+                                                       opener.addheaders = [('User-Agent', UserAgent)]
+                                                       send = opener.open(query)
+                                                       soup = BeautifulSoup(send,'lxml')
+                                                       theend = re.findall('id="pnnext"',str(soup))
+                                                       if len(theend) >0:
+                                                            links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                            for link in links:
+
+                                                                 if not link in googleresults:
+                                                            
+                                                                      savesession("google",link,query)
+                                                                      googleresults.append(link)
+                                                                 else:
+
+                                                                           pass
+                                                            print()
+                       
+          
+                                                            print("Google founds new links:",len(links))
+                                                            page = page + 100
                               
-                                                  stop = 1
+                                                            time.sleep(random.randint(60,123))
+                                                  
+                                                       else:
+                                                            links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                            for link in links:
+                                                  
+                                                                 if not link in googleresults:
+                                                                         savesession("google",link,query)
+                                                                         googleresults.append(link)
+                                                                 else:
+
+                                                                           pass
+
+                                                            print()
+                                                            print("Google total Links :",len(googleresults))
+                                                            print("End of results")
+                                        
+                                                            stop = 1
 
                          except Exception as e:
                                   # print(e)
@@ -3021,46 +3308,97 @@ def google(language,searcharg,cityarg,addarg):
                          try:
                                         while stop != 1:
                                              query = "https://www.google.com/search?hl="+boka+"&q="+urllib.parse.quote(searcharg)+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
-                                             opener = urllib.request.build_opener()
-                                             opener.addheaders = [('User-Agent', str(UserAgent))]
-                                             send = opener.open(query)
-                                             soup = BeautifulSoup(send,'lxml')
-                                             theend = re.findall('id="pnnext"',str(soup))
-                                             if len(theend) >0:
-                                                  links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
-                                                  for link in links:
+                                             print(query)
 
-                                                       if not link in googleresults:
-                                                            savesession("google",link,query)
-                                                            googleresults.append(link)
-                                                       else:
+                                             if last == True:
+                                                  
+                                                  if query == googlestart:
 
-                                                                 pass
-                                                  print()
+                                                       opener = urllib.request.build_opener()
+                                                       opener.addheaders = [('User-Agent', str(UserAgent))]
+                                                       send = opener.open(query)
+                                                       soup = BeautifulSoup(send,'lxml')
+                                                       theend = re.findall('id="pnnext"',str(soup))
+                                                       if len(theend) >0:
+                                                            links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                            for link in links:
+     
+                                                                 if not link in googleresults:
+                                                                      savesession("google",link,query)
+                                                                      googleresults.append(link)
+                                                                 else:
+
+                                                                           pass
+                                                            print()
                        
-
-                                                  print("Google founds new links counter",len(links))
-                                                  page = page + 100
+          
+                                                            print("Google founds new links counter",len(links))
+                                                            page = page + 100
+                                   
+                                                            time.sleep(random.randint(60,123))
                               
-                                                  time.sleep(random.randint(60,123))
-                              
-                                             else:
-                                                  links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
-                                                  for link in links:
-                                                       
-                                                       if not link in googleresults:
-                                                               print(link)
-                                                               savesession("google",link,query)
-                                                               googleresults.append(link)
                                                        else:
+                                                            links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                            for link in links:
+                                                       
+                                                                 if not link in googleresults:
+                                                                         print(link)
+                                                                         savesession("google",link,query)
+                                                                         googleresults.append(link)
+                                                                 else:
 
-                                                                 pass
+                                                                           pass
 
-                                                  print()
-                                                  print("Google total Links :",len(googleresults))
-                                                  print("End of results")
+                                                            print()
+                                                            print("Google total Links :",len(googleresults))
+                                                            print("End of results")
                               
-                                                  stop = 1
+                                                            stop = 1
+
+                                                  else:
+                                                            page = page + 100
+                                             if last != True:
+
+                                                       opener = urllib.request.build_opener()
+                                                       opener.addheaders = [('User-Agent', str(UserAgent))]
+                                                       send = opener.open(query)
+                                                       soup = BeautifulSoup(send,'lxml')
+                                                       theend = re.findall('id="pnnext"',str(soup))
+                                                       if len(theend) >0:
+                                                            links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                            for link in links:
+     
+                                                                 if not link in googleresults:
+                                                                      savesession("google",link,query)
+                                                                      googleresults.append(link)
+                                                                 else:
+
+                                                                           pass
+                                                            print()
+                       
+          
+                                                            print("Google founds new links counter",len(links))
+                                                            page = page + 100
+                                   
+                                                            time.sleep(random.randint(60,123))
+                              
+                                                       else:
+                                                            links = re.findall('<h3 class="r"><a href="(.*?)" onmousedown="', str(soup),re.DOTALL)
+                                                            for link in links:
+                                                       
+                                                                 if not link in googleresults:
+                                                                         print(link)
+                                                                         savesession("google",link,query)
+                                                                         googleresults.append(link)
+                                                                 else:
+
+                                                                           pass
+
+                                                            print()
+                                                            print("Google total Links :",len(googleresults))
+                                                            print("End of results")
+                              
+                                                            stop = 1
 
                          except Exception as e:
                                   #print(e)
@@ -4020,7 +4358,7 @@ parser.add_argument("-c2e","--citytosearchengine", dest="c2e",default='none',
 parser.add_argument("-c2w","--citytowhitepages", dest="c2w",default='none',
                     help="-c2w true : Only use the city arg with whitepages not search engine.", metavar="TRUE-FALSE")
 
-parser.add_argument("-s","--search", dest="name",default='Marcel Menou',
+parser.add_argument("-s","--search", dest="name",default='none',
                     help="Name to Search", metavar="'NAME'")
 
 parser.add_argument("-f","--family", dest="family",default='none',
@@ -4035,13 +4373,19 @@ parser.add_argument("-c","--city", dest="city",default='none',
 parser.add_argument("-i","--img", dest="image",default='true',
                     help="-i true Search and download pictures too ", metavar="TRUE-FALSE")
 
+parser.add_argument("-LS","--lastsession", dest="last",action='store_true',
+                    help="-Ls Load last aborded sessions")
+
 parser.add_argument("-m","--mail", dest="mail",default='none',
                     help="-m an@email.com will ask lullar.com about it.", metavar="EMAIL")
 
 parser.add_argument("-fa","--fullauto", dest="fullauto",default='false',
                     help="Crawl PagesBlanches to get Family name in all cities in france with more than 10 thousand inhabitants.\nTake more than 3 hours can get your ip banned.", metavar="TRUE-FALSE")
 
+
 args = parser.parse_args()
+
+last = args.last
 
 argsengine = args.engine.lower()
 
@@ -4068,7 +4412,22 @@ family = argsfamily
 
 fullauto = args.fullauto.lower()
 
+if last == True:
+     loadsession()
 
+
+#cleansession()
+
+if argsname == "none":
+               print()
+               print("some options are missing")
+               print()
+               print("-s argument is not optional ")
+               print()
+               print("Example: -s Albert Einstein")
+               print()
+               print("")
+               sys.exit()
 
 if lang != "none":
 
@@ -4248,13 +4607,13 @@ print("Search emails :",emails)
 print()
 print("FullAuto Mode :",fullauto)
 print()
-print("Searching for : ",args.name)
+print("Searching for : ",argsname)
 print()
-print("Family Name : ",args.family)
+print("Family Name : ",argsfamily)
 print()
-print("In city : ",args.city)
+print("In city : ",argscity)
 print()
-print("Which may contain : ",args.add)
+print("Which may contain : ",argsadd)
 print()
 
 correct = input('Is this correct? y/n : ')
@@ -4281,79 +4640,104 @@ for item in splitengine:
      if item.lower() == "yellowpages":
           if family != "none":
 
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     yellowpages(family,"none")
-               else:
-                    yellowpages(family,args.city)
+               if argscity != "none" and c2e == "none":
+                    yellowpages(family,argscity)
+               if argscity != "none" and c2e == "false":
+                    yellowpages(family,argscity)
+               if argscity == "none":
+                    yellowpages(family,"none")
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
-
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     yellowpages(str(quickfix),"none")
-               else:
-
-                    yellowpages(str(quickfix),args.city)
+               if argscity != "none" and c2e == "none":
+                    yellowpages(str(quickfix),argscity)
+               if argscity != "none" and c2e == "false":
+                    yellowpages(str(quickfix),argscity)
+               if argscity == "none":
+                    yellowpages(str(quickfix),"none")
 
 for item in splitengine:
      if item.lower() == "spravkaru":
           if family != "none":
 
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     spravkaru(family,"none")
-               else:
-                    spravkaru(family,args.city)
+               if argscity != "none" and c2e == "none":
+                    spravkaru(family,argscity)
+               if argscity != "none" and c2e == "false":
+                    spravkaru(family,argscity)
+               if argscity == "none":
+                    spravkaru(family,"none")
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     spravkaru(str(quickfix),"none")
-               else:
-
-                    spravkaru(str(quickfix),args.city)
+               if argscity != "none" and c2e == "none":
+                    spravkaru(str(quickfix),argscity)
+               if argscity != "none" and c2e == "false":
+                    spravkaru(str(quickfix),argscity)
+               if argscity == "none":
+                    spravkaru(str(quickfix),"none")
 
 for item in splitengine:
      if item.lower() == "paginasblancas":
           if family != "none":
 
 
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     pblancas(family,"none")
-               else:
-                    pblancas(family,args.city)
+               if argscity != "none" and c2e == "none":
+                    pblancas(family,argscity)
+               if argscity != "none" and c2e == "false":
+                    pblancas(family,argscity)
+
+               if argscity == "none":
+                    pblancas(family,"none")
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
 
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     pblancas(str(quickfix),"none")
-               else:
-                    pblancas(str(quickfix),args.city)
+               if argscity != "none" and c2e == "none":
+                    pblancas(str(quickfix),argscity)
+               if argscity != "none" and c2e == "false":
+                    pblancas(str(quickfix),argscity)
 
-
+               if argscity == "none":
+                    pblancas(str(quickfix),"none")
 
 for item in splitengine:
      if item.lower() == "britishtelecom":
           if family != "none":
-
-
-
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     btelecom(family,"none")
-               else:
-                    btelecom(family,args.city)
+               if argscity != "none" and c2e == "none":
+                    btelecom(family,argscity)
+               if argscity != "none" and c2e == "false":
+                    btelecom(family,argscity)
+               if argscity == "none":
+                    btelecom(family,"none")
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     btelecom(str(quickfix),"none")
-               else:
-
-                    btelecom(str(quickfix),args.city)
+               if argscity != "none" and c2e == "none":
+                    btelecom(str(quickfix),argscity)
+               if argscity != "none" and c2e == "false":
+                    btelecom(str(quickfix),argscity)
+               if argscity == "none":
+                    btelecom(str(quickfix),"none")
 
 for item in splitengine:
      if item.lower() == "lullar":
@@ -4363,50 +4747,70 @@ for item in splitengine:
 for item in splitengine:
      if item.lower() == "pagesblanches":
           if family != "none":
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     pageblanche(family,"none")
-               else:
-                    pageblanche(family,args.city)
+               if argscity != "none" and c2e == "none":
+                    pageblanche(family,argscity)
+               if argscity != "none" and c2e == "false":
+                    pageblanche(family,argscity)
+               if argscity == "none":
+                    pageblanche(family,"none")
           if family == "none":
                quickfix=""
                while len(quickfix) < 1:
                     quickfix= input("What's the familly name already?\nInput:")
 
-               if c2e == "true":
+               if argscity != "none" and c2e == "true":
                     pageblanche(str(quickfix),"none")
-               else:
-
-                    pageblanche(str(quickfix),args.city)
+               if argscity != "none" and c2e == "none":
+                    pageblanche(str(quickfix),argscity)
+               if argscity != "none" and c2w == "false":
+                    pageblanche(str(quickfix),argscity)
+               if argscity == "none":
+                    pageblanche(str(quickfix),"none")
 for item in splitengine:
      if item.lower() == "google":
-          if c2w == "true":
+          if argscity != "none" and c2w == "true":
                google(lng,argsname,"none",argsadd)
-          else:
+          if argscity != "none" and c2w == "none":
                google(lng,argsname,argscity,argsadd)
+          if argscity != "none" and c2w == "false":
+               google(lng,argsname,argscity,argsadd)
+          if argscity == "none":
+               google(lng,argsname,"none",argsadd)
 
 for item in splitengine:
      if item.lower() == "yahoo":
-          if c2w == "true":
-
+          if argscity != "none" and c2w == "true":
                getYahooLinks(lng,argsname,8)
-          
-          else:
+          if argscity != "none" and c2w == "none":
                namecity = str(argsname) + " " + str(argscity)
                getYahooLinks(lng,namecity,8)
+          if argscity != "none" and c2w == "false":
+               namecity = str(argsname) + " " + str(argscity)
+               getYahooLinks(lng,namecity,8)
+          
+          if argscity == "none":
+               getYahooLinks(lng,argsname,8)
 
 for item in splitengine:
      if item.lower() == "bing":
 
-          if c2w == "true":
+          if argscity != "none" and c2w == "true":
                bing(argsname)
-          
-          else:
+          if argscity != "none" and c2w == "none":
                namecity = str(argsname) + " " + str(argscity)
                bing(namecity)
+          if argscity != "none" and c2w == "false":
+               namecity = str(argsname) + " " + str(argscity)
+               bing(namecity)
+                    
+          if argscity == "none":
+               bing(argsname)
 
 if argsimg.lower() == "true":
 
-          if c2w == "true":
+          if argscity != "none" and c2w == "true":
                getimg(argsname,"none")
           else:
                getimg(argsname,argscity)

@@ -42,7 +42,7 @@ Search in all regions in France for family name ,adresses,phone numbers.
 - usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e TRUE-FALSE]
                      [-c2w TRUE-FALSE] [-s 'NAME'] [-f FAMILY NAME]
                      [-a OPTION] [-c CITY] [-i TRUE-FALSE] [-m EMAIL]
-                     [-fa TRUE-FALSE]
+                     [-fa TRUE-FALSE] [-LS]
 - optional arguments:
 
 	  -h, --help            show this help message and exit
@@ -68,7 +68,9 @@ Search in all regions in France for family name ,adresses,phone numbers.
 	  -m EMAIL,  will ask lullar.com about it
 	  
 	  -fa TRUE-FALSE, Take more than 3 hours can get your ip banned
-	
+
+	  -LS, --lastsession    -Ls Load last aborded sessions
+
 	
 
 
@@ -83,9 +85,10 @@ Search in all regions in France for family name ,adresses,phone numbers.
 -   ~~Add whitepage engine for es.~~
 -   ~~Add whitepage engine for ru.~~
 -   ~~Add whitepage engine for usa.~~
+-  Add whitepage engine for ger.
 - ~~Add Captcha solver for yellowpages.com.~~
 - ~~Add ability to choose to use city for engine or whitePages.~~
--  Add ability to save current session and continue where it stopped in  case of uncaught error.
+-  ~~Add ability to save current session and continue where it stopped in  case of uncaught error.~~
 -  Add graphml , gephi , cytoscape ,export format .
 -  Add image search for yahoo and bing
 - ~~Add Email search~~
