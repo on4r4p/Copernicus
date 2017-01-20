@@ -362,31 +362,6 @@ def cleansession():
 
 def savesession(moteur,data,url):
 
-     lastname = ""
-     try:
-               with open("./Data/args.save") as f:
-                   content = f.readlines()
-               content = [x.strip() for x in content]
-
-               for item in content:
-                       if "lastname" in item:
-                           item = item.split(":")
-                           lastname = item[1]
-                           print(item[1])
-               if lastname != lastname:
-                    print("im supposed to erase old session here")
-                    cleansession()
-
-
-     except:
-               print()
-               print()
-               print("Error While Trying to Read args.save")
-               print()
-               print("No last session found")
-               print()
-
-
 
      if moteur == "paginasblancas":
           saveto = "./Data/paginasblancas.save"
@@ -3152,6 +3127,7 @@ def get_soup(url,header):
 
 def google(language,searcharg,cityarg,addarg):
      global googledone
+     global googleok
      global googleresults
 
      for boka in language:
@@ -3192,9 +3168,10 @@ def google(language,searcharg,cityarg,addarg):
                                         while stop != 1:
                                              
                                              query = "https://www.google.com/search?hl="+boka+"&q="+urllib.parse.quote(searcharg)+"+"+urllib.parse.quote(cityarg)+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
-                                             print(query)
+
                                              if last == True:
-                                                  if query == googlestart:
+                                                  if query == googlestart or googleok == 1:
+                                                       googleok = 1
                                                        opener = urllib.request.build_opener()
                                                        opener.addheaders = [('User-Agent', UserAgent)]
                                                        send = opener.open(query)
@@ -3308,12 +3285,11 @@ def google(language,searcharg,cityarg,addarg):
                          try:
                                         while stop != 1:
                                              query = "https://www.google.com/search?hl="+boka+"&q="+urllib.parse.quote(searcharg)+"&btnG=Google+Search&start="+str(page)+"&num=100&filter=0"
-                                             print(query)
 
                                              if last == True:
                                                   
-                                                  if query == googlestart:
-
+                                                  if query == googlestart or googleok == 1:
+                                                       googleok = 1
                                                        opener = urllib.request.build_opener()
                                                        opener.addheaders = [('User-Agent', str(UserAgent))]
                                                        send = opener.open(query)
@@ -4416,7 +4392,8 @@ if last == True:
      loadsession()
 
 
-#cleansession()
+else:
+     cleansession()
 
 if argsname == "none":
                print()
@@ -30205,7 +30182,17 @@ for item in splitengine:
                     print(e)
 
           print()
+
+correct = input('Would you like to erase this session now that it has been written to neo4j ? y/n : ')
+if not "y" in correct.lower():
+     print("Later.")
+     sys.exit()
+else:
+     print("Session deleted.")
+     cleansession()
+     
 Fig = Figlet(font='cybermedium')
 print(Fig.renderText('=The End='))
 print()
+
 
