@@ -62,7 +62,7 @@ Search in all regions in France for family name ,adresses,phone numbers.
 	  
 	  -a OPTION, Word1,Word2,Word3
 	  
-	  -c CITY, --city CITY  Specify city
+	  -c CITY, --city   Specify city
 	  
 	  -i TRUE-FALSE, Search and download pictures too
 	  
@@ -70,7 +70,7 @@ Search in all regions in France for family name ,adresses,phone numbers.
 	  
 	  -fa TRUE-FALSE, Take more than 3 hours can get your ip banned
 
-	  -LS, --lastsession    -Ls Load last aborded sessions
+	  -LS, --lastsession  Load last aborded sessions
 
 	
 

@@ -37,26 +37,43 @@ timer = "New search at : " ,datetime.datetime.now()
 lang = []
 
 listnbr = 0
+
 pageBres = []
+
 pageBacu = []
+
 newemailres = []
+
 googleresults = []
+
 variation1= []
+
 variation2= []
+
 variation3= []
+
 variation4= []
+
 variation5= []
+
 variation6= []
 
 ActualImages = []
+
 family = ""
+
 joinvar = []
+
 allcomb = ""
+
 googledone = 0
-yahoodone = 0
+
 bingtitles =[]
+
 bingurls = []
+
 bingquery = ""
+
 bingmeta_descs = []
 
 finalres = []
@@ -79,13 +96,33 @@ pdfinalinkchance =[]
 
 pdflink = []
 
-bingok = []
+pageBstart = ""
 
 bingstart = ""
 
-googlestart =""
+googlestart = ""
+
+yahoostart = ""
+
+pageBstart = ""
+
+lullarstart = ""
+
+btstart = ""
+
+spravstart = ""
+
+btok = 0
+
+bingok = 0
+
+yahoook = 0
      
-googleok = []
+googleok = 0
+
+lullarok = 0
+
+spravok = 0
 
 bingpdflink = []
 
@@ -137,10 +174,10 @@ yellowres = []
 
 searcharglist = []
 
-
-
 allcombparsedfinal = []
+
 allcombparsed = []
+
 tmpchance = []
 
 enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom','paginasblancas','spravkaru','yellowpages']
@@ -203,8 +240,20 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
     return decorator
 
 def loadsession():
+          global spravstart
+          global stravres
+          global newemailres
+          global btstart
+          global btres
+          global pageBres
+          global pageBacu
+          global pageBresfullauto
+          global pageBstart
+          global pageBok
           global googleresults
           global googlestart
+          global yahoores
+          global yahoostart
           global bingstart
           global bingtitles
           global bingurls
@@ -315,7 +364,88 @@ def loadsession():
 
                          for ligne in content:
                               googleresults.append(ligne)
-                          
+  
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/yahoo"):
+                         print()
+                         print("Found yahoo.save")
+                         with open("./Data/yahoo.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              yahoores.append(ligne)
+
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/pagesblanches"):
+                         print()
+                         print("Found pagesblanches.save")
+                         with open("./Data/pagesblanches.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              pageBres.append(ligne)
+
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/pagesblanchesacu"):
+                         print()
+                         print("Found pagesblanchesacu.save")
+                         with open("./Data/pagesblanchesacu.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              pageBacu.append(ligne)
+                        
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/pagesblanchesfa"):
+                         print()
+                         print("Found pagesblanchesfa.save")
+                         with open("./Data/pagesblanchesfa.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              pageBresfullauto.append(ligne)
+
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/lullar"):
+                         print()
+                         print("Found lullar.save")
+                         with open("./Data/lullar.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              newemailres.append(ligne)
+
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/britishtelecom"):
+                         print()
+                         print("Found britishtelecom.save")
+                         with open("./Data/britishtelecom.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              btres.append(ligne)
+
+
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/spravkaru"):
+                         print()
+                         print("Found spravkaru.save")
+                         with open("./Data/spravkaru.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              spravres.append(ligne)
+
+
+##
+##
                           
                               
           for f in glob.glob("./Data/*.url"):
@@ -339,6 +469,63 @@ def loadsession():
 
                          for ligne in content:
                               googlestart = ligne
+
+          for f in glob.glob("./Data/*.url"):
+                    if  f.startswith("./Data/yahoo"):
+                         print()
+                         print("Found yahoo.url")
+                         with open("./Data/yahoo.url") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              yahoostart = ligne
+
+          for f in glob.glob("./Data/*.url"):
+                    if  f.startswith("./Data/pagesblanches"):
+                         print()
+                         print("Found pagesblanches.url")
+                         with open("./Data/pagesblanches.url") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              pageBstart = ligne
+
+          for f in glob.glob("./Data/*.url"):
+                    if  f.startswith("./Data/lullar"):
+                         print()
+                         print("Found lullar.url")
+                         with open("./Data/lullar.url") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              lullarstart = ligne
+
+          for f in glob.glob("./Data/*.url"):
+                    if  f.startswith("./Data/britishtelecom"):
+                         print()
+                         print("Found britishtelecom.url")
+                         with open("./Data/britishtelecom.url") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              btstart = ligne
+
+          for f in glob.glob("./Data/*.url"):
+                    if  f.startswith("./Data/spravkaru"):
+                         print()
+                         print("Found spravkaru.url")
+                         with open("./Data/spravkaru.url") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              spravstart = ligne
+
+
                               
 
 
@@ -446,6 +633,101 @@ def savesession(moteur,data,url):
           filelog = open(savetourl,"w")
           filelog.write("\n"+str(url))
           filelog.close()
+##
+
+
+
+
+     if moteur == "pagesblanchesfa":
+          saveto = "./Data/pagesblanchesfa.save"
+          savetourl = "./Data/pagesblanches.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"w")
+          filelog.write("\n"+str(url))
+          filelog.close()
+
+
+#
+     if moteur == "pagesblanchesacu":
+          saveto = "./Data/pagesblanchesacu.save"
+          savetourl = "./Data/pagesblanches.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"w")
+          filelog.write("\n"+str(url))
+          filelog.close()
+
+
+
+
+
+
+
+
+##
 
      if moteur == "britishtelecom":
           saveto = "./Data/britishtelecom.save"
@@ -1144,7 +1426,7 @@ def yellowpages(fname,city):
 #####
 
 
-     if city != "none":
+     if city != "none" and c2e !="true":
           cj = http.cookiejar.CookieJar()
           state = ""
           ok = 0
@@ -1543,6 +1825,8 @@ def yellowpages(fname,city):
 
 def spravkaru(fname,city):
   global spravres
+  global spravstart
+  global spravok
 
   print()
   Fig = Figlet(font='cybermedium')
@@ -1562,270 +1846,550 @@ def spravkaru(fname,city):
   UserAgent = random.choice(spuser_agent_list)
 
 
-  if city == "none":                  
-     for query in spravcity:
-                              pagenbr = 1
-                              stopwhile = 0
-                              name=""
-                              loc=""
-                              tel=""
-                              query2 = ""   
-                              query = query.replace("***",urllib.parse.quote(fname))                      
-                              while stopwhile != 1 and len(spravres) < 123:
-                                        
-                                   if pagenbr >1:
-                                        query2 = query + "/" + str(pagenbr)
-                                   else:
-                                        query2 = query 
+  if last == True:
 
-                                   opener = urllib.request.build_opener()
-                                   opener.addheaders = [('User-Agent', str(UserAgent))]
+       if city == "none":                  
+          for query in spravcity:
+                         pagenbr = 1
+                         stopwhile = 0
+                         name=""
+                         loc=""
+                         tel=""
+                         query2 = ""   
+                         query = query.replace("***",urllib.parse.quote(fname))
+
+                         if query == spravstart or spravok == 1:
+                                   spravok = 1                                                       
+                                   while stopwhile != 1 :
+                                             
+                                        if pagenbr >1:
+                                             query2 = query + "/" + str(pagenbr)
+                                        else:
+                                             query2 = query 
      
-                                   send = opener.open(query2)
+                                        opener = urllib.request.build_opener()
+                                        opener.addheaders = [('User-Agent', str(UserAgent))]
+          
+                                        send = opener.open(query2)
      
 
           
-                                   soup = BeautifulSoup(send,'lxml')
+                                        soup = BeautifulSoup(send,'lxml')
 
                                    
 
-                                   print()                                        
-                                   tmpres = []
-                                   spravlist = re.findall('<li style="padding-bottom:7px;">(.*?)</li>', str(soup),re.DOTALL)
-                                   for item in spravlist:
+                                        print()                                        
+                                        tmpres = []
+                                        spravlist = re.findall('<li style="padding-bottom:7px;">(.*?)</li>', str(soup),re.DOTALL)
+                                        for item in spravlist:
 
-                                        item = item.split("</a>")
-                                        for subtem in item:
+                                             item = item.split("</a>")
+                                             for subtem in item:
                                                   
-                                                  subtem = subtem.split('">')
-                                                  try:
-                                                       tmpres.append(subtem[1])
-                                                  except:
+                                                       subtem = subtem.split('">')
+                                                       try:
+                                                            tmpres.append(subtem[1])
+                                                       except:
                                                             
-                                                            pass
-                                   final=[]
-
-                                   if len(tmpres) != 0:
-                                   
-                                        for item in tmpres:
-                                             next = 1
-                                             if next == 1:
+                                                                 pass
+                                        final=[]
+     
+                                        if len(tmpres) != 0:
+                                        
+                                             for item in tmpres:
+                                                  next = 1
+                                                  if next == 1:
                                                   
 
-                                                  if len(item) >0:
-                                                       final.append(item)
-                                                  if "+" in item:
-                                                       next = 0
-                                                       final.append("***")
-                                        final = "#".join(final)
-                                        for item in final.split("***"):
-                                             item = item.split("#")
-                                             name = ""
-                                             loc = ""
-                                             tel = ""                              
-                                             try:                                             
+                                                       if len(item) >0:
+                                                            final.append(item)
+                                                       if "+" in item:
+                                                            next = 0
+                                                            final.append("***")
+                                             final = "#".join(final)
+                                             for item in final.split("***"):
+                                                  item = item.split("#")
+                                                  name = ""
+                                                  loc = ""
+                                                  tel = ""                              
+                                                  try:                                             
 
-                                                  if len(item[0]) == 0:
-                                                       name = item[1]
-                                                       
-                                                       for subtem in item:
-                                                            if len(subtem) != 0 and name not in subtem:
-                                                                 if not "+" in subtem:
-                                                                      loc += " "+subtem
-                                                                 if "+" in subtem:
-                                                                      tel= subtem
-                                                       print(name+"#***#"+loc+"#***#"+tel)
-                                                       savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
-                                                       spravres.append(name+"#***#"+loc+"#***#"+tel)
+                                                       if len(item[0]) == 0:
+                                                            name = item[1]
+                                                            
+                                                            for subtem in item:
+                                                                 if len(subtem) != 0 and name not in subtem:
+                                                                      if not "+" in subtem:
+                                                                           loc += " "+subtem
+                                                                      if "+" in subtem:
+                                                                           tel= subtem
+                                                            print(name+"#***#"+loc+"#***#"+tel)
+                                                            savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query)
+                                                            spravres.append(name+"#***#"+loc+"#***#"+tel)
                                                   
                                              
      
-                                                  if len(item[0]) > 1:
-                                                       name = item[0]
+                                                       if len(item[0]) > 1:
+                                                            name = item[0]
                                                   
-                                                       for subtem in item:
-                                                            if len(subtem) != 0 and name not in subtem:
-                                                                 if not "+" in subtem:
-                                                                      loc += " "+subtem
-                                                                 if "+" in subtem:
-                                                                      tel= subtem
-                                                       print(name+"#***#"+loc+"#***#"+tel)
-                                                       savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
-                                                       spravres.append(name+"#***#"+loc+"#***#"+tel)
+                                                            for subtem in item:
+                                                                 if len(subtem) != 0 and name not in subtem:
+                                                                      if not "+" in subtem:
+                                                                           loc += " "+subtem
+                                                                      if "+" in subtem:
+                                                                           tel= subtem
+                                                            print(name+"#***#"+loc+"#***#"+tel)
+                                                            savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query)
+                                                            spravres.append(name+"#***#"+loc+"#***#"+tel)
 
-                                             except Exception as e :
-                                                  #print(e)
+                                                  except Exception as e :
+                                                       #print(e)
                                                   
-                                                  pass
-                                        
-                                        endofresults = re.findall('<a class="pagelink" href="(.*?)</a></div>', str(soup),re.DOTALL)
+                                                       pass
+                                             
+                                             endofresults = re.findall('<a class="pagelink" href="(.*?)</a></div>', str(soup),re.DOTALL)
+     
+                                             enough = 0
+                                             for item in endofresults:
+                                                       if "next" in item and enough != 1:
+                                                            pagenbr = int(pagenbr) + 1
+                                                            enough = 1
+                                                            time.sleep(random.randint(15,23))
+                                                       else:
 
-                                        enough = 0
-                                        for item in endofresults:
-                                                  if "next" in item and enough != 1:
-                                                       pagenbr = int(pagenbr) + 1
-                                                       enough = 1
-                                                       time.sleep(random.randint(15,23))
-                                                  else:
+                                                            stopwhile = 1
+                                                            time.sleep(random.randint(15,23))
+                                        if len(tmpres) < 80:
+                                                            stopwhile = 1
+                                                            time.sleep(random.randint(15,23))
+     
+                                   luck = random.randint(0,10)
+                                   if luck == 1:
 
-                                                       stopwhile = 1
-                                                       time.sleep(random.randint(15,23))
-                                   if len(tmpres) < 80:
-                                                       stopwhile = 1
-                                                       time.sleep(random.randint(15,23))
-
-                              luck = random.randint(0,10)
-                              if luck == 1:
-
-                                   print("Stravkaru results counter : ",len(spravres))               
-
-
-
+                                        print("Stravkaru results counter : ",len(spravres))               
+     
 
 
-  if city != "none":
 
 
-     state = ""
-     ok = 0
-     while ok !=1:
-               for item1 in spravcitynode:
-                  if city.lower() in item1.lower() and len(city) >3:
-                         
-                         ok=1
-                  if ok != 1:
-                    print()
-                    print(spravcitynode)
-                    print()
-                    state = input("State or city does not match this list .\n\n Enter State/city:")
-                    print()
-                    print()
+       if city != "none" and c2e !="true":
+
+
+          state = ""
+          ok = 0
+          while ok !=1:
                     for item1 in spravcitynode:
-                       if state.lower() in item1.lower() and len(state) >3:
-                              city = item1.lower()
+                       if city.lower() in item1.lower() and len(city) >3:
+                              
                               ok=1
+                       if ok != 1:
+                         print()
+                         print(spravcitynode)
+                         print()
+                         state = input("State or city does not match this list .\n\n Enter State/city:")
+                         print()
+                         print()
+                         for item1 in spravcitynode:
+                            if state.lower() in item1.lower() and len(state) >3:
+                                   city = item1.lower()
+                                   ok=1
 
 
      
-     for query in spravcity:
-          for url,ville in zip(spravcity,spravcitynode):
-               if city in ville:
-                              pagenbr = 1
-                              stopwhile = 0
-                              name=""
-                              loc=""
-                              tel=""
-                              query2 = ""   
-                              query = url.replace("***",urllib.parse.quote(fname))                      
-                              while stopwhile != 1 and len(spravres) < 123:
+          for query in spravcity:
+               for url,ville in zip(spravcity,spravcitynode):
+                    if city in ville:
+                                   pagenbr = 1
+                                   stopwhile = 0
+                                   name=""
+                                   loc=""
+                                   tel=""
+                                   query2 = ""   
+                                   query = url.replace("***",urllib.parse.quote(fname)) 
+                                   if query == spravstart or spravok == 1:
+                                        spravok = 1                     
+                                        while stopwhile != 1 :
                                         
-                                   if pagenbr >1:
-                                        query2 = query + "/" + str(pagenbr)
-                                   else:
-                                        query2 = query 
+                                             if pagenbr >1:
+                                                  query2 = query + "/" + str(pagenbr)
+                                             else:
+                                                  query2 = query 
  
                                    
-                                   opener = urllib.request.build_opener()
-                                   opener.addheaders = [('User-Agent', str(UserAgent))]
+                                             opener = urllib.request.build_opener()
+                                             opener.addheaders = [('User-Agent', str(UserAgent))]
      
-                                   send = opener.open(query2)
+                                             send = opener.open(query2)
      
 
-          
-                                   soup = BeautifulSoup(send,'lxml')
+               
+                                             soup = BeautifulSoup(send,'lxml')
 
-                                   print()                                        
-                                   tmpres = []
-                                   spravlist = re.findall('<li style="padding-bottom:7px;">(.*?)</li>', str(soup),re.DOTALL)
-                                   for item in spravlist:
+                                             print()                                        
+                                             tmpres = []
+                                             spravlist = re.findall('<li style="padding-bottom:7px;">(.*?)</li>', str(soup),re.DOTALL)
+                                             for item in spravlist:
 
-                                        item = item.split("</a>")
-                                        for subtem in item:
+                                                  item = item.split("</a>")
+                                                  for subtem in item:
                                                   
-                                                  subtem = subtem.split('">')
-                                                  try:
-                                                       tmpres.append(subtem[1])
-                                                  except:
+                                                            subtem = subtem.split('">')
+                                                            try:
+                                                                 tmpres.append(subtem[1])
+                                                            except:
                                                             
-                                                            pass
-                                   final=[]
+                                                                      pass
+                                             final=[]
 
-                                   if len(tmpres) != 0:
+                                             if len(tmpres) != 0:
                                    
-                                        for item in tmpres:
-                                             next = 1
-                                             if next == 1:
+                                                  for item in tmpres:
+                                                       next = 1
+                                                       if next == 1:
                                                   
 
-                                                  if len(item) >0:
-                                                       final.append(item)
-                                                  if "+" in item:
-                                                       next = 0
-                                                       final.append("***")
-                                        final = "#".join(final)
-
-                                        for item in final.split("***"):
-                                             item = item.split("#")
-                                             name = ""
-                                             loc = ""
-                                             tel = ""                              
-                                             try:
+                                                            if len(item) >0:
+                                                                 final.append(item)
+                                                            if "+" in item:
+                                                                 next = 0
+                                                                 final.append("***")
+                                                  final = "#".join(final)
+     
+                                                  for item in final.split("***"):
+                                                       item = item.split("#")
+                                                       name = ""
+                                                       loc = ""
+                                                       tel = ""                              
+                                                       try:
     
 
 
 
                                              
 
-                                                  if len(item[0]) == 0:
-                                                       name = item[1]
+                                                            if len(item[0]) == 0:
+                                                                 name = item[1]
                                                        
-                                                       for subtem in item:
-                                                            if len(subtem) != 0 and name not in subtem:
-                                                                 if not "+" in subtem:
-                                                                      loc += " "+subtem
-                                                                 if "+" in subtem:
-                                                                      tel= subtem
-                                                       print(name+"#***#"+loc+"#***#"+tel)
-                                                       savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
-                                                       spravres.append(name+"#***#"+loc+"#***#"+tel)
+                                                                 for subtem in item:
+                                                                      if len(subtem) != 0 and name not in subtem:
+                                                                           if not "+" in subtem:
+                                                                                loc += " "+subtem
+                                                                           if "+" in subtem:
+                                                                                tel= subtem
+                                                                 print(name+"#***#"+loc+"#***#"+tel)
+                                                                 savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query)
+                                                                 spravres.append(name+"#***#"+loc+"#***#"+tel)
+                                                  
+                                             
+               
+                                                            if len(item[0]) > 1:
+                                                                 name = item[0]
+                                                  
+                                                                 for subtem in item:
+                                                                      if len(subtem) != 0 and name not in subtem:
+                                                                           if not "+" in subtem:
+                                                                                loc += " "+subtem
+                                                                           if "+" in subtem:
+                                                                                tel= subtem
+                                                                 print(name+"#***#"+loc+"#***#"+tel)
+                                                                 savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query)
+                                                                 spravres.append(name+"#***#"+loc+"#***#"+tel)
+     
+                                                       except Exception as e :
+                                                            #print(e)
+                                                       
+                                                            pass
+                                        
+                                                  endofresults = re.findall('<a class="pagelink" href="(.*?)</a></div>', str(soup),re.DOTALL)
+
+                                                  enough = 0
+                                                  for item in endofresults:
+                                                            if "next" in item and enough != 1:
+                                                                 pagenbr = int(pagenbr) + 1
+                                                                 enough = 1
+                                                                 time.sleep(random.randint(15,23))
+                                                            else:
+
+                                                                 stopwhile = 1
+                                                                 time.sleep(random.randint(15,23))
+                                             if len(tmpres) < 80:
+                                                                 stopwhile = 1
+                                                                 time.sleep(random.randint(15,23))
+     
+                                        print("Stravkaru results counter : ",len(spravres)) 
+                                        
+                                   
+                             
+
+##
+
+
+  if last != True:
+
+       if city == "none":                  
+          for query in spravcity:
+                                   pagenbr = 1
+                                   stopwhile = 0
+                                   name=""
+                                   loc=""
+                                   tel=""
+                                   query2 = ""   
+                                   query = query.replace("***",urllib.parse.quote(fname))                      
+                                   while stopwhile != 1 :
+                                             
+                                        if pagenbr >1:
+                                             query2 = query + "/" + str(pagenbr)
+                                        else:
+                                             query2 = query 
+     
+                                        opener = urllib.request.build_opener()
+                                        opener.addheaders = [('User-Agent', str(UserAgent))]
+          
+                                        send = opener.open(query2)
+     
+
+          
+                                        soup = BeautifulSoup(send,'lxml')
+
+                                   
+
+                                        print()                                        
+                                        tmpres = []
+                                        spravlist = re.findall('<li style="padding-bottom:7px;">(.*?)</li>', str(soup),re.DOTALL)
+                                        for item in spravlist:
+
+                                             item = item.split("</a>")
+                                             for subtem in item:
+                                                  
+                                                       subtem = subtem.split('">')
+                                                       try:
+                                                            tmpres.append(subtem[1])
+                                                       except:
+                                                            
+                                                                 pass
+                                        final=[]
+     
+                                        if len(tmpres) != 0:
+                                        
+                                             for item in tmpres:
+                                                  next = 1
+                                                  if next == 1:
+                                                  
+
+                                                       if len(item) >0:
+                                                            final.append(item)
+                                                       if "+" in item:
+                                                            next = 0
+                                                            final.append("***")
+                                             final = "#".join(final)
+                                             for item in final.split("***"):
+                                                  item = item.split("#")
+                                                  name = ""
+                                                  loc = ""
+                                                  tel = ""                              
+                                                  try:                                             
+
+                                                       if len(item[0]) == 0:
+                                                            name = item[1]
+                                                            
+                                                            for subtem in item:
+                                                                 if len(subtem) != 0 and name not in subtem:
+                                                                      if not "+" in subtem:
+                                                                           loc += " "+subtem
+                                                                      if "+" in subtem:
+                                                                           tel= subtem
+                                                            print(name+"#***#"+loc+"#***#"+tel)
+                                                            savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
+                                                            spravres.append(name+"#***#"+loc+"#***#"+tel)
                                                   
                                              
      
-                                                  if len(item[0]) > 1:
-                                                       name = item[0]
+                                                       if len(item[0]) > 1:
+                                                            name = item[0]
                                                   
-                                                       for subtem in item:
-                                                            if len(subtem) != 0 and name not in subtem:
-                                                                 if not "+" in subtem:
-                                                                      loc += " "+subtem
-                                                                 if "+" in subtem:
-                                                                      tel= subtem
-                                                       print(name+"#***#"+loc+"#***#"+tel)
-                                                       savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
-                                                       spravres.append(name+"#***#"+loc+"#***#"+tel)
+                                                            for subtem in item:
+                                                                 if len(subtem) != 0 and name not in subtem:
+                                                                      if not "+" in subtem:
+                                                                           loc += " "+subtem
+                                                                      if "+" in subtem:
+                                                                           tel= subtem
+                                                            print(name+"#***#"+loc+"#***#"+tel)
+                                                            savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
+                                                            spravres.append(name+"#***#"+loc+"#***#"+tel)
 
-                                             except Exception as e :
-                                                  #print(e)
+                                                  except Exception as e :
+                                                       #print(e)
                                                   
-                                                  pass
+                                                       pass
+                                             
+                                             endofresults = re.findall('<a class="pagelink" href="(.*?)</a></div>', str(soup),re.DOTALL)
+     
+                                             enough = 0
+                                             for item in endofresults:
+                                                       if "next" in item and enough != 1:
+                                                            pagenbr = int(pagenbr) + 1
+                                                            enough = 1
+                                                            time.sleep(random.randint(15,23))
+                                                       else:
+
+                                                            stopwhile = 1
+                                                            time.sleep(random.randint(15,23))
+                                        if len(tmpres) < 80:
+                                                            stopwhile = 1
+                                                            time.sleep(random.randint(15,23))
+     
+                                   luck = random.randint(0,10)
+                                   if luck == 1:
+
+                                        print("Stravkaru results counter : ",len(spravres))               
+     
+
+
+
+
+       if city != "none" and c2e !="true":
+
+
+          state = ""
+          ok = 0
+          while ok !=1:
+                    for item1 in spravcitynode:
+                       if city.lower() in item1.lower() and len(city) >3:
+                              
+                              ok=1
+                       if ok != 1:
+                         print()
+                         print(spravcitynode)
+                         print()
+                         state = input("State or city does not match this list .\n\n Enter State/city:")
+                         print()
+                         print()
+                         for item1 in spravcitynode:
+                            if state.lower() in item1.lower() and len(state) >3:
+                                   city = item1.lower()
+                                   ok=1
+
+
+     
+          for query in spravcity:
+               for url,ville in zip(spravcity,spravcitynode):
+                    if city in ville:
+                                   pagenbr = 1
+                                   stopwhile = 0
+                                   name=""
+                                   loc=""
+                                   tel=""
+                                   query2 = ""   
+                                   query = url.replace("***",urllib.parse.quote(fname))                      
+                                   while stopwhile != 1 :
                                         
-                                        endofresults = re.findall('<a class="pagelink" href="(.*?)</a></div>', str(soup),re.DOTALL)
+                                        if pagenbr >1:
+                                             query2 = query + "/" + str(pagenbr)
+                                        else:
+                                             query2 = query 
+ 
+                                   
+                                        opener = urllib.request.build_opener()
+                                        opener.addheaders = [('User-Agent', str(UserAgent))]
+     
+                                        send = opener.open(query2)
+     
 
-                                        enough = 0
-                                        for item in endofresults:
-                                                  if "next" in item and enough != 1:
-                                                       pagenbr = int(pagenbr) + 1
-                                                       enough = 1
-                                                       time.sleep(random.randint(15,23))
-                                                  else:
+          
+                                        soup = BeautifulSoup(send,'lxml')
 
-                                                       stopwhile = 1
-                                                       time.sleep(random.randint(15,23))
-                                   if len(tmpres) < 80:
-                                                       stopwhile = 1
-                                                       time.sleep(random.randint(15,23))
-  
-                              print("Stravkaru results counter : ",len(spravres)) 
+                                        print()                                        
+                                        tmpres = []
+                                        spravlist = re.findall('<li style="padding-bottom:7px;">(.*?)</li>', str(soup),re.DOTALL)
+                                        for item in spravlist:
+
+                                             item = item.split("</a>")
+                                             for subtem in item:
+                                                  
+                                                       subtem = subtem.split('">')
+                                                       try:
+                                                            tmpres.append(subtem[1])
+                                                       except:
+                                                            
+                                                                 pass
+                                        final=[]
+
+                                        if len(tmpres) != 0:
+                                   
+                                             for item in tmpres:
+                                                  next = 1
+                                                  if next == 1:
+                                                  
+
+                                                       if len(item) >0:
+                                                            final.append(item)
+                                                       if "+" in item:
+                                                            next = 0
+                                                            final.append("***")
+                                             final = "#".join(final)
+     
+                                             for item in final.split("***"):
+                                                  item = item.split("#")
+                                                  name = ""
+                                                  loc = ""
+                                                  tel = ""                              
+                                                  try:
+    
+
+
+
+                                             
+
+                                                       if len(item[0]) == 0:
+                                                            name = item[1]
+                                                       
+                                                            for subtem in item:
+                                                                 if len(subtem) != 0 and name not in subtem:
+                                                                      if not "+" in subtem:
+                                                                           loc += " "+subtem
+                                                                      if "+" in subtem:
+                                                                           tel= subtem
+                                                            print(name+"#***#"+loc+"#***#"+tel)
+                                                            savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
+                                                            spravres.append(name+"#***#"+loc+"#***#"+tel)
+                                                  
+                                             
+          
+                                                       if len(item[0]) > 1:
+                                                            name = item[0]
+                                                  
+                                                            for subtem in item:
+                                                                 if len(subtem) != 0 and name not in subtem:
+                                                                      if not "+" in subtem:
+                                                                           loc += " "+subtem
+                                                                      if "+" in subtem:
+                                                                           tel= subtem
+                                                            print(name+"#***#"+loc+"#***#"+tel)
+                                                            savesession("spravkaru",name+"#***#"+loc+"#***#"+tel,query2)
+                                                            spravres.append(name+"#***#"+loc+"#***#"+tel)
+
+                                                  except Exception as e :
+                                                       #print(e)
+                                                  
+                                                       pass
+                                        
+                                             endofresults = re.findall('<a class="pagelink" href="(.*?)</a></div>', str(soup),re.DOTALL)
+
+                                             enough = 0
+                                             for item in endofresults:
+                                                       if "next" in item and enough != 1:
+                                                            pagenbr = int(pagenbr) + 1
+                                                            enough = 1
+                                                            time.sleep(random.randint(15,23))
+                                                       else:
+
+                                                            stopwhile = 1
+                                                            time.sleep(random.randint(15,23))
+                                        if len(tmpres) < 80:
+                                                            stopwhile = 1
+                                                            time.sleep(random.randint(15,23))
+     
+                                   print("Stravkaru results counter : ",len(spravres)) 
                                    
                                    
                              
@@ -1939,7 +2503,7 @@ def pblancas(fname,city):
           print("Paginas Blancas Total results : ",len(pblancasres)) 
 
 
-     if city != "none":
+     if city != "none" and c2e != "true":
           state = ""
           
           ok = 0
@@ -2053,6 +2617,8 @@ def pblancas(fname,city):
 
 def btelecom(fname,city):
      global btres
+     global btok
+
      print()
      Fig = Figlet(font='cybermedium')
      print(Fig.renderText('Searching Family Name in British Telecom'))
@@ -2062,140 +2628,281 @@ def btelecom(fname,city):
 
      UserAgent = random.choice(pbuser_agent_list)
 
+     if last == True:   
+          if city == "none":
+               try:
+                    for ville in cityuk:
+                         pagenbr = 1
+                         stopwhile = 0
+                         while stopwhile != 1:
+                                   btname=""
+                                   btloc=""
+                                   bttel=""                         
+                                   query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(ville)+"&Page="+str(pagenbr)
+                                   print(query)
+
+                                   if query == btstart or btok == 1:
+                                        btok = 1
+
+
+                                        opener = urllib.request.build_opener()
+                                        opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                        send = opener.open(query)
      
-     if city == "none":
-          try:
-               for ville in cityuk:
-                    pagenbr = 1
-                    stopwhile = 0
-                    while stopwhile != 1:
-                              btname=""
-                              btloc=""
-                              bttel=""                         
-                              query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(ville)+"&Page="+str(pagenbr)
 
-                              opener = urllib.request.build_opener()
-                              opener.addheaders = [('User-Agent', str(UserAgent))]
-
-                              send = opener.open(query)
      
-
-
-                              soup = BeautifulSoup(send,'lxml')
+                                        soup = BeautifulSoup(send,'lxml')
 
                          
-                              btname = re.findall('<div class="recordTitle">(.*?)</div>', str(soup),re.DOTALL)
-                              btloc = re.findall('<div class="recordAddress">(.*?) - <a data-coord="', str(soup),re.DOTALL)
-                              bttel = re.findall('<span class="phone">(.*?)</span>', str(soup),re.DOTALL)
-                              for n,l,t in zip(btname,btloc,bttel):
-                                   n = n.replace("\n"," ").replace('\r', ' ')
-                                   l = l.replace("\n"," ").replace('\r', ' ')
-                                   t = t.replace("\n"," ").replace('\r', ' ')
-
-                                   print(n+"#***#"+l+"#***#"+t)
-                                   savesession("britishtelecom",n+"#***#"+l+"#***#"+t,query)
-                                   btres.append(n+"#***#"+l+"#***#"+t)
-                              nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
-                              for item in nextpage:
-                                   print()
+                                        btname = re.findall('<div class="recordTitle">(.*?)</div>', str(soup),re.DOTALL)
+                                        btloc = re.findall('<div class="recordAddress">(.*?) - <a data-coord="', str(soup),re.DOTALL)
+                                        bttel = re.findall('<span class="phone">(.*?)</span>', str(soup),re.DOTALL)
+                                        for n,l,t in zip(btname,btloc,bttel):
+                                             n = n.replace("\n"," ").replace('\r', ' ')
+                                             l = l.replace("\n"," ").replace('\r', ' ')
+                                             t = t.replace("\n"," ").replace('\r', ' ')
+     
+                                             print(n+"#***#"+l+"#***#"+t)
+                                             savesession("britishtelecom",n+"#***#"+l+"#***#"+t,query)
+                                             btres.append(n+"#***#"+l+"#***#"+t)
+                                        nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
+                                        for item in nextpage:
+                                             print()
                                    
-                                   if "a href" in item:
+                                             if "a href" in item:
 
-                                        pagenbr = pagenbr +1
-                                   else:
+                                                  pagenbr = pagenbr +1
+                                             else:
 
-                                        stopwhile = 1
-                                   print()
-                              if len(nextpage) == 0:
-                                   stopwhile = 1
+                                                  stopwhile = 1
+                                             print()
+                                        if len(nextpage) == 0:
+                                             stopwhile = 1
                                                             
-                              time.sleep(random.randint(32,123))
-                              print()
-                              print("British Telecom results counter : ",len(btres))
-                              print()
-
-          except Exception as e:
-               print(e)
-
-          print()
-          print("British Telecom Total results : ",len(btres))               
-
-     if city != "none":
-          try:
-                    state = ""
-                    ok = 0
-                    while ok !=1:
-                         for item1 in cityuknode:
-                              if city.lower() in item1.lower() and len(city) >3:
-                         
-                                   ok=1
-                         if ok != 1:
-                              print()
-                              print(cityuknode)
-                              print()
-                              state = input("State or city does not match this list .\n\n Enter State/city:")
-                              print()
-                              print()
-                              for item1 in cityuknode:
-                                 if state.lower() in item1.lower() and len(state) >3:
-                                        city = item1.lower()
-                                        ok=1               
-                    pagenbr = 1
-                    stopwhile = 0
-                    while stopwhile != 1:
-                              btname=""
-                              btloc=""
-                              bttel=""                         
-                              query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(city)+"&Page="+str(pagenbr)
-
-                              opener = urllib.request.build_opener()
-                              opener.addheaders = [('User-Agent', str(UserAgent))]
-
-                              send = opener.open(query)
-     
-
-
-                              soup = BeautifulSoup(send,'lxml')
-
-                              btname = re.findall('<div class="recordTitle">(.*?)</div>', str(soup),re.DOTALL)
-                              btloc = re.findall('<div class="recordAddress">(.*?) - <a data-coord="', str(soup),re.DOTALL)
-                              bttel = re.findall('<span class="phone">(.*?)</span>', str(soup),re.DOTALL)
-                              for n,l,t in zip(btname,btloc,bttel):
-                                   n = n.replace("\n"," ").replace('\r', ' ')
-                                   l = l.replace("\n"," ").replace('\r', ' ')
-                                   t = t.replace("\n"," ").replace('\r', ' ')
-
-                                   print(n+"#***#"+l+"#***#"+t)
-                                   savesession("britishtelecom",n+"#***#"+l+"#***#"+t,query)
-                                   btres.append(n+"#***#"+l+"#***#"+t)
-                              nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
-                              for item in nextpage:
-                                   print()
-                                   
-                                   if "a href" in item:
-
-                                        pagenbr = pagenbr +1
+                                        time.sleep(random.randint(32,82))
+                                        print()
+                                        print("British Telecom results counter : ",len(btres))
+                                        print()
                                    else:
-
                                         stopwhile = 1
-                                   print() 
-                              if len(nextpage) == 0:
-                                   stopwhile = 1                        
-                              time.sleep(random.randint(32,123))
-                              print()
-                              print("British Telecom results counter : ",len(btres))
-                              print()
-               
-          except Exception as e:
-               print(e)
-          print()
-          print("British Telecom Total results : ",len(btres))
+               except Exception as e:
+                         print(e)
+     
+               print()
+               print("British Telecom Total results : ",len(btres))               
+
+          if city != "none" and c2e != "true":
+                    try:
+                              state = ""
+                              ok = 0
+                              while ok !=1:
+                                   for item1 in cityuknode:
+                                        if city.lower() in item1.lower() and len(city) >3:
+                              
+                                             ok=1
+                                   if ok != 1:
+                                        print()
+                                        print(cityuknode)
+                                        print()
+                                        state = input("State or city does not match this list .\n\n Enter State/city:")
+                                        print()
+                                        print()
+                                        for item1 in cityuknode:
+                                           if state.lower() in item1.lower() and len(state) >3:
+                                                  city = item1.lower()
+                                                  ok=1               
+                              pagenbr = 1
+                              stopwhile = 0
+                              while stopwhile != 1:
+                                        btname=""
+                                        btloc=""
+                                        bttel=""                         
+                                        query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(city)+"&Page="+str(pagenbr)
+                                        if query == btstart or btok == 1:
+                                             btok = 1
+                                             opener = urllib.request.build_opener()
+                                             opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                             send = opener.open(query)
      
 
+
+                                             soup = BeautifulSoup(send,'lxml')
+     
+                                             btname = re.findall('<div class="recordTitle">(.*?)</div>', str(soup),re.DOTALL)
+                                             btloc = re.findall('<div class="recordAddress">(.*?) - <a data-coord="', str(soup),re.DOTALL)
+                                             bttel = re.findall('<span class="phone">(.*?)</span>', str(soup),re.DOTALL)
+                                             for n,l,t in zip(btname,btloc,bttel):
+                                                  n = n.replace("\n"," ").replace('\r', ' ')
+                                                  l = l.replace("\n"," ").replace('\r', ' ')
+                                                  t = t.replace("\n"," ").replace('\r', ' ')
+
+                                                  print(n+"#***#"+l+"#***#"+t)
+                                                  savesession("britishtelecom",n+"#***#"+l+"#***#"+t,query)
+                                                  btres.append(n+"#***#"+l+"#***#"+t)
+                                             nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
+                                             for item in nextpage:
+                                                  print()
+                                   
+                                                  if "a href" in item:
+     
+                                                       pagenbr = pagenbr +1
+                                                  else:
+     
+                                                       stopwhile = 1
+                                                  print() 
+                                             if len(nextpage) == 0:
+                                                  stopwhile = 1                        
+                                             time.sleep(random.randint(32,82))
+                                             print()
+                                             print("British Telecom results counter : ",len(btres))
+                                             print()
+                                        else:
+                                             stopwhile = 1
+                    except Exception as e:
+                         print(e)
+                    print()
+                    print("British Telecom Total results : ",len(btres))
+     
+##
+
+     if last != True:   
+
+          if city == "none" :
+               try:
+                    for ville in cityuk:
+                         pagenbr = 1
+                         stopwhile = 0
+                         while stopwhile != 1:
+                                   btname=""
+                                   btloc=""
+                                   bttel=""                         
+                                   query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(ville)+"&Page="+str(pagenbr)
+                                   print(query)
+
+
+                                   opener = urllib.request.build_opener()
+                                   opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                   send = opener.open(query)
+     
+
+     
+                                   soup = BeautifulSoup(send,'lxml')
+
+                         
+                                   btname = re.findall('<div class="recordTitle">(.*?)</div>', str(soup),re.DOTALL)
+                                   btloc = re.findall('<div class="recordAddress">(.*?) - <a data-coord="', str(soup),re.DOTALL)
+                                   bttel = re.findall('<span class="phone">(.*?)</span>', str(soup),re.DOTALL)
+                                   for n,l,t in zip(btname,btloc,bttel):
+                                        n = n.replace("\n"," ").replace('\r', ' ')
+                                        l = l.replace("\n"," ").replace('\r', ' ')
+                                        t = t.replace("\n"," ").replace('\r', ' ')
+
+                                        print(n+"#***#"+l+"#***#"+t)
+                                        savesession("britishtelecom",n+"#***#"+l+"#***#"+t,query)
+                                        btres.append(n+"#***#"+l+"#***#"+t)
+                                   nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
+                                   for item in nextpage:
+                                        print()
+                                   
+                                        if "a href" in item:
+
+                                             pagenbr = pagenbr +1
+                                        else:
+
+                                             stopwhile = 1
+                                        print()
+                                   if len(nextpage) == 0:
+                                        stopwhile = 1
+                                                            
+                                   time.sleep(random.randint(32,82))
+                                   print()
+                                   print("British Telecom results counter : ",len(btres))
+                                   print()
+
+               except Exception as e:
+                    print(e)
+     
+               print()
+               print("British Telecom Total results : ",len(btres))               
+
+          if city != "none" and c2e != "true":
+               try:
+                         state = ""
+                         ok = 0
+                         while ok !=1:
+                              for item1 in cityuknode:
+                                   if city.lower() in item1.lower() and len(city) >3:
+                              
+                                        ok=1
+                              if ok != 1:
+                                   print()
+                                   print(cityuknode)
+                                   print()
+                                   state = input("State or city does not match this list .\n\n Enter State/city:")
+                                   print()
+                                   print()
+                                   for item1 in cityuknode:
+                                      if state.lower() in item1.lower() and len(state) >3:
+                                             city = item1.lower()
+                                             ok=1               
+                         pagenbr = 1
+                         stopwhile = 0
+                         while stopwhile != 1:
+                                   btname=""
+                                   btloc=""
+                                   bttel=""                         
+                                   query = "http://www.thephonebook.bt.com/publisha.content/en/search/residential/search.publisha?Surname="+urllib.parse.quote(fname)+"&Initial=&Street=&Location="+urllib.parse.quote(city)+"&Page="+str(pagenbr)
+
+                                   opener = urllib.request.build_opener()
+                                   opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                   send = opener.open(query)
+     
+
+
+                                   soup = BeautifulSoup(send,'lxml')
+     
+                                   btname = re.findall('<div class="recordTitle">(.*?)</div>', str(soup),re.DOTALL)
+                                   btloc = re.findall('<div class="recordAddress">(.*?) - <a data-coord="', str(soup),re.DOTALL)
+                                   bttel = re.findall('<span class="phone">(.*?)</span>', str(soup),re.DOTALL)
+                                   for n,l,t in zip(btname,btloc,bttel):
+                                        n = n.replace("\n"," ").replace('\r', ' ')
+                                        l = l.replace("\n"," ").replace('\r', ' ')
+                                        t = t.replace("\n"," ").replace('\r', ' ')
+
+                                        print(n+"#***#"+l+"#***#"+t)
+                                        savesession("britishtelecom",n+"#***#"+l+"#***#"+t,query)
+                                        btres.append(n+"#***#"+l+"#***#"+t)
+                                   nextpage = re.findall('<span class="pagenext">(.*?)</span>', str(soup),re.DOTALL)
+                                   for item in nextpage:
+                                        print()
+                                   
+                                        if "a href" in item:
+
+                                             pagenbr = pagenbr +1
+                                        else:
+
+                                             stopwhile = 1
+                                        print() 
+                                   if len(nextpage) == 0:
+                                        stopwhile = 1                        
+                                   time.sleep(random.randint(32,82))
+                                   print()
+                                   print("British Telecom results counter : ",len(btres))
+                                   print()
+               
+               except Exception as e:
+                    print(e)
+               print()
+               print("British Telecom Total results : ",len(btres))
 
 
 def lullaremail(email):
      global newemailres
+     global lullarok
      print()
      Fig = Figlet(font='cybermedium')
      print(Fig.renderText('Searching Emails relations in lullar.com'))
@@ -2207,7 +2914,13 @@ def lullaremail(email):
 
 
      try:
-                         query = "http://lullar-com-3.appspot.com/en?q="+email
+
+               query = "http://lullar-com-3.appspot.com/en?q="+email
+               if last == True:
+                    if query == lullarstart or lullarok == 1:
+                         lullarok = 1
+
+
      
                          opener = urllib.request.build_opener()
                          opener.addheaders = [('User-Agent', str(UserAgent))]
@@ -2236,6 +2949,35 @@ def lullaremail(email):
                               print(item)     
                          
                          
+               if last != True:
+
+     
+                         opener = urllib.request.build_opener()
+                         opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                         send = opener.open(query)
+     
+
+
+                         soup = BeautifulSoup(send,'lxml')
+
+                         newemailres=[]
+                         emailspokeo = re.findall('<div><a href="http://www.spokeo.com(.*?)" target="_blank">', str(soup),re.DOTALL)
+                         emailres = re.findall('<div id="(.*?)target="_blank"><b>', str(soup),re.DOTALL)
+                         for item in emailres:
+                              item = item.replace('"><a class="urllink2" href="',' ')
+                              item = item.replace(">","").replace("<a","").replace('"','')
+                              item = item.split(" ")
+                              item = item[0]+"#***#"+item[1]
+                              savesession("lullar",item,query)
+                              newemailres.append(item)
+                         for item in emailspokeo:
+                              item = "spokeo#***#"+ "http://www.spokeo.com"+item
+                              savesession("lullar",item,query)
+                              newemailres.append(item)
+                         for item in newemailres:
+                              print(item)     
+                         
      except Exception as e:
                print(e)
 
@@ -2245,6 +2987,7 @@ def pageblanche(familyname,city):
      global pageBres
      global pageBacu
      global pageBresfullauto
+     global pageBok
 
      print()
      Fig = Figlet(font='cybermedium')
@@ -2256,9 +2999,618 @@ def pageblanche(familyname,city):
      UserAgent = random.choice(pbuser_agent_list)
      page = 0
 
+#####################################################################
+     if last == True:
+
+          if city != "none" and c2e !="true":
+               ok = 0
+               while ok !=1:
+                              for item1 in villefr:
+                                   if city.lower() in item1.lower() and len(city) >3:
+                              
+                                        ok=1
+                              if ok != 1:
+                                   print()
+                                   print(villefr)
+                                   print()
+                                   state = input("State or city does not match this list .\n\n Enter State/city:")
+                                   print()
+                                   print()
+                                   for item1 in villefr:
+                                      if state.lower() in item1.lower() and len(state) >3:
+                                             city = item1.lower()
+                                             ok=1 
 
 
-     if city != "none":
+
+
+
+               try:
+                              query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+city+"&proximite=1"
+                              print(query)
+                              if query == pageBstart or pageBok == 1:
+                                   pageBok = 1
+                                   opener = urllib.request.build_opener()
+                                   opener.addheaders = [('User-Agent', str(UserAgent))]
+     
+                                   send = opener.open(query)
+     
+
+
+                                   soup = BeautifulSoup(send,'lxml')
+
+
+                                   initial = 0
+
+                                   loca = re.findall('" href="#" title="Voir le plan">(.*?)</a></div>', str(soup),re.DOTALL)
+                                   if len(loca) >0:
+
+                                        for item in loca:
+                                   
+                                             item = item.replace("   ","").replace("\n"," ").replace("<br>"," ")
+                                             loca[initial] = item
+                                             mask = re.compile('\d{5}')
+                                             codepostal = mask.search(loca[initial]).group(0)
+                                   
+                                             time.sleep(10)
+
+                                             query2 = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+str(codepostal)
+                                   
+                                             opener2 = urllib.request.build_opener()
+                                             opener2.addheaders = [('User-Agent', str(UserAgent))]
+
+                                             send2 = opener2.open(query2)
+
+
+
+                                             soup2 = BeautifulSoup(send2,'lxml')
+
+
+                                             i = 0
+                                             names = re.findall('<a class="bi-pos-links pj-lb pj-link" data-pjlb=(.*?)<span class="id-bi', str(soup2),re.DOTALL)
+
+
+                                             if len(names) > 0:
+
+                                                  for item in names:
+
+                                                       item = item.split('href="#" title=')
+
+                                                       item = item[1].replace("   "," ").replace('"','').replace(">","").replace("\n","")
+                                                       names[i] = item
+                                             
+                                                       i = i + 1
+                                             else:
+                                                       names.append("none")
+
+
+                                             i = 0
+
+                                             locations = re.findall('" href="#" title="Voir le plan">(.*?)</a></div>', str(soup2),re.DOTALL)
+                                             if len(locations) >0:
+     
+                                                  for item in locations:
+                                                       if '</a><a class="more-adresse' in item:
+                                                            item.split('</a><a class="more-adresse')
+                                                            item = item[0]
+
+                                                       item = item.replace("   ","").replace("\n"," ").replace("<br>"," ")
+                                                       locations[i] = item
+                                                       
+                                                       i = i + 1
+                                                  else:
+                                                            locations.append("none")
+
+                                             i = 0
+     
+
+
+
+                                             tels = re.findall('</span><strong class="num" title="(.*?)">', str(soup2),re.DOTALL)
+
+                                             if len(tels) >0:
+                                                  pass
+                                             else:
+                                                       tels.append("none")
+
+
+
+                                             i = 0
+                                             for Maow in names:
+
+
+
+                                                  try:
+                                                       locations[i]
+                                                  except:
+                                         
+                                                      locations.append("none")
+
+
+                                                  try:
+                                                       names[i]
+                                                  except:
+                                                       names.append("none")
+     
+                                                  try:
+                                                       tels[i]
+                                                  except:
+                                                       tels.append("none")
+
+
+                                                  if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
+                                                       print("Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                       savesession("pagesblanchesacu","Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
+                                                       pageBacu.append("Autour de "+city+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                       i = i + 1 
+
+                                                  else:
+                                         
+                                              
+                                                       pass
+
+
+
+
+
+
+
+                                             initial = initial + 1
+                                   else:
+                                             pass
+
+
+                                   time.sleep(15)
+               #               else :
+
+
+                              
+               except Exception as e:
+
+                  #print(e)
+                  pass
+
+
+
+          if fullauto != "true":
+
+               names = []
+               locations = []
+               tels =[]
+
+               print()
+
+               for region in regionfr:
+          
+          
+                    try:
+                         query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+urllib.parse.quote(region)
+                         print(query)
+                         if query == pageBstart or pageBok == 1:
+                              pageBok = 1
+                              opener = urllib.request.build_opener()
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              send = opener.open(query)
+     
+
+
+                              soup = BeautifulSoup(send,'lxml')
+
+
+          
+                              totalpage = re.findall('<span class="pagination-compteur" id="SEL-compteur"><strong>Page 1</strong>(.*?)</span>', str(soup), re.DOTALL)
+
+                              if len(totalpage) > 0:
+     
+                                   totalpage = totalpage[0].replace("  ","").replace("/","")
+     
+                                   if int(totalpage) == 1:
+
+                         
+
+                                        #Do a Barrel Roll
+                                        tmp = ""
+                                        i = 0
+                                        names = re.findall('<a class="bi-pos-links pj-lb pj-link" data-pjlb=(.*?)<span class="id-bi', str(soup),re.DOTALL)
+                         
+                              
+                                        if len(names) > 0:
+
+                                             for item in names:
+                              
+                                                  item = item.split('href="#" title=')
+                                        
+                                                  item = item[1].replace("   "," ").replace('"','').replace(">","").replace("\n","")
+                                                  names[i] = item
+               #                                   print(names[i])
+                                                  i = i + 1
+                                        else:
+                                                  names.append("none")
+                                        i = 0
+
+                                        locations = re.findall('" href="#" title="Voir le plan">(.*?)</a></div>', str(soup),re.DOTALL)
+                                        if len(locations) >0:
+
+                                             for item in locations:
+                                                  if '</a><a class="more-adresse' in item:
+                                                       item.split('</a><a class="more-adresse')
+                                                       item = item[0]
+
+                                                  item = item.replace("   ","").replace("\n"," ").replace("<br>"," ")
+                                                  locations[i] = item
+               #                                   print(locations[i])
+                                                  i = i + 1
+                                        else:
+                                                  locations.append("none")
+                                        i = 0
+
+                                        tels = re.findall('</span><strong class="num" title="(.*?)">', str(soup),re.DOTALL)
+
+                                        if len(tels) >0:
+                                             pass
+                                        else:
+                                                  tels.append("none")
+                                        i = 0
+     
+                                        for Maow in names:
+
+
+
+                                                  try:
+                                                       locations[i]
+                                                  except:
+                                        
+                                                       locations.append("none")
+
+
+                                                  try:
+                                                       names[i]
+                                                  except:
+                                                       names.append("none")
+     
+                                                  try:
+                                                       tels[i]
+                                                  except:
+                                                       tels.append("none")
+
+                                   
+                                                  if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
+                                                       print(region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                       savesession("pagesblanches",region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
+                                                       pageBres.append(region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                       i = i + 1 
+     
+                                                  else:
+                                                        i = i + 1
+                                                        pass
+                                        
+     
+                                        time.sleep(15)
+
+     
+                              if int(totalpage) > 1:
+
+
+                                        page = 1
+                                        while page <= int(totalpage):
+
+
+                                              time.sleep(15)
+                               
+                                              query2 = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+urllib.parse.quote(region)+"&page="+str(page)
+
+                                              opener = urllib.request.build_opener()
+                                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                              send = opener.open(query2)
+
+
+
+                                              soup = BeautifulSoup(send,'lxml')
+                               
+
+
+
+                                              tmp = ""
+                                              i = 0
+                               
+                                              names = re.findall('<a class="bi-pos-links pj-lb pj-link" data-pjlb=(.*?)<span class="id-bi', str(soup),re.DOTALL)
+                               
+                                              if len(names) > 0:
+     
+                                                   for item in names:
+                                                        item = item.split('href="#" title=')
+                                                        item = item[1].replace("   "," ").replace('"','').replace(">","").replace("\n","")
+                                                        names[i] = item
+                                                        i = i + 1
+                                              else:
+                                                        names.append("none")
+                                              i = 0
+
+                                              locations = re.findall(' href="#" title="Voir le plan(.*?)</a></div>', str(soup),re.DOTALL)
+                                              if len(locations) >0:
+                                                   if '</a><a class="more-adresse' in item:
+                                                            item.split('</a><a class="more-adresse')
+                                                            item = item[0]     
+                                                   for item in locations:
+                                                        item = item.replace("   "," ").replace('"','').replace("\n"," ").replace("<br>"," ")
+                                                        locations[i] = item
+                                                        i = i + 1
+                                              else:
+                                                        locations.append("none")
+                                              i = 0
+     
+                                              tels = re.findall('<div class="tel-zone"><span> Tél :</span><strong class="num" title="(.*?)">', str(soup),re.DOTALL)
+          
+                                              if len(tels) >0:
+                                                   pass
+                                              else:
+                                                        tels.append("none")
+
+
+                                              for maow in names:
+
+
+                                                       try:
+                                                            locations[i]
+                                                       except:
+                                                            locations.append("none")
+
+
+                                                       try:
+                                                            names[i]
+                                                       except:
+                                                            names.append("none")
+
+                                                       try:
+                                                            tels[i]
+                                                       except:
+                                                            tels.append("none")
+
+                                                       if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
+                                                            print(region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                            savesession("pagesblanches",region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
+                                                            pageBres.append(region+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                            i = i + 1 
+                                                       else:
+                                                            i = i + 1
+                                                            pass
+                                              page = page + 1
+                              UserAgent = random.choice(pbuser_agent_list)
+#                         else:
+#                                   page = page +
+                    except Exception as e:
+
+
+                       pass
+
+          if fullauto == "true":
+
+               print()
+               Fig = Figlet(font='cybermedium')
+               print(Fig.renderText('!! Fucking Crazy FullAuto Mode !!'))
+               print()
+
+
+               names = []
+               locations = []
+               tels =[]
+
+               print()
+
+               for ville in villefr:
+          
+          
+                    try:
+                         query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+urllib.parse.quote(ville)
+                         print(query)
+
+
+                         if query == pageBstart or pageBok == 1:
+                              pageBok = 1
+
+                              opener = urllib.request.build_opener()
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              send = opener.open(query)
+     
+
+
+                              soup = BeautifulSoup(send,'lxml')
+
+
+          
+                              totalpage = re.findall('<span class="pagination-compteur" id="SEL-compteur"><strong>Page 1</strong>(.*?)</span>', str(soup), re.DOTALL)
+
+                              if len(totalpage) > 0:
+
+                                   totalpage = totalpage[0].replace("  ","").replace("/","")
+     
+                                   if int(totalpage) == 1:
+
+                         
+
+
+                                        tmp = ""
+                                        i = 0
+                                        names = re.findall('<a class="bi-pos-links pj-lb pj-link" data-pjlb=(.*?)<span class="id-bi', str(soup),re.DOTALL)
+                         
+                         
+                                        if len(names) > 0:
+
+                                             for item in names:
+                              
+                                                  item = item.split('href="#" title=')
+                                   
+                                                  item = item[1].replace("   "," ").replace('"','').replace(">","").replace("\n","")
+                                                  names[i] = item
+
+                                                  i = i + 1
+                                        else:
+                                                  names.append("none")
+                                        i = 0
+
+                                        locations = re.findall('" href="#" title="Voir le plan">(.*?)</a></div>', str(soup),re.DOTALL)
+                                        if len(locations) >0:
+
+                                             for item in locations:
+                                                  if '</a><a class="more-adresse' in item:
+                                                       item.split('</a><a class="more-adresse')
+                                                       item = item[0]
+
+                                                  item = item.replace("   ","").replace("\n"," ").replace("<br>"," ")
+                                                  locations[i] = item
+ 
+                                                  i = i + 1
+                                        else:
+                                                  locations.append("none")
+                                        i = 0
+
+                                        tels = re.findall('</span><strong class="num" title="(.*?)">', str(soup),re.DOTALL)
+     
+                                        if len(tels) >0:
+                                             pass
+                                        else:
+                                                  tels.append("none")
+                                        i = 0
+          
+                                        for Maow in names:
+
+
+
+                                                  try:
+                                                       locations[i]
+                                                  except:
+                                             
+                                                       locations.append("none")
+     
+
+                                                  try:
+                                                       names[i]
+                                                  except:
+                                                       names.append("none")
+
+                                                  try:
+                                                       tels[i]
+                                                  except:
+                                                       tels.append("none")
+
+                                   
+                                                  if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
+                                                       print(ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                       savesession("pagesblanchesfa",ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
+                                                       pageBresfullauto.append(ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                       i = i + 1 
+
+                                                  else:
+                                                        i = i + 1
+                                                        pass
+                                   
+
+                                        time.sleep(15)
+
+
+                              if int(totalpage) > 1:
+
+
+                                        page = 1
+                                        while page <= int(totalpage):
+
+
+                                              time.sleep(15)
+                               
+                                              query2 = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+urllib.parse.quote(ville)+"&page="+str(page)
+
+                                              opener = urllib.request.build_opener()
+                                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                              send = opener.open(query2)
+
+
+
+                                              soup = BeautifulSoup(send,'lxml')
+                               
+
+
+
+                                              tmp = ""
+                                              i = 0
+                               
+                                              names = re.findall('<a class="bi-pos-links pj-lb pj-link" data-pjlb=(.*?)<span class="id-bi', str(soup),re.DOTALL)
+                               
+                                              if len(names) > 0:
+     
+                                                   for item in names:
+                                                        item = item.split('href="#" title=')
+                                                        item = item[1].replace("   "," ").replace('"','').replace(">","").replace("\n","")
+                                                        names[i] = item
+                                                        i = i + 1
+                                              else:
+                                                        names.append("none")
+                                              i = 0
+
+                                              locations = re.findall(' href="#" title="Voir le plan(.*?)</a></div>', str(soup),re.DOTALL)
+                                              if len(locations) >0:
+     
+                                                   for item in locations:
+                                                        item = item.replace("   "," ").replace('"','').replace("\n"," ").replace("<br>"," ")
+                                                        locations[i] = item
+                                                        i = i + 1
+                                              else:
+                                                        locations.append("none")
+                                              i = 0
+     
+                                              tels = re.findall('<div class="tel-zone"><span> Tél :</span><strong class="num" title="(.*?)">', str(soup),re.DOTALL)
+
+                                              if len(tels) >0:
+                                                   pass
+                                              else:
+                                                        tels.append("none")
+     
+
+                                              for maow in names:
+
+
+                                                       try:
+                                                            locations[i]
+                                                       except:
+                                                            locations.append("none")
+
+
+                                                       try:
+                                                            names[i]
+                                                       except:
+                                                            names.append("none")
+
+                                                       try:
+                                                            tels[i]
+                                                       except:
+                                                            tels.append("none")
+
+                                                       if names[i] != "none" and locations[i] != "none" and tels[i] != "none":
+                                                            print(ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                            savesession("pagesblanches",ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i],query)
+                                                            pageBresfullauto.append(ville+"#***#"+names[i]+"#***#"+locations[i]+"#***#"+tels[i])
+                                                            i = i + 1 
+                                                       else:
+                                                            i = i + 1
+                                                            pass
+                                        page = page + 1
+                         UserAgent = random.choice(pbuser_agent_list)
+               
+                    except Exception as e:
+
+     #                  print(e)
+                       pass
+
+
+######################################################################
+    
+     if last != True:
+
+
+       if city != "none" and c2w != "true":
           ok = 0
           while ok !=1:
                          for item1 in villefr:
@@ -2423,7 +3775,7 @@ def pageblanche(familyname,city):
 
 
 
-     if fullauto != "true":
+       if fullauto != "true":
 
           names = []
           locations = []
@@ -2547,12 +3899,12 @@ def pageblanche(familyname,city):
 
                                     time.sleep(15)
                                
-                                    query = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+urllib.parse.quote(region)+"&page="+str(page)
+                                    query2 = "http://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui="+urllib.parse.quote(familyname)+"&ou="+urllib.parse.quote(region)+"&page="+str(page)
 
                                     opener = urllib.request.build_opener()
                                     opener.addheaders = [('User-Agent', str(UserAgent))]
 
-                                    send = opener.open(query)
+                                    send = opener.open(query2)
 
 
 
@@ -2633,7 +3985,7 @@ def pageblanche(familyname,city):
 
                   pass
 
-     if fullauto == "true":
+       if fullauto == "true":
 
           print()
           Fig = Figlet(font='cybermedium')
@@ -2862,9 +4214,11 @@ def pageblanche(familyname,city):
 
 
 
+
 def getYahooLinks(language,link,depth): #from https://github.com/geckogecko
-     global yahoodone
      global yahoores
+     global yahoostart
+     global yahoook
      for boka in language:
           print()
           txtfig = "Getting results from Yahoo in "+ str(boka)
@@ -2877,94 +4231,151 @@ def getYahooLinks(language,link,depth): #from https://github.com/geckogecko
                results_array = []
                try:
                
-                    if argscity == "none":
-                         if yahoodone != 1:
-                              print("Without city arg")
-                              yahoodone = 1
-                         query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
-                    if argscity != "none" and c2e != "true":
-                         if yahoodone != 1:
-                              print("With city arg")
-                              yahoodone = 1
-                         query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"%20"+urllib.parse.quote(argscity)+"&b="+str((i*100)+1)+"&pz=100"
-                    if argscity != "none" and c2e == "true":
-                         if yahoodone != 1:
-                              print("Without city arg")
-                              yahoodone = 1
-                         query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
+                    query = "http://search.yahoo.com/search;_ylt=Agm6_o0evxm18v3oXd_li6bvzx4?vl=lang_"+str(boka)+"&p="+urllib.parse.quote(link)+"&b="+str((i*100)+1)+"&pz=100"
                     i
                     i = i+1
                     print()
-#                    print(query)
-                    print("Page nbr : ",i)
-                    print()
-
-                    yhuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
-                      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
-
-                    UserAgent = random.choice(yhuser_agent_list)
-
-
-                    opener = urllib.request.build_opener()
-                    opener.addheaders = [('User-Agent', str(UserAgent))]
-
-                    htmltext = opener.open(query)
-
-
-
-                    soup = BeautifulSoup(htmltext,'lxml')
-                    search = soup.findAll('div',attrs={'id':'web'})
-                    searchtext = str(search[0])
-                    soup1 = BeautifulSoup(searchtext,'lxml')
-                    list_items = soup1.findAll('li')
-               
-                    time.sleep(random.randint(60,120))
-               
-                    for li in list_items:
-                         soup2 = BeautifulSoup(str(li),'lxml')
-                         links = soup2.findAll('a')
-                         if len(links)>0:
-                              results_array.append(links)
-                    urls2 = (re.findall('www(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',str(results_array)))
-                    print("Yahoo Link counter : ",len(urls2))
-                    print()
-
-                    for cleanlink in urls2:
-                         try:
-                              cleanlink = cleanlink.split("/RK")
-                              cleanlink[0] = "http://"+urllib.parse.unquote(cleanlink[0])
-                              savesession("yahoo",cleanlink[0],query)
-                              yahoores.append(cleanlink[0]) 
-                         except Exception as e:
-                              #print(e)
-                              pass
-                    print()
-                    print()
-                    print("Yahoo Total : ",len(yahoores))
-
-                    endofres = re.findall('<span>(.*?)results</span></div></div></li></ol></div>', str(soup),re.DOTALL)
-                    try:
-                         endofres = endofres[0].replace(" ","").replace(",","")
-                         if  int(endofres) < i * 100 + 100 - len(yahoores):
-                              print()
-                              print("That's all falks!")
-                              return
-                    except Exception as e:
+                    print(query)
                     
-                         time.sleep(30)
-                         endofres = 1
-                         if  int(endofres) < i * 100 + 100 - len(yahoores):
+                    if last == True:
+                         if query == yahoostart or yahoook == 1:
+                              yahoook = 1
+
+                              print("Page nbr : ",i)
                               print()
-                              print("That's all falks")
-                              return
+     
+                              yhuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+     
+                              UserAgent = random.choice(yhuser_agent_list)
+
+
+                              opener = urllib.request.build_opener()
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              htmltext = opener.open(query)
+
+
+
+                              soup = BeautifulSoup(htmltext,'lxml')
+                              search = soup.findAll('div',attrs={'id':'web'})
+                              searchtext = str(search[0])
+                              soup1 = BeautifulSoup(searchtext,'lxml')
+                              list_items = soup1.findAll('li')
+               
+                              time.sleep(random.randint(60,120))
+               
+                              for li in list_items:
+                                   soup2 = BeautifulSoup(str(li),'lxml')
+                                   links = soup2.findAll('a')
+                                   if len(links)>0:
+                                        results_array.append(links)
+                              urls2 = (re.findall('www(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',str(results_array)))
+                              print("Yahoo Link counter : ",len(urls2))
+                              print()
+
+                              for cleanlink in urls2:
+                                   try:
+                                        cleanlink = cleanlink.split("/RK")
+                                        cleanlink[0] = "http://"+urllib.parse.unquote(cleanlink[0])
+                                        savesession("yahoo",cleanlink[0],query)
+                                        yahoores.append(cleanlink[0]) 
+                                   except Exception as e:
+                                        #print(e)
+                                        pass
+                              print()
+                              print()
+                              print("Yahoo Total : ",len(yahoores))
+
+                              endofres = re.findall('<span>(.*?)results</span></div></div></li></ol></div>', str(soup),re.DOTALL)
+                              try:
+                                   endofres = endofres[0].replace(" ","").replace(",","")
+                                   if  int(endofres) < i * 100 + 100 - len(yahoores):
+                                        print()
+                                        print("That's all falks!")
+                                        return
+                              except Exception as e:
+                              
+                                   time.sleep(30)
+                                   endofres = 1
+                                   if  int(endofres) < i * 100 + 100 - len(yahoores):
+                                        print()
+                                        print("That's all falks")
+                                        return
+
+
+                    if last != True:
+
+                              print("Page nbr : ",i)
+                              print()
+     
+                              yhuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+     
+                              UserAgent = random.choice(yhuser_agent_list)
+
+
+                              opener = urllib.request.build_opener()
+                              opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                              htmltext = opener.open(query)
+
+
+
+                              soup = BeautifulSoup(htmltext,'lxml')
+                              search = soup.findAll('div',attrs={'id':'web'})
+                              searchtext = str(search[0])
+                              soup1 = BeautifulSoup(searchtext,'lxml')
+                              list_items = soup1.findAll('li')
+               
+                              time.sleep(random.randint(60,120))
+               
+                              for li in list_items:
+                                   soup2 = BeautifulSoup(str(li),'lxml')
+                                   links = soup2.findAll('a')
+                                   if len(links)>0:
+                                        results_array.append(links)
+                              urls2 = (re.findall('www(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',str(results_array)))
+                              print("Yahoo Link counter : ",len(urls2))
+                              print()
+
+                              for cleanlink in urls2:
+                                   try:
+                                        cleanlink = cleanlink.split("/RK")
+                                        cleanlink[0] = "http://"+urllib.parse.unquote(cleanlink[0])
+                                        savesession("yahoo",cleanlink[0],query)
+                                        yahoores.append(cleanlink[0]) 
+                                   except Exception as e:
+                                        #print(e)
+                                        pass
+                              print()
+                              print()
+                              print("Yahoo Total : ",len(yahoores))
+
+                              endofres = re.findall('<span>(.*?)results</span></div></div></li></ol></div>', str(soup),re.DOTALL)
+                              try:
+                                   endofres = endofres[0].replace(" ","").replace(",","")
+                                   if  int(endofres) < i * 100 + 100 - len(yahoores):
+                                        print()
+                                        print("That's all falks!")
+                                        return
+                              except Exception as e:
+                              
+                                   time.sleep(30)
+                                   endofres = 1
+                                   if  int(endofres) < i * 100 + 100 - len(yahoores):
+                                        print()
+                                        print("That's all falks")
+                                        return
 
 
                except Exception as e:
-                         time.sleep(30)
-                         pass
-                         if len(yahoores) > 600 :
-                              print("Need to fix that loop")
-                              return
+                                   time.sleep(30)
+                                   pass
+                                   if len(yahoores) > 900 :
+                                        print("Need to fix that loop")
+                                        return
+
 
 
 
@@ -4427,7 +5838,7 @@ if argsengine.lower() != "none" :
                print()
                print("some options are missing")
                print()
-               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom,paginasblancas,spravkaru")
+               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom,paginasblancas,spravkaru,yellowpages")
                print()
                print("Example: -e google,pagesblanches  -s Albert Einstein -f Einstein -c Berne")
                print()
@@ -4589,6 +6000,14 @@ print()
 print("Family Name : ",argsfamily)
 print()
 print("In city : ",argscity)
+
+if c2e != "none":
+     print()
+     print("Only using city with search engine.")
+if c2w != "none":
+     print()
+     print("Only using city with whitepages.")
+
 print()
 print("Which may contain : ",argsadd)
 print()
