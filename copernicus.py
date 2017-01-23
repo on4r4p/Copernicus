@@ -96,6 +96,8 @@ pdfinalinkchance =[]
 
 pdflink = []
 
+tfstart = ""
+
 yellowstart = ""
 
 pblancasstart = ""
@@ -116,6 +118,8 @@ btstart = ""
 
 spravstart = ""
 
+tfok = 0
+
 pblancasok = 0
 
 yellowok = 0
@@ -131,6 +135,8 @@ googleok = 0
 lullarok = 0
 
 spravok = 0
+
+tfres = []
 
 bingpdflink = []
 
@@ -188,7 +194,7 @@ allcombparsed = []
 
 tmpchance = []
 
-enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom','paginasblancas','spravkaru','yellowpages']
+enginelist = ['google','yahoo','bing','pagesblanches','lullar','britishtelecom','paginasblancas','spravkaru','yellowpages','telefonbuch']
 
 
 yellownode = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
@@ -248,6 +254,9 @@ def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
     return decorator
 
 def loadsession():
+
+          global tfstart
+          global tfres
           global yellowstart
           global yellowres
           global spravstart
@@ -480,6 +489,18 @@ def loadsession():
 
 
 
+          for f in glob.glob("./Data/*.save"):
+                    if  f.startswith("./Data/telefonbuch"):
+                         print()
+                         print("Found telefonbuch.save")
+                         with open("./Data/telefonbuch.save") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
+
+                         for ligne in content:
+                              tfres.append(ligne)
+
+
 ##
 ##
                           
@@ -586,7 +607,16 @@ def loadsession():
                                
                               
 
+          for f in glob.glob("./Data/*.url"):
+                    if  f.startswith("./Data/telefonbuch"):
+                         print()
+                         print("Found telefonbuch.url")
+                         with open("./Data/telefonbuch.url") as f:
+                              content = f.readlines()
+                         content = [x.strip() for x in content]
 
+                         for ligne in content:
+                              tfstart = ligne
                               
 
 
@@ -1068,6 +1098,50 @@ def savesession(moteur,data,url):
 
 
 
+##
+     if moteur == "telefonbuch":
+          saveto = "./Data/telefonbuch.save"
+          savetourl = "./Data/telefonbuch.url"          
+
+
+          try:
+                                        filelog = open(saveto,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",saveto)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(saveto,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(saveto,"a")
+          filelog.write("\n"+str(data))
+          filelog.close()
+
+
+          try:
+                                        filelog = open(savetourl,"r")
+                                        filelog.close()
+          except:
+                                        print("==")
+                                        print("file does not exist:)",savetourl)
+                                        print("Creating file")
+                                        print("==")
+                                        filelog = open(savetourl,"w")
+                                        filelog.write("")
+                                        filelog.close()
+
+
+          filelog = open(savetourl,"w")
+          filelog.write("\n"+str(url))
+          filelog.close()
+
+
+
+
 
      savearg = "./Data/args.save"
 
@@ -1087,6 +1161,166 @@ def savesession(moteur,data,url):
      filelog = open(savearg,"w")
      filelog.write("\nengine:"+str(argsengine)+"\nc2e:"+str(c2e)+"\nc2w:"+str(c2w)+"\nlang:"+str(lang)+"\nargsname:"+str(argsname)+"\nargscity:"+str(argscity)+"\nargsfamily:"+str(argsfamily)+"\nemails:"+str(emails)+"\nargsadd:"+str(argsadd)+"\nargsimg:"+str(argsimg)+"\nfullauto:"+str(fullauto))
      filelog.close()
+
+
+def telefonbuch(fname,city):
+     global tfres
+     global tfok
+
+     print()
+     Fig = Figlet(font='cybermedium')
+     print(Fig.renderText('Searching Family Name in Telefon Buch'))
+     print()
+     pbuser_agent_list = ['Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/50.0',
+                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/51.0']
+
+     UserAgent = random.choice(pbuser_agent_list)
+
+     if last != True:   
+          if city == "none":
+               #try:
+                         maxpage = 1
+                         pagenbr = 1
+                         stopwhile = 0
+                         while stopwhile != 1 and pagenbr <= int(maxpage):
+                     
+                                        query = "http://www.dastelefonbuch.de/Personen/"+urllib.parse.quote(fname)+"/"+str(pagenbr)
+                                        print(query)
+
+                                   #if query.split("&page=")[0] == yellowstart.split("&page=")[0] or yellowok == 1:
+                                        tfok = 1
+                                        
+                                        opener = urllib.request.build_opener()
+                                        opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                        send = opener.open(query)
+
+
+                                        soup = BeautifulSoup(send,'lxml')
+                                        #print(soup)
+                                        
+                                        
+                                        tfnext = re.findall('<span class="step gap">…</span>(.*?)">Nächste</a>', str(soup),re.DOTALL)
+                                        
+                                        if len(tfnext) > 0:
+                                             try:
+                                                  for item in tfnext:
+                                                       item = item.split(' rel="nofollow">')
+                                                       for subtem in item:
+                                                            subtem = subtem.split('</a>')
+                                                       
+                                                  maxpage = subtem[0]
+                                             except:
+                                                       print("no res")                                             
+                                        print(maxpage)
+                                        
+                                        
+                                        tftmp = re.findall('<div class="entry privat clearfix"(.*?)<div class="name" title=', str(soup),re.DOTALL)
+                                        
+                                        
+                                        for item in tftmp:
+                                             tfname=""
+                                             tfloc=""
+                                             tftel=""    
+                                             print()
+
+                                             item2 = item.split("&")
+
+                                             for subtem in item2 :
+                                   
+                                                  if "na=" in subtem:
+                                                     try:
+                                                       tfname = subtem.split("na=")[1].replace("+"," ")
+                                                       tfname = urllib.parse.unquote(tfname)
+                                                       print(tfname)
+                                                     except:
+                                                            pass
+                                                       
+                                                  if "st=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("st=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "hn=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("hn=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "pc=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("pc=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "ci=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("ci=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "ciid=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("ciid=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+                         
+                                                  if "ccsd=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("ccsd=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "web=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("web=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "webtext=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("webtext=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+                                                      
+                                                       
+                                                  if "bi=" in subtem:
+                                                     try:
+                                                       tftel += " " +subtem.split("ccsd=")[1].replace("+"," ")
+                                                       tftel = urllib.parse.unquote(tftel)
+                                                       print(tftel)
+                                                     except:
+                                                            pass
+
+                                                  if "ph=" in subtem:
+                                                     try:
+                                                       tftel += " " +subtem.split("ph=")[1].replace("+"," ")
+                                                       tftel = urllib.parse.unquote(tftel)
+                                                       print(tftel)
+                                                     except:
+                                                            pass
+                                             print()
+                                             print(tfloc)
+                                        sys.exit()
+
+
 
 
 def yellowpages(fname,city):
@@ -6944,7 +7178,7 @@ if argsengine.lower() != "none" :
                print()
                print("some options are missing")
                print()
-               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom,paginasblancas,spravkaru,yellowpages")
+               print("-e option must match the following names : google,bing,yahoo,pagesblanches,lullar,britishtelecom,paginasblancas,spravkaru,yellowpages,telefonbuch")
                print()
                print("Example: -e google,pagesblanches  -s Albert Einstein -f Einstein -c Berne")
                print()
@@ -7135,6 +7369,30 @@ if fullauto == "true":
 
 permutation(argsname)
 
+for item in splitengine:
+     if item.lower() == "telefonbuch":
+          if family != "none":
+
+               if argscity != "none" and c2e == "true":
+                    telefonbuch(family,"none")
+               if argscity != "none" and c2e == "none":
+                    telefonbuch(family,argscity)
+               if argscity != "none" and c2e == "false":
+                    telefonbuch(family,argscity)
+               if argscity == "none":
+                    telefonbuch(family,"none")
+          if family == "none":
+               quickfix=""
+               while len(quickfix) < 1:
+                    quickfix= input("What's the familly name already?\nInput:")
+               if argscity != "none" and c2e == "true":
+                    telefonbuch(str(quickfix),"none")
+               if argscity != "none" and c2e == "none":
+                    telefonbuch(str(quickfix),argscity)
+               if argscity != "none" and c2e == "false":
+                    telefonbuch(str(quickfix),argscity)
+               if argscity == "none":
+                    telefonbuch(str(quickfix),"none")
 
 
 
