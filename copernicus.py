@@ -1176,9 +1176,10 @@ def telefonbuch(fname,city):
 
      UserAgent = random.choice(pbuser_agent_list)
 
-     if last != True:   
+
+     if last == True:   
           if city == "none":
-               #try:
+
                          maxpage = 1
                          pagenbr = 1
                          stopwhile = 0
@@ -1186,9 +1187,260 @@ def telefonbuch(fname,city):
                      
                                         query = "http://www.dastelefonbuch.de/Personen/"+urllib.parse.quote(fname)+"/"+str(pagenbr)
                                         print(query)
+                                        print("tfstart",tfstart)
 
+                                        if query == tfstart or tfok == 1:
+                                             tfok = 1
+                                        
+                                             opener = urllib.request.build_opener()
+                                             opener.addheaders = [('User-Agent', str(UserAgent))]
+
+                                             send = opener.open(query)
+
+
+                                             soup = BeautifulSoup(send,'lxml')
+                                             #print(soup)
+                                        
+                                        
+                                             tfnext = re.findall('<span class="step gap">…</span>(.*?)">Nächste</a>', str(soup),re.DOTALL)
+                                             
+                                             if len(tfnext) > 0:
+                                                  try:
+                                                       for item in tfnext:
+                                                            item = item.split(' rel="nofollow">')
+                                                            for subtem in item:
+                                                                 subtem = subtem.split('</a>')
+                                                       
+                                                       maxpage = subtem[0]
+                                                  except:
+                                                            print("no res")                                             
+                                             print(maxpage)
+                                             
+                                             tftmp2 = re.findall('<div class="entry privat clearfix"(.*?)<div class="name" title=', str(soup),re.DOTALL)
+                                             tftmp = re.findall('<div class="entry clearfix "(.*?)<div class="name" title=', str(soup),re.DOTALL)
+                                        
+                                             
+                                             for item in tftmp:
+                                                  res =""
+                                                  tfname=""
+                                                  tfloc=""
+                                                  tftel=""    
+                                                  print()
+
+                                                  item2 = item.split("&")
+                                                  #print(item2)
+                                                  for subtem in item2 :
+                                   
+                                                       if "na=" in subtem:
+                                                          try:
+                                                            tfname = subtem.split("na=")[1].replace("+"," ")
+                                                            tfname = urllib.parse.unquote(tfname)
+                                                          except:
+                                                                 pass
+                                                       
+                                                       if "st=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("st=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+
+                                                          except:
+                                                                 pass
+
+                                                       if "hn=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("hn=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+
+                                                          except:
+                                                                 pass
+
+                                                       if "pc=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("pc=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+
+                                                          except:
+                                                                 pass
+
+                                                       if "ci=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("ci=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+
+                                                          except:
+                                                                 pass
+
+                                                       if "ciid=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("ciid=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+
+                                                          except:
+                                                                 pass
+                         
+                                                       if "web=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("web=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+
+                                                          except:
+                                                                 pass
+
+                                                       if "webtext=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("webtext=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+
+                                                          except:
+                                                                 pass
+                                                      
+                                                       
+                                                       if "bi=" in subtem:
+                                                          try:
+                                                            tftel += " " +subtem.split("bi=")[1].replace("+"," ")
+                                                            tftel = urllib.parse.unquote(tftel)
+                                                          except:
+                                                                 pass
+
+                                                       if "ph=" in subtem:
+                                                          try:
+                                                            tftel += " " +subtem.split("ph=")[1].replace("+"," ")
+                                                            tftel = urllib.parse.unquote(tftel)
+                                                       
+                                                          except:
+                                                                 pass
+                                                  print()
+                                              
+                                                  print()
+                                                  res = tfname +"#***#"+tfloc+"#***#"+tftel
+                                                  tfres.append(res)
+                                                  savesession("telefonbuch",res,query)
+                                                  print(res)
+
+
+
+
+                                             for item in tftmp2:
+
+                                                  res=""
+                                                  tfname=""
+                                                  tfloc=""
+                                                  tftel=""    
+                                                  print()
+
+                                                  item2 = item.split("&")
+                                                  #print(item2)
+                                                  for subtem in item2 :
+                                        
+                                                       if "na=" in subtem:
+                                                          try:
+                                                            tfname = subtem.split("na=")[1].replace("+"," ")
+                                                            tfname = urllib.parse.unquote(tfname)
+                                                          except:
+                                                                 pass
+                                                       
+                                                       if "st=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("st=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+     
+                                                          except:
+                                                                 pass
+     
+                                                       if "hn=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("hn=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+     
+                                                          except:
+                                                                 pass
+     
+                                                       if "pc=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("pc=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+     
+                                                          except:
+                                                                 pass
+     
+                                                       if "ci=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("ci=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+     
+                                                          except:
+                                                                 pass
+     
+                                                       if "ciid=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("ciid=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+     
+                                                          except:
+                                                                 pass
+     
+     
+     
+                                                       if "web=" in subtem:
+                                                          try:
+     
+                                                            tfloc += " " +subtem.split("web=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+
+                                                          except:
+     
+                                                                 pass
+     
+                                                       if "webtext=" in subtem:
+                                                          try:
+                                                            tfloc += " " +subtem.split("webtext=")[1].replace("+"," ")
+                                                            tfloc = urllib.parse.unquote(tfloc)
+     
+                                                          except:
+                                                                 pass
+                                                           
+                                                            
+                                                       if "bi=" in subtem:
+                                                          try:
+                                                            tftel += " " +subtem.split("bi=")[1].replace("+"," ")
+                                                            tftel = urllib.parse.unquote(tftel)
+                                                          except:
+                                                                 pass
+
+                                                       if "ph=" in subtem:
+                                                          try:
+                                                            tftel += " " +subtem.split("ph=")[1].replace("+"," ")
+                                                            tftel = urllib.parse.unquote(tftel)
+                                                          except:
+                                                                 pass
+                                                  print()
+                                                  res = tfname +"#***#"+tfloc+"#***#"+tftel
+                                                  print(res)
+                                             savesession("telefonbuch",res,query)
+                                             tfres.append(res)
+
+
+                                             time.sleep(random.randint(23,123))
+                                             pagenbr = pagenbr + 1
+                                        else:
+                                             pagenbr = pagenbr + 1
+
+
+
+
+     if last != True:   
+          if city == "none":
+
+                         maxpage = 1
+                         pagenbr = 1
+                         stopwhile = 0
+                         while stopwhile != 1 and pagenbr <= int(maxpage):
+                     
+                                        query = "http://www.dastelefonbuch.de/Personen/"+urllib.parse.quote(fname)+"/"+str(pagenbr)
+                                        print(query)
+     
                                    #if query.split("&page=")[0] == yellowstart.split("&page=")[0] or yellowok == 1:
-                                        tfok = 1
+
                                         
                                         opener = urllib.request.build_opener()
                                         opener.addheaders = [('User-Agent', str(UserAgent))]
@@ -1214,25 +1466,25 @@ def telefonbuch(fname,city):
                                                        print("no res")                                             
                                         print(maxpage)
                                         
-                                        
-                                        tftmp = re.findall('<div class="entry privat clearfix"(.*?)<div class="name" title=', str(soup),re.DOTALL)
+                                        tftmp2 = re.findall('<div class="entry privat clearfix"(.*?)<div class="name" title=', str(soup),re.DOTALL)
+                                        tftmp = re.findall('<div class="entry clearfix "(.*?)<div class="name" title=', str(soup),re.DOTALL)
                                         
                                         
                                         for item in tftmp:
+                                             res =""
                                              tfname=""
                                              tfloc=""
                                              tftel=""    
                                              print()
 
                                              item2 = item.split("&")
-
+                                             #print(item2)
                                              for subtem in item2 :
                                    
                                                   if "na=" in subtem:
                                                      try:
                                                        tfname = subtem.split("na=")[1].replace("+"," ")
                                                        tfname = urllib.parse.unquote(tfname)
-                                                       print(tfname)
                                                      except:
                                                             pass
                                                        
@@ -1276,14 +1528,6 @@ def telefonbuch(fname,city):
                                                      except:
                                                             pass
                          
-                                                  if "ccsd=" in subtem:
-                                                     try:
-                                                       tfloc += " " +subtem.split("ccsd=")[1].replace("+"," ")
-                                                       tfloc = urllib.parse.unquote(tfloc)
-
-                                                     except:
-                                                            pass
-
                                                   if "web=" in subtem:
                                                      try:
                                                        tfloc += " " +subtem.split("web=")[1].replace("+"," ")
@@ -1303,9 +1547,8 @@ def telefonbuch(fname,city):
                                                        
                                                   if "bi=" in subtem:
                                                      try:
-                                                       tftel += " " +subtem.split("ccsd=")[1].replace("+"," ")
+                                                       tftel += " " +subtem.split("bi=")[1].replace("+"," ")
                                                        tftel = urllib.parse.unquote(tftel)
-                                                       print(tftel)
                                                      except:
                                                             pass
 
@@ -1313,12 +1556,120 @@ def telefonbuch(fname,city):
                                                      try:
                                                        tftel += " " +subtem.split("ph=")[1].replace("+"," ")
                                                        tftel = urllib.parse.unquote(tftel)
-                                                       print(tftel)
+                                                       
                                                      except:
                                                             pass
                                              print()
-                                             print(tfloc)
-                                        sys.exit()
+                                         
+                                             print()
+                                             res = tfname +"#***#"+tfloc+"#***#"+tftel
+                                             tfres.append(res)
+                                             savesession("telefonbuch",res,query)
+                                             print(res)
+
+
+
+
+                                        for item in tftmp2:
+
+                                             res=""
+                                             tfname=""
+                                             tfloc=""
+                                             tftel=""    
+                                             print()
+
+                                             item2 = item.split("&")
+                                             #print(item2)
+                                             for subtem in item2 :
+                                   
+                                                  if "na=" in subtem:
+                                                     try:
+                                                       tfname = subtem.split("na=")[1].replace("+"," ")
+                                                       tfname = urllib.parse.unquote(tfname)
+                                                     except:
+                                                            pass
+                                                       
+                                                  if "st=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("st=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "hn=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("hn=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "pc=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("pc=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "ci=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("ci=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+                                                  if "ciid=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("ciid=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+
+
+
+                                                  if "web=" in subtem:
+                                                     try:
+
+                                                       tfloc += " " +subtem.split("web=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+
+                                                            pass
+
+                                                  if "webtext=" in subtem:
+                                                     try:
+                                                       tfloc += " " +subtem.split("webtext=")[1].replace("+"," ")
+                                                       tfloc = urllib.parse.unquote(tfloc)
+
+                                                     except:
+                                                            pass
+                                                      
+                                                       
+                                                  if "bi=" in subtem:
+                                                     try:
+                                                       tftel += " " +subtem.split("bi=")[1].replace("+"," ")
+                                                       tftel = urllib.parse.unquote(tftel)
+                                                     except:
+                                                            pass
+
+                                                  if "ph=" in subtem:
+                                                     try:
+                                                       tftel += " " +subtem.split("ph=")[1].replace("+"," ")
+                                                       tftel = urllib.parse.unquote(tftel)
+                                                     except:
+                                                            pass
+                                             print()
+                                             res = tfname +"#***#"+tfloc+"#***#"+tftel
+                                             print(res)
+                                             savesession("telefonbuch",res,query)
+                                             tfres.append(res)
+                                        time.sleep(random.randint(23,123))
+                                        pagenbr = pagenbr + 1
 
 
 
