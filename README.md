@@ -90,10 +90,10 @@ Search  all regions in France for family name ,adresses,phone numbers.
 -   ~~Add whitepage engine for es.~~
 -   ~~Add whitepage engine for ru.~~
 -   ~~Add whitepage engine for usa.~~
-- ~~ Add whitepage engine for ger.~~
-- ~~Add Captcha solver for yellowpages.com.~~
-- ~~Add ability to choose to use city for engine or whitePages.~~
--  ~~Add ability to save current session and continue where it stopped in  case of uncaught error.~~
+-   ~~Add whitepage engine for ger.~~
+-   ~~Add Captcha solver for yellowpages.com.~~
+-   ~~Add ability to choose to use city for engine or whitePages.~~
+-   ~~Add ability to save current session and continue where it stopped in  case of uncaught error.~~
 -  Add graphml , mtgx export format .
 -  Add image search for yahoo and bing
 - ~~Add Email search~~
