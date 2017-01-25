@@ -2,7 +2,7 @@
  
  
 
-Osint tool to get results from Google, Bing, Yahoo,British Telecom,PagesBlanches,PaginasBlancas,SpravKaru,Yellow Pages,lullar, about peoples.
+Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,Yellow Pages,lullar, about peoples.
 
 1. No Smeging Api key required.
 
@@ -14,24 +14,28 @@ Osint tool to get results from Google, Bing, Yahoo,British Telecom,PagesBlanches
 
 5. If strict search result failed for one website try another finding method helped by a list of words provided by user.
 
-6. Search in french city specified by user for family name ,adresses,phone numbers.
-Search in all regions in France for family name ,adresses,phone numbers.
- Search in all cities in France with more than 10 thousand inhabitants for family name ,adresses,phone numbers (never tested  yet suspected to block your ip)
+6. Search in a french's city specified by user for family name ,adresses,phone numbers.
+Search  all regions in France for family name ,adresses,phone numbers.
+ Search  all cities in France with more than 10 thousand inhabitants for family name ,adresses,phone numbers (never tested  yet suspected to block your ip)
  
-7. Search in United-Kingdom city specified by user for family name ,adresses,phone numbers.
- Search in all cities in United-Kingdom for family name ,adresses,phone numbers.
+7. Search in United-Kingdom a city specified by user for family name ,adresses,phone numbers.
+ Search  all cities in United-Kingdom for family name ,adresses,phone numbers.
  
-8. Search in spanish city specified by user for family name ,adresses,phone numbers.
- Search in all cities in Spain for family name ,adresses,phone numbers.
+8. Search in a spanish's city specified by user for family name ,adresses,phone numbers.
+ Search all cities in Spain for family name ,adresses,phone numbers.
  
-9. Search in russian city specified by user for family name ,adresses,phone numbers.
- Search in all cities in Russia for family name ,adresses,phone numbers.
+9. Search in a russian city's specified by user for family name ,adresses,phone numbers.
+ Search all cities in Russia for family name ,adresses,phone numbers.
  
-10. Search in all States of Usa for family name ,adresses,phone numbers. 
+10. Search in an american's city specified by user for family name ,adresses,phone numbers.
+ Search all States of Usa for family name ,adresses,phone numbers. 
  
-11. Search social relations with Lullar if email is provided
+11. Search german's city specified by user for family name ,adresses,phone numbers.
+ Search all cities in Germany for family name ,adresses,phone numbers. 
  
-12. Then make a graph in neo4j .
+12. Search social relations with Lullar if email is provided
+ 
+13. Then make a graph in neo4j .
 
 ^(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to work directly in neo4j .)^
 
@@ -86,11 +90,11 @@ Search in all regions in France for family name ,adresses,phone numbers.
 -   ~~Add whitepage engine for es.~~
 -   ~~Add whitepage engine for ru.~~
 -   ~~Add whitepage engine for usa.~~
--  Add whitepage engine for ger.
+- ~~ Add whitepage engine for ger.~~
 - ~~Add Captcha solver for yellowpages.com.~~
 - ~~Add ability to choose to use city for engine or whitePages.~~
 -  ~~Add ability to save current session and continue where it stopped in  case of uncaught error.~~
--  Add graphml , gephi , cytoscape ,export format .
+-  Add graphml , mtgx export format .
 -  Add image search for yahoo and bing
 - ~~Add Email search~~
 - Add Search results function for other file format 
