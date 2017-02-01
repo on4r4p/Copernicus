@@ -37,7 +37,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
  
 13. Search social relations with Lullar if email is provided
 
-14. Generate all possible combinations of mails adresses then check if they exist .(need to find a way to avoid black listing if too many request)
+14. Generate all possible combinations of mails adresses then check if they exist .
  
 15. Then make a graph in neo4j .
 
