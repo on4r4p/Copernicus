@@ -49,7 +49,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
 
 		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e TRUE-FALSE]
-		                     [-c2w TRUE-FALSE] [-s 'NAME'] [-f FAMILY NAME]
+		                     [-c2w TRUE-FALSE] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
 		                     [-a OPTION] [-c CITY] [-i TRUE-FALSE] [-m EMAIL]
 		                     [-gm OPTION] [-fa TRUE-FALSE] [-LS]
 		- optional arguments:
@@ -63,6 +63,8 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       -c2e TRUE-FALSE Only use the city arg with search engine
 		       
 		       -c2w TRUE-FALSE, Only use the city arg with whitepages 
+		       
+		       -sa 'ALIAS', Alias to Search
 		       
 		       -s 'NAME', Name to Search
 		       
@@ -120,7 +122,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 - Add Search results function for other file format 
 - Add Search by language in Bing
 - Add nickname guessing function.
-- Add nickname searching function (instead of only using people's names.)
+- ~~Add nickname searching function (instead of only using people's names.)~~
 - ~~Add email guessing function.~~
 - ~~Add email checking function.~~
 - ~~catch all mails found in results~~
