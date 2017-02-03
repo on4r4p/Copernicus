@@ -37,13 +37,19 @@ Search  all regions in France for family name ,adresses,phone numbers.
  
 13. Search social relations with Lullar if email is provided
 
-14. Generate all possible combinations of mails adresses then check if they exist .
+14. Generate all possible combinations of mails adresses then check if they exist . If they exist , will ask lullar searchengine.
  
 15. Then make a graph in neo4j .
 
 ^(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to work directly in neo4j .)^
 
+![ ](http://img11.hostingpics.net/pics/139823resc.png  "search engine")
 
+
+![ ](http://img11.hostingpics.net/pics/117526piximg.jpg  "google pic")
+
+
+![ ](http://img11.hostingpics.net/pics/384186Captcha.png  "yellowpages captcha bypass")
 
 
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
@@ -51,7 +57,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e TRUE-FALSE]
 		                     [-c2w TRUE-FALSE] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
 		                     [-a OPTION] [-c CITY] [-i TRUE-FALSE] [-m EMAIL]
-		                     [-gm OPTION] [-fa TRUE-FALSE] [-LS]
+		                     [-gm OPTION] [-fa TRUE-FALSE] [-LS] [-t TIME]
 		- optional arguments:
 		
 		       -h, --help            show this help message and exit
@@ -79,21 +85,23 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       -m EMAIL,  will ask lullar.com about it
 		       
 		        -gm OPTION, --guessmail OPTION
-		                        -gm ._-,badidea000,leet,64,1984,666,all,top10,@emailpr
-		                        ovider1.com,@emailprovider2.ru find all emails
-		                        permutation and check if they exist. leet for
-		                        l33tsp34k, .-_ are chosen separators , Ppl often add
-		                        birthdate/postalcode/fav number try to add some. Add
-		                        badidea0000 to test all combinations from 0 to 9999
-		                        (even 2 digits is a bad idea). Another bad idea is the
-		                        'all' option which try over 4500 emails providers.
-		                        top10 option will use gmail.com,outlook.com,yahoo.com,
-		                        hotmail.com,aol.com,facebook.com,gmx.com,live.com,msn.
-		                        com,mail.com. The best option here is to add some
-		                        domain yourself like this :
-		                        ._-,64,@emailprovider1.com,@emailprovider2.ru
-		
-		       
+		        
+		        -t TIME, --timesleep Resting time before each requests ( random between 42 to x where x is your choice)
+		        
+		       -gm ._-,badidea000,leet,64,1984,666,all,top10,@emailpr
+		         ovider1.com,@emailprovider2.ru find all emails
+		         permutation and check if they exist. leet for
+		         l33tsp34k, .-_ are chosen separators , Ppl often add
+		         birthdate/postalcode/fav number try to add some. Add
+		         badidea0000 to test all combinations from 0 to 9999
+		         (even 2 digits is a bad idea). Another bad idea is the
+		          'all' option which try over 4500 emails providers.
+		          top10 option will use gmail.com,outlook.com,yahoo.com,
+		         hotmail.com,aol.com,facebook.com,gmx.com,live.com,msn.
+		         com,mail.com. The best option here is to add some
+		         domain yourself like this :
+		          -gm ._-,64,@emailprovider1.com,@emailprovider2.ru
+		           
 		       -fa TRUE-FALSE, Take more than 3 hours can get your ip banned
 		
 		       -LS, --lastsession  Load last aborded sessions
@@ -120,7 +128,6 @@ Search  all regions in France for family name ,adresses,phone numbers.
 -  ~~Add image search for yahoo and bing~~
 - ~~Add Email search~~
 - Add Search results function for other file format 
-- Add Search by language in Bing
 - Add nickname guessing function.
 - ~~Add nickname searching function (instead of only using people's names.)~~
 - ~~Add email guessing function.~~
@@ -128,4 +135,4 @@ Search  all regions in France for family name ,adresses,phone numbers.
 - ~~catch all mails found in results~~
 - ~~Add FullAuto mode for PagesBlanches (testings all cities with more than 10 000 inhabitants )~~
 
-*Wrote this cause of the maltego community limitation (12 results only=
+*Wrote this cause of the maltego community limitation (12 results only)*
