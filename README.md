@@ -128,7 +128,8 @@ Search  all regions in France for family name ,adresses,phone numbers.
 -  ~~Add image search for yahoo and bing~~
 - ~~Add Email search~~
 - Add Search results function for other file format 
-- Add nickname guessing function.
+- ~~Add nickname guessing function.~~(Canceled unreliable)
+- Save final results session.
 - ~~Add nickname searching function (instead of only using people's names.)~~
 - ~~Add email guessing function.~~
 - ~~Add email checking function.~~
