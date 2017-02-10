@@ -38,8 +38,10 @@ Search  all regions in France for family name ,adresses,phone numbers.
 13. Search social relations with Lullar if email is provided
 
 14. Generate all possible combinations of mails adresses then check if they exist . If they exist , will ask lullar searchengine.
+
+15. Search Family name in Skype Directory (And perhaps find his/her Online alias)
  
-15. Then make a graph in neo4j .
+16. Then make a graph in neo4j .
 
 ^(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to work directly in neo4j .)^
 
@@ -55,7 +57,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
 
 		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e TRUE-FALSE]
-		                     [-c2w TRUE-FALSE] [-sm TRUE-FALSE] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
+		                     [-c2w TRUE-FALSE] [-sm TRUE-FALSE] [-sk LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
 		                     [-a OPTION] [-c CITY] [-i TRUE-FALSE] [-m EMAIL]
 		                     [-gm OPTION] [-fa TRUE-FALSE] [-LS] [-t TIME]
 		- optional arguments:
@@ -71,6 +73,8 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       -c2w TRUE-FALSE, Only use the city arg with whitepages 
 		       
 		       -sm TRUE-FALSE, --scrapmail TRUE-FALSE
+		       
+		        -sk LOGIN-PASSWORD,  Search Family name in Skype Directory.
 
 		       -sa 'ALIAS', Alias to Search
 		       
@@ -112,7 +116,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 	
 	
 	
-	>./copernicus.py -e google,yahoo,pagesblanches,lullar -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w true -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org
+	>./copernicus.py -e google,yahoo,pagesblanches,lullar -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w true -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org -sk SkypeLogin,SkypePassword
 	   
 ###To do list:
 - Rewrite all this shit
@@ -129,11 +133,12 @@ Search  all regions in France for family name ,adresses,phone numbers.
 -  Add graphml , mtgx export format .
 -  ~~Add image search for yahoo and bing~~
 - ~~Add Email search~~
-- Add Search results function for other file format 
-- ~~Add nickname guessing function.~~(Canceled unreliable)
+- Add Search results function for other file format (not only html and pdf) 
+- ~~Add nickname guessing function.~~(Canceled unreliable |Skype def or Facebook has better chances to find nickname or Alias)
 - ~~Save final results session.~~
-- Add Skype search
+- ~~Add Skype search~~
 - Add Facebook search
+- Add TinyEye search engine to compare with images results from Skype, Facebook/Lullar and the first ten pictures from google bing and yahoo.
 - ~~Add nickname searching function (instead of only using people's names.)~~
 - ~~Add email guessing function.~~
 - ~~Add email checking function.~~
