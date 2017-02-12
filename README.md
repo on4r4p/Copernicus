@@ -74,7 +74,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       
 		       -sm TRUE-FALSE, --scrapmail TRUE-FALSE
 		       
-		        -sk LOGIN-PASSWORD,  Search Family name in Skype Directory.
+		       -sk LOGIN-PASSWORD,  Search Family name in Skype Directory.
 
 		       -sa 'ALIAS', Alias to Search
 		       
@@ -90,23 +90,22 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       
 		       -m EMAIL,  will ask lullar.com about it
 		       
-		        -gm OPTION, --guessmail OPTION
+		       -t TIME, --timesleep Resting time before each requests ( random between 42 to x where x is your choice)
 		        
-		        -t TIME, --timesleep Resting time before each requests ( random between 42 to x where x is your choice)
-		        
-		       -gm ._-,badidea000,leet,64,1984,666,all,top10,@emailpr
-		         ovider1.com,@emailprovider2.ru find all emails
-		         permutation and check if they exist. leet for
-		         l33tsp34k, .-_ are chosen separators , Ppl often add
-		         birthdate/postalcode/fav number try to add some. Add
-		         badidea0000 to test all combinations from 0 to 9999
-		         (even 2 digits is a bad idea). Another bad idea is the
-		          'all' option which try over 4500 emails providers.
-		          top10 option will use gmail.com,outlook.com,yahoo.com,
-		         hotmail.com,aol.com,facebook.com,gmx.com,live.com,msn.
-		         com,mail.com. The best option here is to add some
-		         domain yourself like this :
-		          -gm ._-,64,@emailprovider1.com,@emailprovider2.ru
+		       -gm OPTION Find all emails permutation and check if they exist.
+		       	 Options:
+						 leet for l33tsp34k
+						  .-_ are chosen separators
+						  23,42 People often add birthdate/postalcode/fav at the end number try to add some
+						 badidea0000 to test all combinations from 0 to 9999 (even 2 digits is a bad idea). 
+						 Another bad idea is the 'all' option which try over 4500 emails providers.
+						 top10 option will use 10 most used provider 
+						 The best option here is to add some domain yourself like this :
+						 -gm @emailprovider1.com,@emailprovider2.ru
+						 
+						 Ex : -gm ._-,badidea00,leet,64,1984,666,all,top10,@emailprovider1.com,@emailprovider2.ru
+						 
+						
 		           
 		       -fa TRUE-FALSE, Take more than 3 hours can get your ip banned
 		
@@ -138,7 +137,8 @@ Search  all regions in France for family name ,adresses,phone numbers.
 - ~~Save final results session.~~
 - ~~Add Skype search~~
 - Add Facebook search
-- Add TinyEye search engine to compare with images results from Skype, Facebook/Lullar and the first ten pictures from google bing and yahoo.
+- Add webmii search
+- Add TinyEye search engine to compare with images results from Skype's avatar, Facebook ,Lullar and the first ten pictures from google bing webmi and yahoo.
 - ~~Add nickname searching function (instead of only using people's names.)~~
 - ~~Add email guessing function.~~
 - ~~Add email checking function.~~
