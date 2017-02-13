@@ -41,7 +41,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 
 15. Search in Skype Directory 
  
-16. Search in Facebook Directory  al
+16. Search in Facebook Directory 
  
 17. Then make a graph in neo4j .
 
