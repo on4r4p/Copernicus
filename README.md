@@ -39,9 +39,9 @@ Search  all regions in France for family name ,adresses,phone numbers.
 
 14. Generate all possible combinations of mails adresses then check if they exist . If they exist , will ask lullar searchengine.
 
-15. Search in Skype Directory 
+15. Search in Skype Directory (can use results to guess emails)
  
-16. Search in Facebook Directory 
+16. Search in Facebook Directory  (can use results to guess emails)
  
 17. Then make a graph in neo4j .
 
@@ -59,7 +59,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
 
 		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e TRUE-FALSE]
-		                     [-c2w TRUE-FALSE] [-sm TRUE-FALSE] [-sk LOGIN-PASSWORD] [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
+		                     [-c2w TRUE-FALSE] [-f2e] [-sm TRUE-FALSE] [-sk LOGIN-PASSWORD] [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
 		                     [-a OPTION] [-c CITY] [-i TRUE-FALSE] [-m EMAIL]
 		                     [-gm OPTION] [-fa TRUE-FALSE] [-LS] [-t TIME]
 		- optional arguments:
@@ -72,7 +72,9 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       
 		       -c2e TRUE-FALSE Only use the city arg with search engine
 		       
-		       -c2w TRUE-FALSE, Only use the city arg with whitepages 
+		       -c2w TRUE-FALSE, Only use the city arg with whitepages
+		       
+		       -f2e Search with full name not only Family name with skye or facebook 
 		       
 		       -sm TRUE-FALSE, --scrapmail TRUE-FALSE
 		       
@@ -138,7 +140,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 -  Add graphml , mtgx export format .
 -  ~~Add image search for yahoo and bing~~
 - ~~Add Email search~~
-- Add Search results function for other file format (not only html and pdf) 
+- ~~Add Search results function for other file format (not only html and pdf) ~~
 - ~~Add nickname guessing function.~~(Canceled unreliable |Skype def or Facebook has better chances to find nickname or Alias)
 - ~~Save final results session.~~
 - ~~Add Skype search~~
