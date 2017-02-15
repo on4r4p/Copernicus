@@ -140,7 +140,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 -  Add graphml , mtgx export format .
 -  ~~Add image search for yahoo and bing~~
 - ~~Add Email search~~
-- ~~Add Search results function for other file format (not only html and pdf) ~~
+- ~~Add Search results function for other file format.~~
 - ~~Add nickname guessing function.~~(Canceled unreliable |Skype def or Facebook has better chances to find nickname or Alias)
 - ~~Save final results session.~~
 - ~~Add Skype search~~
