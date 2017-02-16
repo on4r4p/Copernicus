@@ -2,7 +2,7 @@
  
  
 
-Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,Yellow Pages,Lullar,Skype about peoples.
+Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,Yellow Pages,Lullar,Skype,Facebook about peoples.
 
 1. No Smeging Api key required.
 
@@ -145,9 +145,10 @@ Search  all regions in France for family name ,adresses,phone numbers.
 - ~~Save final results session.~~
 - ~~Add Skype search~~
 - ~~Add Facebook search~~
-- Add webmii search
-- Add TinyEye search engine to compare with images results from Skype's avatar, Facebook ,Lullar and the first ten pictures from google bing webmi and yahoo.
+- ~~Add webmii search~~ (Canceled results similar to Copernicus.py)
+- Add TinyEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.
 - ~~Add nickname searching function (instead of only using people's names.)~~
+- Check Lullar results for false positive.
 - ~~Add email guessing function.~~
 - ~~Add email checking function.~~
 - ~~catch all mails found in results~~
