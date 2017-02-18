@@ -58,7 +58,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
 
-		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e TRUE-FALSE]
+		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e]
 		                     [-c2w ] [-f2e] [-n2w] [-sm ] [-sk LOGIN-PASSWORD] [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
 		                     [-a OPTION] [-c CITY] [-i ] [-m EMAIL]
 		                     [-gm OPTION] [-fa TRUE-FALSE] [-LS] [-t TIME]
@@ -70,9 +70,9 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       
 		       -l LANG, Country : en,zh-CN,es,ar,pt,ja,ru,fr,de...
 		       
-		       -c2e TRUE-FALSE Only use the city arg with search engine
+		       -c2e  Only use the city arg with search engine
 		       
-		       -c2w TRUE-FALSE, Only use the city arg with whitepages
+		       -c2w Only use the city arg with whitepages
 		       
 		       -f2e Search with full name not only Family name with skye or facebook 
 		       -n2w Dont only use Family name with whitepages use fullname instead
