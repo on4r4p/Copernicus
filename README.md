@@ -59,8 +59,8 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
 
 		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e TRUE-FALSE]
-		                     [-c2w TRUE-FALSE] [-f2e] [-sm TRUE-FALSE] [-sk LOGIN-PASSWORD] [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
-		                     [-a OPTION] [-c CITY] [-i TRUE-FALSE] [-m EMAIL]
+		                     [-c2w ] [-f2e] [-n2w] [-sm ] [-sk LOGIN-PASSWORD] [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
+		                     [-a OPTION] [-c CITY] [-i ] [-m EMAIL]
 		                     [-gm OPTION] [-fa TRUE-FALSE] [-LS] [-t TIME]
 		- optional arguments:
 		
@@ -75,8 +75,9 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       -c2w TRUE-FALSE, Only use the city arg with whitepages
 		       
 		       -f2e Search with full name not only Family name with skye or facebook 
+		       -n2w Dont only use Family name with whitepages use fullname instead
 		       
-		       -sm TRUE-FALSE, --scrapmail TRUE-FALSE
+		       -sm , --scrapmail get all emails from results
 		       
 		       -sk LOGIN-PASSWORD,  Search Family name in Skype Directory.
 		       
@@ -92,7 +93,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       
 		       -c CITY, --city   Specify city
 		       
-		       -i TRUE-FALSE, Search and download pictures too
+		       -i , Search and download pictures too
 		       
 		       -m EMAIL,  will ask lullar.com about it
 		       
@@ -123,7 +124,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 	
 	
 	
-	>./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook -s "Someone you looking for" -f "looking for" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w true -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org -sk SkypeLogin,SkypePassword -sf FacebookLogin,FacebookPassword
+	>./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook -s "name+familyname" -f "Family name" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w  -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org -sk SkypeLogin,SkypePassword -sf FacebookLogin,FacebookPassword -f2e -n2w
 	   
 ###To do list:
 - Rewrite all this shit
