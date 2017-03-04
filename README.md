@@ -8,7 +8,7 @@ Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanche
 
 2. Will not get your ip banned.
 
-3. Get images from google
+3. Get images from Google,Bing,Yahoo
 
 4. Filter each websites results to be sure to retreive what we looking for . (including pdf)
 
