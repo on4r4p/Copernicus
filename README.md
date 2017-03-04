@@ -2,7 +2,7 @@
  
  
 
-Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,Yellow Pages,Lullar,Skype,Facebook about peoples.
+Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,Yellow Pages,Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr,Skype,Facebook about peoples.
 
 1. No Smeging Api key required.
 
@@ -35,9 +35,10 @@ Search  all regions in France for family name ,adresses,phone numbers.
 12. Search german's city specified by user for family name ,adresses,phone numbers.
  Search all cities in Germany for family name ,adresses,phone numbers. 
  
-13. Search social relations with Lullar if email is provided
+13. Search social relations with Lullar() if email is provided
+(Ask Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr)
 
-14. Generate all possible combinations of mails adresses then check if they exist . If they exist , will ask lullar searchengine.
+14. Generate all possible combinations of mails adresses then check if they exist . If they exist , will ask Lullar() .
 
 15. Search in Skype Directory (can use results to guess emails)
  
@@ -141,6 +142,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 -  Add graphml , mtgx export format .
 -  ~~Add image search for yahoo and bing~~
 - ~~Add Email search~~
+- Add Irc Logs search.
 - ~~Add Search results function for other file format.~~
 - ~~Add nickname guessing function.~~(Canceled unreliable |Skype def or Facebook has better chances to find nickname or Alias)
 - ~~Save final results session.~~
@@ -149,7 +151,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 - ~~Add webmii search~~ (Canceled results similar to Copernicus.py)
 - Add TinyEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.
 - ~~Add nickname searching function (instead of only using people's names.)~~
-- Check Lullar results for false positive.
+- ~~Check Lullar results for false positive.~~
 - ~~Add email guessing function.~~
 - ~~Add email checking function.~~
 - ~~catch all mails found in results~~
