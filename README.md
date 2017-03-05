@@ -130,6 +130,10 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ###To do list:
 - Rewrite all this shit
 - Add Install setup 
+- Add Irc Logs search.
+- Add TinyEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.
+- Add graphml , mtgx export format .
+- Add onion search engine.
 -   ~~Add whitepage engine for fr.~~
 -   ~~Add whitepage engine for uk.~~
 -   ~~Add whitepage engine for es.~~
@@ -139,17 +143,14 @@ Search  all regions in France for family name ,adresses,phone numbers.
 -   ~~Add Captcha solver for yellowpages.com.~~
 -   ~~Add ability to choose to use city for engine or whitePages.~~
 -   ~~Add ability to save current session and continue where it stopped in  case of uncaught error.~~
--  Add graphml , mtgx export format .
 -  ~~Add image search for yahoo and bing~~
 - ~~Add Email search~~
-- Add Irc Logs search.
 - ~~Add Search results function for other file format.~~
 - ~~Add nickname guessing function.~~(Canceled unreliable |Skype def or Facebook has better chances to find nickname or Alias)
 - ~~Save final results session.~~
 - ~~Add Skype search~~
 - ~~Add Facebook search~~
 - ~~Add webmii search~~ (Canceled results similar to Copernicus.py)
-- Add TinyEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.
 - ~~Add nickname searching function (instead of only using people's names.)~~
 - ~~Check Lullar results for false positive.~~
 - ~~Add email guessing function.~~
