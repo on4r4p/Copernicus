@@ -135,8 +135,8 @@ Search  all regions in France for family name ,adresses,phone numbers.
 - Add Install setup 
 - Add Irc Logs search.
 - Add TinyEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.
-- Add graphml , mtgx export format .
-- ~~ Add onion search engine.~~
+-  Add graphml , mtgx export format .
+-  ~~Add onion search engine~~
 -   ~~Add whitepage engine for fr.~~
 -   ~~Add whitepage engine for uk.~~
 -   ~~Add whitepage engine for es.~~
