@@ -45,8 +45,10 @@ Search  all regions in France for family name ,adresses,phone numbers.
 16. Search in Facebook Directory  (can use results to guess emails)
 
 17. Search in Darksearch.com for onion links
+
+18. Search in Irc logs from botbot.me and tunes.org (planning to add many more)
  
-18. Then make a graph in neo4j .
+19. Then make a graph in neo4j .
 
 ^(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to work directly in neo4j .)^
 
@@ -133,7 +135,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ###To do list:
 - Rewrite all this shit
 - Add Install setup 
-- Add Irc Logs search.
+- ~~Add Irc Logs search.~~
 - Add TinyEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.
 -  Add graphml , mtgx export format .
 -  ~~Add onion search engine~~
