@@ -46,7 +46,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 
 17. Search in Darksearch.com for onion links
 
-18. Search in Irc logs from botbot.me and tunes.org (planning to add many more)
+18. Search in Irc logs from various servers .
  
 19. Then make a graph in neo4j .
 
