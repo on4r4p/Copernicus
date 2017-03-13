@@ -2,7 +2,7 @@
  
  
 
-Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,YellowPages,Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr,Skype,Facebook about peoples.
+Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,YellowPages,Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr,Skype,Facebook ,irc logs about peoples.
 
 1. No Smeging Api key required.
 
@@ -47,6 +47,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 17. Search in Darksearch.com for onion links
 
 18. Search in Irc logs from various servers .
+        (https://botbot.me/ http://tunes.org/ http://irc.slitaz.org/ http://logs.glob.uno/ https://krijnhoetmer.nl/irc-logs/ https://indieweb.org/irc/ http://eavesdrop.openstack.org/irclogs/ http://irclog.whitequark.org/ http://chat.alfresco.com/ http://ircbrowse.net http://www.wcnews.com/logs/ http://logs.nslu2-linux.org/livelogs http://irclogs.shortcircuit.net.au/ http://irclogs.ceph.widodh.nl/ https://fluidtypo3.org/community/ https://www.tryton.org/~irclog/ http://rbach.priv.at/Microformats/IRC/ https://log.bezut.info/ http://sbnc.khobbits.co.uk/log/logs/ https://irclogs.baserock.org/ http://carrier.6irc.net/metachan/ https://irclogs.ubuntu.com/ https://www.spi-inc.org/meetings/logs/ https://www.olimex.com/irc? https://irc.cakephp.org/ http://freecadlog.archivist.info/ https://irclogs.jackgrigg.com/ http://irc.koha-community.org/koha/ http://www.merproject.org/logs/ http://www.alwaysinnovating.com/irclog/ https://ghostscript.com/irclogs/ https://badcheese.com/~steve/atlogs/ http://c4evaspeaks.com https://irclog.perlgeek.de/ http://old.geotools.org http://riesvantwisk.com/home/irc-logs/ http://blockstack.slackarchive.io/ http://chat-logs.dcpython.org/ https://irclogs.deepin.io/deepin http://logs.collectionspace.org/ http://irc.minetest.ru/ https://irc.dokuwiki.org/ https://silverstripe.logged.nz/ http://tech.lds.org/irc/ http://globalqss.com/idempiere/irclog/ http://dig.csail.mit.edu/irc/dig/ http://www.webplatform.org/talk/chatlogs/ http://ilbot2.kohaaloha.com/koha/)
  
 19. Then make a graph in neo4j .
 
@@ -103,7 +104,6 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       
 		       -m EMAIL,  will ask lullar.com about it
 		       
-		       -gm OPTION, --guessmail OPTION
 		        
 		       -t TIME, --timesleep Resting time before each requests ( random between 42 to x where x is your choice)
 		        
@@ -130,7 +130,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 	
 	
 	
-	>./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook -s "name+familyname" -f "Family name" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,you,search,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w  -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org -sk SkypeLogin,SkypePassword -sf FacebookLogin,FacebookPassword -f2e -n2w
+	>./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook -s "name+familyname" -f "Family name" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,"you are",searching,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w  -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org -sk SkypeLogin,SkypePassword -sf FacebookLogin,FacebookPassword -f2e -n2w
 	   
 ###To do list:
 - Rewrite all this shit
