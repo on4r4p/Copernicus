@@ -137,6 +137,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 - Add Install setup 
 - ~~Add Irc Logs search.~~
 - Add TinEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.
+- workaround in case of google ban like using google.co.jp or something
 -  Add graphml , mtgx export format .
 -  ~~Add onion search engine~~
 -   ~~Add whitepage engine for fr.~~
