@@ -2,7 +2,7 @@
  
  
 
-Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,YellowPages,Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr,Skype,Facebook,Tineye,irc logs about peoples.
+Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,YellowPages,Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr,Skype,Facebook,Tineye,Irc logs about peoples.
 
 1. No Smeging Api key required.
 
