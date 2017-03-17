@@ -2,7 +2,7 @@
  
  
 
-Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,YellowPages,Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr,Skype,Facebook ,irc logs about peoples.
+Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,YellowPages,Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr,Skype,Facebook,Tineye,irc logs about peoples.
 
 1. No Smeging Api key required.
 
@@ -135,10 +135,10 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ###To do list:
 - Rewrite all this shit
 - Add Install setup 
-- ~~Add Irc Logs search.~~
-- Add TinEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.
 - workaround in case of google ban like using google.co.jp or something
 -  Add graphml , mtgx export format .
+- ~~Add Irc Logs search.~~
+- ~~Add TinEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.~~
 -  ~~Add onion search engine~~
 -   ~~Add whitepage engine for fr.~~
 -   ~~Add whitepage engine for uk.~~
