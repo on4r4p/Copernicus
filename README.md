@@ -138,8 +138,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ###To do list:
 - Rewrite all this shit
 - Add Install setup 
-- workaround in case of google ban like using google.co.jp or something
--  ~~Add graphml , mtgx export format ~~. (replaced by csv export)
+-~~Add graphml , mtgx export format.~~ (replaced by csv export)
 - ~~Add Irc Logs search.~~
 - ~~Add TinEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.~~
 -  ~~Add onion search engine~~
