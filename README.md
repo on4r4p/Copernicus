@@ -48,7 +48,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 18. Search in Irc logs from various servers .
         (https://botbot.me/ http://tunes.org/ http://irc.slitaz.org/ http://logs.glob.uno/ https://krijnhoetmer.nl/irc-logs/ https://indieweb.org/irc/ http://eavesdrop.openstack.org/irclogs/ http://irclog.whitequark.org/ http://chat.alfresco.com/ http://ircbrowse.net http://www.wcnews.com/logs/ http://logs.nslu2-linux.org/livelogs http://irclogs.shortcircuit.net.au/ http://irclogs.ceph.widodh.nl/ https://fluidtypo3.org/community/ https://www.tryton.org/~irclog/ http://rbach.priv.at/Microformats/IRC/ https://log.bezut.info/ http://sbnc.khobbits.co.uk/log/logs/ https://irclogs.baserock.org/ http://carrier.6irc.net/metachan/ https://irclogs.ubuntu.com/ https://www.spi-inc.org/meetings/logs/ https://www.olimex.com/irc? https://irc.cakephp.org/ http://freecadlog.archivist.info/ https://irclogs.jackgrigg.com/ http://irc.koha-community.org/koha/ http://www.merproject.org/logs/ http://www.alwaysinnovating.com/irclog/ https://ghostscript.com/irclogs/ https://badcheese.com/~steve/atlogs/ http://c4evaspeaks.com https://irclog.perlgeek.de/ http://old.geotools.org http://riesvantwisk.com/home/irc-logs/ http://blockstack.slackarchive.io/ http://chat-logs.dcpython.org/ https://irclogs.deepin.io/deepin http://logs.collectionspace.org/ http://irc.minetest.ru/ https://irc.dokuwiki.org/ https://silverstripe.logged.nz/ http://tech.lds.org/irc/ http://globalqss.com/idempiere/irclog/ http://dig.csail.mit.edu/irc/dig/ http://www.webplatform.org/talk/chatlogs/ http://ilbot2.kohaaloha.com/koha/)
  
-19. Then make a graph in neo4j .
+19. Then make a graph in neo4j or csv file.
 
 ^(Consider downloading [Linkification](https://addons.mozilla.org/fr/firefox/addon/linkification/)  for Firefox or [Clickable links](https://chrome.google.com/webstore/detail/clickable-links/mgamelhnfokapndfdodnmfiningckjia) for Chrome if you want to work directly in neo4j .)^
 
@@ -61,13 +61,13 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ![ ](http://img11.hostingpics.net/pics/384186Captcha.png  "yellowpages captcha bypass")
 
 
+![Maltego graph](http://img15.hostingpics.net/pics/994737malti.png  "maltego")
+
 
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
 
 		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e]
-		                     [-c2w ] [-f2e] [-n2w] [-sm ] [-sk LOGIN-PASSWORD] [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-f FAMILY NAME]
-		                     [-a OPTION] [-c CITY] [-i ] [-m EMAIL]
-		                     [-gm OPTION] [-fa TRUE-FALSE] [-LS] [-t TIME]
+		                     [-c2w ] [-f2e] [-n2w] [-sm ] [-sk LOGIN-PASSWORD] [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-o output] [-f FAMILY NAME] [-a OPTION] [-c CITY] [-i ] [io] [-m EMAIL] [-gm OPTION] [-fa TRUE-FALSE] [-LS] [-t TIME]
 		- optional arguments:
 		
 		       -h, --help            show this help message and exit
@@ -93,6 +93,8 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       
 		       -s 'NAME', Name to Search
 		       
+		       -o --output output to Neo4j or Cvs.
+		       
 		       -f FAMILY NAME, --family FAMILY NAME
 		       
 		       -a OPTION, Word1,Word2,Word3
@@ -100,6 +102,8 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		       -c CITY, --city   Specify city
 		       
 		       -i , Search and download pictures too
+		       
+		       -io , --imgonly Collect images and skip Google Bing and Yahoo search engine
 		       
 		       -m EMAIL,  will ask lullar.com about it
 		       
@@ -129,13 +133,13 @@ Search  all regions in France for family name ,adresses,phone numbers.
 	
 	
 	
-	>./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook -s "name+familyname" -f "Family name" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,"you are",searching,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w  -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org -sk SkypeLogin,SkypePassword -sf FacebookLogin,FacebookPassword -f2e -n2w
+	>./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook -s "name+familyname" -f "Family name" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,"you are",searching,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w  -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org -sk SkypeLogin,SkypePassword -sf FacebookLogin,FacebookPassword -f2e -n2w -o neo4j,csv
 	   
 ###To do list:
 - Rewrite all this shit
 - Add Install setup 
 - workaround in case of google ban like using google.co.jp or something
--  Add graphml , mtgx export format .
+-  ~~Add graphml , mtgx export format ~~. (replaced by csv export)
 - ~~Add Irc Logs search.~~
 - ~~Add TinEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.~~
 -  ~~Add onion search engine~~
