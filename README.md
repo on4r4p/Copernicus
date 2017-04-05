@@ -67,7 +67,11 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ![](http://img15.hostingpics.net/pics/938427copernicus0.png) 
 
 		- usage: copernicus.py [-h] [-e Engine] [-l LANG] [-c2e]
-		                     [-c2w ] [-f2e] [-n2w] [-sm ] [-sk LOGIN-PASSWORD] [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] [-o output] [-f FAMILY NAME] [-a OPTION] [-c CITY] [-i ] [io] [-m EMAIL] [-gm OPTION] [-fa TRUE-FALSE] [-LS] [-t TIME]
+		                     [-c2w ] [-f2e] [-n2w] [-sm ] [-sk LOGIN-PASSWORD] 
+		                     [-sf LOGIN-PASSWORD] [-sa 'ALIAS'] [-s 'NAME'] 
+		                     [-o output] [-f FAMILY NAME] [-a OPTION] [-c CITY] 
+		                     [-i ] [io] [-m EMAIL] [-gm OPTION] [-fa TRUE-FALSE] 
+		                     [-LS] [-t TIME]
 		- optional arguments:
 		
 		       -h, --help            show this help message and exit
@@ -112,20 +116,20 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		        
 		       -gm OPTION Find all emails permutation and check if they exist.
 		       	 Options:
-						 leet for l33tsp34k
-						  .-_ are chosen separators
-						  23,42 People often add birthdate/postalcode/fav at the end number try to add some
-						 badidea0000 to test all combinations from 0 to 9999 (even 2 digits is a bad idea). 
-						 Another bad idea is the 'all' option which try over 4500 emails providers.
-						 top10 option will use 10 most used provider 
-						 The best option here is to add some domain yourself like this :
-						 -gm @emailprovider1.com,@emailprovider2.ru
+				 leet for l33tsp34k
+				  .-_ are chosen separators
+				 23,42 People often add birthdate/postalcode/fav at the end number try to add some
+				 badidea0000 to test all combinations from 0 to 9999 (even 2 digits is a bad idea). 
+				 Another bad idea is the 'all' option which try over 4500 emails providers.
+				 top10 option will use 10 most used provider 
+				 The best option here is to add some domain yourself like this :
+					 -gm @emailprovider1.com,@emailprovider2.ru
 						 
-						 Ex : -gm ._-,badidea00,leet,64,1984,666,all,top10,@emailprovider1.com,@emailprovider2.ru
+				 Ex : -gm ._-,badidea00,leet,64,1984,666,all,top10,@emailprovider1.com,@emailprovider2.ru
 						 
 						
 		           
-		       -fa TRUE-FALSE, Take more than 3 hours can get your ip banned
+		       -fa TRUE-FALSE, Check 946 city in France .Take more than 3 hours can get your ip banned
 		
 		       -LS, --lastsession  Load last aborded sessions
 		
@@ -133,12 +137,24 @@ Search  all regions in France for family name ,adresses,phone numbers.
 	
 	
 	
-	>./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook -s "name+familyname" -f "Family name" -c paris -a lot,of,words,to,add,here,in,relation,with,the,people,"you are",searching,if,you,want,more,results,"dont forget to quote space",doh   -i true -m some@mail.something -c2w  -gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org -sk SkypeLogin,SkypePassword -sf FacebookLogin,FacebookPassword -f2e -n2w -o neo4j,csv
+	example@ofuse:~$ ./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook 
+	-s "name+familyname" -f "Family name" 
+	-c paris 
+	-a lot,of,words,to,add,here,in,relation,with,the,people,"you are",searching 
+	-i -m some@mail.something 
+	-c2w
+	-gm .-,top10,leet,666,@postmaster.co.uk,@openmailbox.org 
+	-sk SkypeLogin,SkypePassword 
+	-sf FacebookLogin,FacebookPassword
+	-f2e 
+	-n2w 
+	 -o neo4j,csv
 	   
 ###To do list:
 - Rewrite all this shit
-- Add Install setup 
--~~Add graphml , mtgx export format.~~ (replaced by csv export)
+- Add Install setup
+- Add another way to check mails related to microsoft.
+- ~~Add graphml , mtgx export format.~~ (replaced by csv export)
 - ~~Add Irc Logs search.~~
 - ~~Add TinEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.~~
 -  ~~Add onion search engine~~
