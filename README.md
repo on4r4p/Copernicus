@@ -1,4 +1,4 @@
-#Copernicus
+##Copernicus
  
 
 Osint tool to get results from Google, Bing, Yahoo,British Telecom,Pages Blanches,Paginas Blancas,SpravKaru,Das Telefon Bush,YellowPages,Instagram,Twitter,Youtube,WeChat,GooglePlus,Linkedin,Myspace,Flickr,Foursquare,PhotoBucket,Picturetrail,Wayn,Dek-d,Pinterest,Badoo,Blogger,Tumblr,Skype,Facebook,Tineye,Irc logs,Darksearch about peoples.
@@ -153,7 +153,7 @@ Search  all regions in France for family name ,adresses,phone numbers.
 ###To do list:
 - Rewrite all this shit
 - Add Install setup
-- Add another way to check mails related to microsoft.
+- ~~Add another way to check mails related to microsoft.~~
 - ~~Add graphml , mtgx export format.~~ (replaced by csv export)
 - ~~Add Irc Logs search.~~
 - ~~Add TinEye search engine to compare with images results from Skype's avatar, Facebook ,and the first ten pictures from google bing  and yahoo.~~
