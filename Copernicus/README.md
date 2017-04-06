@@ -133,10 +133,12 @@ Search  all regions in France for family name ,adresses,phone numbers.
 		
 		       -LS, --lastsession  Load last aborded sessions
 		
-	     
-	
-	
-	
+##Install
+
+- pip3 install copernicus
+
+##Usage
+
 	example@ofuse:~$ ./copernicus.py -e google,yahoo,pagesblanches,lullar,skype,facebook 
 	-s "name+familyname" -f "Family name" 
 	-c paris 
