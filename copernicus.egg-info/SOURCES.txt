@@ -1,0 +1,15 @@
+MANIFEST.in
+README.md
+setup.py
+Copernicus/Copernicus.mtz
+Copernicus/README.md
+Copernicus/copernicus.py
+Copernicus/geckodriver
+Copernicus/geckodriver.exe
+Copernicus/imageGwall.py
+Copernicus/Data/Pictures/captcha.png
+copernicus.egg-info/PKG-INFO
+copernicus.egg-info/SOURCES.txt
+copernicus.egg-info/dependency_links.txt
+copernicus.egg-info/requires.txt
+copernicus.egg-info/top_level.txt
