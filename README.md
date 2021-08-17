@@ -1,5 +1,7 @@
 ##Copernicus
- 
+
+###THIS SCRIPT IS NOT MAINTAINED ATM AND SOME PARTs OF IT ARE NOT WORKING ###
+###When i have some time i will rewrite it from scratch###
 
 Osint tool to get results from
 youtube,google,bing,yahoo,britishtelecom,pagesblanches,paginasblancas,
