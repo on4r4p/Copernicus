@@ -7,6 +7,6 @@ transliterate == 1.9
 pytesseract == 0.1.6
 grapefruit == 0.1a4
 fabulous == 0.3.0
-PyPDF2 == 1.26.0
+PyPDF2 == 1.27.5
 dnspython3 == 1.15.0
 Unidecode == 0.4.19
